@@ -1,29 +1,115 @@
-<h2>Sign up</h2>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
-
-  <div class="field">
-    <p><%= f.label :password %></p>
-    <% if @minimum_password_length %>
-      <p><em>(<%= @minimum_password_length %> characters minimum)</em></p>
-    <% end %>
-    <p><%= f.password_field :password, autocomplete: "new-password" %></p>
-  </div>
-
-  <div class="field">
-    <p><%= f.label :password_confirmation %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+<div class="min-vh-100 d-flex flex-column justify-content-between p-4" style="background-color: #f6f5f1; color: #1e1e1e; font-family: system-ui, -apple-system, sans-serif;">
+  <!-- 1. HEADER -->
+  <header class="d-flex justify-content-between align-items-center mb-5 px-md-4">
+    <div class="d-flex align-items-center gap-2">
+      <i class="fa-solid fa-paw fs-4"></i>
+      <span class="fs-4 fw-bold" style="font-family: 'Comic Sans MS', cursive, sans-serif; font-style: italic;">Pet Portal</span>
+    </div>
+  </header>
+  <!-- 2. MAIN CONTAINER -->
+  <main class="container my-auto">
+    <div class="row align-items-center gy-5">
+      <!-- Left Column: Copy & Mockups -->
+      <div class="col-lg-6 pe-lg-5">
+        <h1 class="display-4 fw-bold mt-2 mb-4" style="letter-spacing: -1px; line-height: 1.15;">
+          Every vet visit, vaccine, and quiet afternoon &mdash; in <span class="text-decoration-underline" style="text-decoration-color: #e07a5f;">one place.</span>
+        </h1>
+        <p class="lead text-secondary mb-5 fs-5">
+          Pet Portal is a private chart for your pet's medical records, daily care, and photo memories. Built for the anxious pet parent in all of us.
+        </p>
+        <!-- Visual Mockups (Bella's Chart & Polaroids) -->
+        <div class="position-relative mt-4 d-none d-md-block" style="height: 320px;">
+          <!-- Bella's Chart Card -->
+          <div class="card p-3 shadow-sm border border-secondary-subtle rounded-3 position-absolute" style="width: 320px; z-index: 2; top: 0; left: 0; background: white;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="d-flex align-items-center gap-2">
+                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center fw-bold text-muted border" style="width: 40px; height: 40px;">B</div>
+                <div>
+                  <h6 class="mb-0 fw-bold">Bella's chart</h6>
+                  <small class="text-muted">Mini Aussie • 4 yr</small>
+                </div>
+              </div>
+              <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill">1 alert</span>
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <div class="border rounded p-2 bg-light-subtle">
+                  <small class="text-muted text-uppercase d-block" style="font-size: 0.65rem;">Weight</small>
+                  <strong class="fs-5">32.4 lb</strong>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="border rounded p-2 bg-light-subtle">
+                  <small class="text-muted text-uppercase d-block" style="font-size: 0.65rem;">Vaccines</small>
+                  <strong class="fs-5">5 / 7</strong>
+                </div>
+              </div>
+            </div>
+            <div class="small border-top pt-2">
+              <span class="text-success"><i class="fa-solid fa-check me-1"></i> Morning walk</span> • <span class="text-success">Apoquel</span> • <span class="text-muted">2 more today</span>
+            </div>
+          </div>
+          <!-- Polaroid 1 (Park Day) -->
+          <div class="bg-white p-2 shadow border position-absolute" style="width: 140px; transform: rotate(-8deg); z-index: 3; top: 30px; left: 240px;">
+            <div class="bg-light border-bottom d-flex align-items-center justify-content-center" style="height: 120px;">
+              <i class="fa-solid fa-tree text-secondary opacity-50 fs-3"></i>
+            </div>
+            <div class="text-center pt-2" style="font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 0.8rem;">park day</div>
+          </div>
+          <!-- Polaroid 2 (Nap Time) -->
+          <div class="bg-white p-2 shadow border position-absolute" style="width: 140px; transform: rotate(5deg); z-index: 4; top: 70px; left: 340px;">
+            <div class="bg-light border-bottom d-flex align-items-center justify-content-center" style="height: 120px;">
+              <i class="fa-solid fa-mountain text-secondary opacity-50 fs-3"></i>
+            </div>
+            <div class="text-center pt-2" style="font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 0.8rem;">nap time</div>
+          </div>
+          <!-- Red label indicator -->
+          <div class="position-absolute text-danger" style="top: 250px; left: 80px; font-family: 'Comic Sans MS', cursive, sans-serif; font-style: italic; z-index: 5;">
+            your pet's whole story &rarr;
+          </div>
+        </div>
+      </div>
+      <!-- Right Column: Card & Form -->
+      <div class="col-lg-5 offset-lg-1 col-md-8 mx-auto">
+        <div class="card p-4 p-md-5 border border-secondary-subtle rounded-4 shadow-sm bg-white">
+          <!-- Tab Header Toggle -->
+          <div class="d-flex border rounded-pill p-1 bg-light mb-4" style="height: 50px;">
+            <button class="btn btn-white rounded-pill fw-semibold w-50 shadow-sm border" type="button">Create account</button>
+            <%= link_to "Sign in", new_user_session_path, class: "btn btn-link text-muted text-decoration-none fw-semibold w-50 d-flex align-items-center justify-content-center" %>
+          </div>
+          <h2 class="h4 fw-bold mb-1">Start your pet's chart</h2>
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            <%= render "devise/shared/error_messages", resource: resource %>
+            <!-- Name Input (For layout - see note below) -->
+            <div class="mb-3">
+              <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;">Your Name</label>
+              <input type="text" class="form-control py-2 px-3 rounded border-secondary-subtle" placeholder="John Smith" autofocus="true" />
+            </div>
+            <!-- Email Input -->
+            <div class="mb-3">
+              <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;"><%= f.label :email %></label>
+              <%= f.email_field :email, autocomplete: "email", class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "you@email.com" %>
+            </div>
+            <!-- Password Input -->
+            <div class="mb-4">
+              <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;"><%= f.label :password %></label>
+              <%= f.password_field :password, autocomplete: "new-password", class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "••••••••" %>
+            </div>
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-dark w-100 py-3 rounded-pill fw-bold mb-4" style="background-color: #1e1e1e;">
+              Create my account &rarr;
+            </button>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- 3. FOOTER -->
+  <footer class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-5 pt-4 border-top border-secondary-subtle px-md-4 small text-muted">
+    <div class="d-flex gap-3 mb-2 mb-md-0">
+    </div>
+    <div>
+      Made for the anxious pet parent in all of us <i class="fa-solid fa-paw ms-1"></i>
+    </div>
+  </footer>
+</div>
