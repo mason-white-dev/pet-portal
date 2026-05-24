@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
   # Require user authentication for all actions by default.
   before_action :authenticate_user!
 
+  # Ensure custom fields (like first_name, last_name) are permitted through Strong Parameters
+  # whenever a Devise controller handles user registration or profile updates.
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
@@ -21,5 +25,13 @@ class ApplicationController < ActionController::Base
     else
       "application"
     end
+  end
+
+  # Custom parameter handler for Devise controllers.
+  # This allows the "first_name" and "last_name" fields to be processed
+  # along with the standard email/password fields during sign up and updates.
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :first_name, :last_name ])
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :first_name, :last_name ])
   end
 end
