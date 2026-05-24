@@ -26,7 +26,7 @@
       <%= f.text_field :first_name, autofocus: true, placeholder: "John",
             class: [ "form-control py-2 px-3 rounded border-secondary-subtle", ("is-invalid" if resource.errors[:first_name].any?) ] %>
       <% if resource.errors[:first_name].any? %>
-        <div class="invalid-feedback"><i class="fa-solid fa-circle-exclamation me-1"></i>First name <%= resource.errors[:first_name].join(", ") %></div>
+        <div class="invalid-feedback d-block"><i class="fa-solid fa-circle-exclamation me-1"></i>First name <%= resource.errors[:first_name].join(", ") %></div>
       <% end %>
     </div>
 
@@ -36,7 +36,7 @@
       <%= f.text_field :last_name, placeholder: "Smith",
             class: [ "form-control py-2 px-3 rounded border-secondary-subtle", ("is-invalid" if resource.errors[:last_name].any?) ] %>
       <% if resource.errors[:last_name].any? %>
-        <div class="invalid-feedback"><i class="fa-solid fa-circle-exclamation me-1"></i>Last name <%= resource.errors[:last_name].join(", ") %></div>
+        <div class="invalid-feedback d-block"><i class="fa-solid fa-circle-exclamation me-1"></i>Last name <%= resource.errors[:last_name].join(", ") %></div>
       <% end %>
     </div>
 
@@ -46,7 +46,7 @@
       <%= f.email_field :email, autocomplete: "email", placeholder: "you@email.com",
             class: [ "form-control py-2 px-3 rounded border-secondary-subtle", ("is-invalid" if resource.errors[:email].any?) ] %>
       <% if resource.errors[:email].any? %>
-        <div class="invalid-feedback"><i class="fa-solid fa-circle-exclamation me-1"></i>Email <%= resource.errors[:email].join(", ") %></div>
+        <div class="invalid-feedback d-block"><i class="fa-solid fa-circle-exclamation me-1"></i>Email <%= resource.errors[:email].join(", ") %></div>
       <% end %>
     </div>
 
@@ -56,7 +56,7 @@
       <%= f.password_field :password, autocomplete: "new-password", placeholder: "••••••••",
             class: [ "form-control py-2 px-3 rounded border-secondary-subtle", ("is-invalid" if resource.errors[:password].any?) ] %>
       <% if resource.errors[:password].any? %>
-        <div class="invalid-feedback"><i class="fa-solid fa-circle-exclamation me-1"></i>Password <%= resource.errors[:password].join(", ") %></div>
+        <div class="invalid-feedback d-block"><i class="fa-solid fa-circle-exclamation me-1"></i>Password <%= resource.errors[:password].join(", ") %></div>
       <% end %>
     </div>
 
