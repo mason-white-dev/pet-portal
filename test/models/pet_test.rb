@@ -75,13 +75,13 @@ class PetTest < ActiveSupport::TestCase
   test "should reject avatar images larger than 5MB" do
     # Generate a 6MB string in memory to simulate a massive file upload
     large_file = "a" * 6.megabytes
-    
+
     @valid_pet.avatar_image.attach(
       io: StringIO.new(large_file),
       filename: "large_avatar.jpg",
       content_type: "image/jpeg"
     )
-    
+
     assert_not @valid_pet.valid?
     assert_includes @valid_pet.errors[:avatar_image], "is too big (must be under 5MB)"
   end
