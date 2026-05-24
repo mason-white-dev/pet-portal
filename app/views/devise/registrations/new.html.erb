@@ -17,19 +17,6 @@
     <button class="btn btn-white rounded-pill fw-semibold w-50 shadow-sm border" type="button">Create account</button>
     <%= link_to "Sign in", new_user_session_path, class: "btn btn-link text-muted text-decoration-none fw-semibold w-50 d-flex align-items-center justify-content-center" %>
   </div>
-  <% if notice %>
-    <div class="alert alert-success alert-dismissible fade show py-2 small rounded-3" role="alert">
-      <%= notice %>
-      <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close" style="padding: 0.75rem;"></button>
-    </div>
-  <% end %>
-  <% if alert %>
-    <div class="alert alert-danger alert-dismissible fade show py-2 small rounded-3" role="alert">
-      <%= alert %>
-      <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close" style="padding: 0.75rem;"></button>
-    </div>
-  <% end %>
-
   <h2 class="h4 fw-bold mb-1">Start your pet's chart</h2>
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { data: { turbo_frame: "_top" } }) do |f| %>
     <%# First Name Input %>
