@@ -11,10 +11,7 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
-  </div>
+
 
   <div>
     <%= form.label :name, style: "display: block" %>
@@ -23,12 +20,12 @@
 
   <div>
     <%= form.label :species, style: "display: block" %>
-    <%= form.number_field :species %>
+    <%= form.select :species, Pet.species.keys.map { |k| [k.humanize, k] }, { prompt: "Select species" } %>
   </div>
 
   <div>
     <%= form.label :sex, style: "display: block" %>
-    <%= form.number_field :sex %>
+    <%= form.select :sex, Pet.sexes.keys.map { |k| [k.humanize, k] }, { prompt: "Select sex" } %>
   </div>
 
   <div>
