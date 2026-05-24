@@ -1,0 +1,48 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# == Schema Information
+#
+# Table name: pets
+#
+#  id            :bigint           not null, primary key
+#  breed         :string
+#  date_of_birth :date
+#  microchip     :string
+#  name          :string
+#  neutered      :boolean
+#  notes         :text
+#  sex           :string
+#  species       :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  user_id       :bigint           not null
+#
+# Indexes
+#
+#  index_pets_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
+one:
+  user: one
+  name: MyString
+  species: 1
+  sex: 1
+  breed: MyString
+  date_of_birth: 2026-05-24
+  microchip: MyString
+  neutered: false
+  notes: MyText
+
+two:
+  user: two
+  name: MyString
+  species: 1
+  sex: 1
+  breed: MyString
+  date_of_birth: 2026-05-24
+  microchip: MyString
+  neutered: false
+  notes: MyText

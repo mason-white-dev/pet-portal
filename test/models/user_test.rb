@@ -37,4 +37,24 @@ class UserTest < ActiveSupport::TestCase
     assert_not user.valid?
     assert_includes user.errors[:last_name], "can't be blank"
   end
+
+  test "requires an email" do
+    user = User.new(first_name: "Pat", last_name: "Lee", password: "password")
+    assert_not user.valid?
+    assert_includes user.errors[:email], "can't be blank"
+  end
+
+  test "requires a password" do
+    user = User.new(first_name: "Pat", last_name: "Lee", email: "new@example.com")
+    assert_not user.valid?
+    assert_includes user.errors[:password], "can't be blank"
+  end
+
+  test "requires a unique email" do
+    # `users(:one)` pulls the existing user fixture from test/fixtures/users.yml
+    existing_user = users(:one)
+    user = User.new(first_name: "Pat", last_name: "Lee", password: "password", email: existing_user.email)
+    assert_not user.valid?
+    assert_includes user.errors[:email], "has already been taken"
+  end
 end

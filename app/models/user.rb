@@ -23,7 +23,12 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
 
-  # Custom Validations
+  # Associations
+  # A User can have multiple pets. The `dependent: :destroy` option ensures that
+  # if a user deletes their account, all of their associated pets are also deleted
+  # from the database automatically to prevent orphaned records.
+  has_many :pets, dependent: :destroy
+
   # Ensures that users cannot sign up or update their profile with blank names.
   # If left blank, Devise will automatically block the form submission and show an error.
   validates :first_name, presence: true
