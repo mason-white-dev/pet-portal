@@ -1,0 +1,48 @@
+<%#
+  # Devise Sessions (Sign In) View
+  #
+  # This view provides the user interface for authenticating an existing account.
+  # Key features:
+  # - Wrapped in a Turbo Frame (`:auth_frame`) to allow seamless, SPA-like 
+  #   navigation between the "Create account" and "Sign In" tabs without full page reloads.
+  # - Renders flash alerts (e.g., invalid credentials).
+  #
+  # Wire Frame Reference:
+  # https://github.com/masonwhite/pet-portal/blob/main/wireframes/Landing%20page.png
+%>
+<%= turbo_frame_tag :auth_frame do %>
+  <%# Tab Header Toggle (Sign In Active) %>
+  <div class="d-flex border rounded-pill p-1 bg-light mb-4" style="height: 50px;">
+    <%= link_to "Create account", new_user_registration_path, class: "btn btn-link text-muted text-decoration-none fw-semibold w-50 d-flex align-items-center justify-content-center" %>
+    <button class="btn btn-white rounded-pill fw-semibold w-50 shadow-sm border" type="button">Sign in</button>
+  </div>
+  <% if notice %>
+    <div class="alert alert-success alert-dismissible fade show py-2 small rounded-3" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close" style="padding: 0.75rem;"></button>
+    </div>
+  <% end %>
+  <% if alert %>
+    <div class="alert alert-danger alert-dismissible fade show py-2 small rounded-3" role="alert">
+      <%= alert %>
+      <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close" style="padding: 0.75rem;"></button>
+    </div>
+  <% end %>
+  <h2 class="h4 fw-bold mb-1">Welcome back</h2>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { data: { turbo_frame: "_top" } }) do |f| %>
+    <%# Email Input %>
+    <div class="mb-3">
+      <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;"><%= f.label :email %></label>
+      <%= f.email_field :email, autocomplete: "email", class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "you@email.com", autofocus: true %>
+    </div>
+    <%# Password Input %>
+    <div class="mb-4">
+      <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;"><%= f.label :password %></label>
+      <%= f.password_field :password, autocomplete: "current-password", class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "••••••••" %>
+    </div>
+    <%# Submit Button %>
+    <button type="submit" class="btn btn-dark w-100 py-3 rounded-pill fw-bold mb-4" style="background-color: #1e1e1e;">
+      Sign in &rarr;
+    </button>
+  <% end %>
+<% end %>
