@@ -24,19 +24,6 @@
   </head>
   <body>
     <%# 
-      # Global Flash Messages
-      # Displays transient notifications to the user (e.g., successful login, errors).
-      # 'notice' is typically used for success/informational messages.
-      # 'alert' is typically used for warnings/errors.
-    %>
-    <% if notice %>
-      <p class="notice" style="color: green;"><%= notice %></p>
-    <% end %>
-    <% if alert %>
-      <p class="alert" style="color: red;"><%= alert %></p>
-    <% end %>
-
-    <%# 
       # Dynamic Layout Rendering
       # If a nested layout (like auth.html.erb) captured its content using `content_for :content`,
       # we render that specific block here. Otherwise, we fall back to a standard `yield` to render the view directly.
