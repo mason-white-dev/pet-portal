@@ -13,16 +13,54 @@
   # https://github.com/mason-white-dev/pet-portal/blob/main/wireframes/Landing%20page.png
 %>
 <%= turbo_frame_tag :auth_frame do %>
-  <%# Tab Header Toggle (Sign Up Active) %>
+  <%#
+    # Tab Header Toggle (Sign Up Active)
+    #
+    # The active tab ("Create account") is a plain, non-interactive button — it just
+    # marks the page you're already on, so it has no action. The "Sign in" tab is a
+    # link_to: clicking it loads the Sign In view INTO the surrounding `auth_frame`,
+    # so only this form swaps out, not the whole page.
+  %>
   <div class="d-flex border rounded-pill p-1 bg-light mb-4" style="height: 50px;">
+    <%# Active tab: static label for the page we're on %>
     <button class="btn bg-white rounded-pill fw-semibold w-50 shadow-sm border" type="button">Create account</button>
+    <%# Inactive tab: navigates to Sign In, swapping the auth_frame %>
     <%= link_to "Sign in", new_user_session_path, class: "btn btn-link text-muted text-decoration-none fw-semibold w-50 d-flex align-items-center justify-content-center" %>
   </div>
   <h2 class="h4 fw-bold mb-1">Start your pet's chart</h2>
+  <%#
+    # The form lives inside `auth_frame`, but `turbo_frame: "_top"` makes it submit
+    # against the WHOLE page. That's deliberate: on success Devise redirects to the
+    # dashboard, and on failure it re-renders this view with errors — both should take
+    # over the full page rather than get trapped inside this little frame container.
+  %>
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { data: { turbo_frame: "_top" } }) do |f| %>
+    <%#
+      # --- Per-field validation display (the same pattern repeats for every field) ---
+      #
+      # When a field is invalid, two independent Bootstrap pieces light up:
+      #
+      #   1. `is-invalid` on the <input> itself (added conditionally in the class array).
+      #      This draws the red border + red exclamation icon. It works no matter where
+      #      the input sits in the DOM, because it's a class on the input directly.
+      #
+      #   2. A `.invalid-feedback` <div> below the input holds the readable message.
+      #
+      # Why the extra `d-block` on that <div>?
+      #   Bootstrap ships `.invalid-feedback` as `display: none` and only un-hides it via
+      #   a CSS rule that needs the input to be its direct SIBLING. But Rails wraps any
+      #   errored field in a <div class="field_with_errors">, which nests the input one
+      #   level down and breaks that sibling link — so the message would stay hidden.
+      #
+      #   We don't actually need Bootstrap's hide/reveal trick here: these errors are
+      #   server-rendered, so we only output the <div> WHEN the field has an error (the
+      #   `if` blocks below). `d-block` forces it visible, so "present in the HTML" just
+      #   means "shown" — no client-side toggling required.
+    %>
     <%# First Name Input %>
     <div class="mb-3">
       <%= f.label :first_name, class: "form-label text-uppercase text-muted fw-bold small", style: "font-size: 0.75rem;" %>
+      <%# Append `is-invalid` only when this field has an error (red border + icon) %>
       <%= f.text_field :first_name, autofocus: true, placeholder: "John",
             class: [ "form-control py-2 px-3 rounded border-secondary-subtle", ("is-invalid" if resource.errors[:first_name].any?) ] %>
       <% if resource.errors[:first_name].any? %>
