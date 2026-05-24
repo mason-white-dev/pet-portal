@@ -25,15 +25,9 @@
   <% end %>
 
   <h2 class="h4 fw-bold mb-1">Start your pet's chart</h2>
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { data: { turbo_frame: "_top" } }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
     
-    <%# Name Input (For layout - see note below) %>
-    <div class="mb-3">
-      <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;">Your Name</label>
-      <input type="text" class="form-control py-2 px-3 rounded border-secondary-subtle" placeholder="John Smith" autofocus="true" />
-    </div>
-
     <%# Email Input %>
     <div class="mb-3">
       <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;"><%= f.label :email %></label>

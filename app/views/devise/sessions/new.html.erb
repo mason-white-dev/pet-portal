@@ -23,7 +23,7 @@
     <div class="alert alert-danger py-2 small rounded-3"><%= alert %></div>
   <% end %>
   <h2 class="h4 fw-bold mb-1">Welcome back</h2>
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { data: { turbo_frame: "_top" } }) do |f| %>
     <%# Email Input %>
     <div class="mb-3">
       <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;"><%= f.label :email %></label>
