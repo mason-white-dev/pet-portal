@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<div class="row row-cols-1 row-cols-xl-2 g-4" id="pets">
+<div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4" id="pets">
   <% @pets.each do |pet| %>
     <div class="col">
       <%= render "pets/pet_banner", pet: pet %>
