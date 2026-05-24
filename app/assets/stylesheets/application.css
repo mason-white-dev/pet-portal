@@ -8,3 +8,30 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+/* ============================================================================
+ * Pet Portal brand tokens
+ *
+ * Single source of truth for the brand palette and wordmark font. These are
+ * plain CSS custom properties (no Sass build needed) defined on :root, plus a
+ * few utility classes named after Bootstrap's own "bg-" and "text-" helpers so
+ * they read naturally alongside Bootstrap classes in the markup.
+ *
+ * To rebrand (new colors or a real wordmark font), change it here only.
+ * ==========================================================================*/
+:root {
+  --pp-bg: #f6f5f1;      /* warm off-white page background */
+  --pp-ink: #1e1e1e;     /* near-black brand ink (body text + dark buttons) */
+  --pp-accent: #e07a5f;  /* coral accent (active states, highlights) */
+}
+
+.bg-brand    { background-color: var(--pp-bg); }
+.text-ink    { color: var(--pp-ink); }
+.bg-ink      { background-color: var(--pp-ink); }
+.text-accent { color: var(--pp-accent); }
+.bg-accent   { background-color: var(--pp-accent); }
+
+/* Handwritten brand font. `.pp-wordmark` is the logo treatment (pair it with
+ * `.pp-handwritten`); `.pp-handwritten` alone is for incidental handwritten bits. */
+.pp-handwritten { font-family: "Comic Sans MS", cursive, sans-serif; }
+.pp-wordmark    { font-style: italic; letter-spacing: -0.5px; }
