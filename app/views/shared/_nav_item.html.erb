@@ -1,0 +1,18 @@
+<%# locals: (label:, path:, active: false) %>
+<%#
+  # Sidebar navigation item — a pill link with a leading status dot.
+  #
+  # Active items get the white "raised pill" treatment and an accent dot;
+  # inactive items are muted with a gray dot. The caller computes `active`,
+  # since what counts as "current" differs per section (a single page vs. a
+  # whole controller — e.g. pets stays active across index/show/new/edit).
+  #   label:  link text
+  #   path:   link target
+  #   active: whether this item represents the current section
+%>
+<%= link_to path, class: "nav-link d-flex align-items-center justify-content-between fw-medium px-3 py-2 #{active ? 'text-dark rounded-pill bg-white border border-secondary-subtle shadow-sm' : 'text-secondary'}" do %>
+  <div class="d-flex align-items-center gap-2">
+    <span class="rounded-circle <%= active ? 'bg-accent' : '' %>" style="width: 6px; height: 6px; <%= active ? '' : 'background-color: var(--bs-gray-500);' %>"></span>
+    <%= label %>
+  </div>
+<% end %>

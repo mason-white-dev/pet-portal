@@ -37,25 +37,14 @@
         <%# Desktop Logo (Hidden on mobile) %>
         <%= render "shared/brand_logo", classes: "d-none d-md-flex align-items-center gap-2 mb-5 px-3 text-ink" %>
 
-        <%# Navigation Links %>
+        <%# Navigation Links — see shared/_nav_item for the pill + dot markup.
+            Each section computes its own "active" rule (Dashboard is a single
+            page; My pets stays lit across the whole pets controller). %>
         <nav class="nav flex-column gap-2 mb-auto px-1 w-100">
-          <%# Dashboard %>
-          <% dashboard_active = current_page?(root_path) %>
-          <%= link_to root_path, class: "nav-link d-flex align-items-center justify-content-between fw-medium px-3 py-2 #{dashboard_active ? 'text-dark rounded-pill bg-white border border-secondary-subtle shadow-sm' : 'text-secondary'}" do %>
-            <div class="d-flex align-items-center gap-2">
-              <span class="rounded-circle <%= dashboard_active ? 'bg-accent' : '' %>" style="width: 6px; height: 6px; <%= dashboard_active ? '' : 'background-color: var(--bs-gray-500);' %>"></span>
-              Dashboard
-            </div>
-          <% end %>
-
-          <%# My Pets %>
-          <% pets_active = current_page?(pets_path) || params[:controller] == 'pets' %>
-          <%= link_to pets_path, class: "nav-link d-flex align-items-center justify-content-between fw-medium px-3 py-2 #{pets_active ? 'text-dark rounded-pill bg-white border border-secondary-subtle shadow-sm' : 'text-secondary'}" do %>
-            <div class="d-flex align-items-center gap-2">
-              <span class="rounded-circle <%= pets_active ? 'bg-accent' : '' %>" style="width: 6px; height: 6px; <%= pets_active ? '' : 'background-color: var(--bs-gray-500);' %>"></span>
-              My pets
-            </div>
-          <% end %>
+          <%= render "shared/nav_item", label: "Dashboard", path: root_path,
+                active: current_page?(root_path) %>
+          <%= render "shared/nav_item", label: "My pets", path: pets_path,
+                active: current_page?(pets_path) || params[:controller] == "pets" %>
         </nav>
 
         <%# User Profile / Settings (Bottom) %>
