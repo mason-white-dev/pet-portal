@@ -2,10 +2,14 @@
   <div class="card-body p-4">
     <div class="d-flex align-items-center gap-3">
       
-      <%# Profile Image Stub %>
-      <div class="rounded-circle bg-light d-flex align-items-center justify-content-center border border-secondary-subtle" style="width: 72px; height: 72px; flex-shrink: 0;">
-        <span class="fs-4 fw-bold text-secondary pp-handwritten"><%= pet.name.present? ? pet.name[0].upcase : "?" %></span>
-      </div>
+      <%# Profile Image / Stub %>
+      <% if pet.avatar_image.attached? %>
+        <%= image_tag pet.avatar_image, class: "rounded-circle border border-secondary-subtle object-fit-cover", style: "width: 72px; height: 72px; flex-shrink: 0;" %>
+      <% else %>
+        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center border border-secondary-subtle" style="width: 72px; height: 72px; flex-shrink: 0;">
+          <span class="fs-4 fw-bold text-secondary pp-handwritten"><%= pet.name.present? ? pet.name[0].upcase : "?" %></span>
+        </div>
+      <% end %>
       
       <div>
         <h4 class="fw-bold mb-1"><%= pet.name %></h4>

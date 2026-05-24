@@ -33,6 +33,11 @@ class Pet < ApplicationRecord
   enum :sex, { male: "male", female: "female" }
   enum :species, { dog: "dog", cat: "cat", other: "other" }
 
+  # Concerns
+  # Pulls in the `has_one_attached :avatar_image` Active Storage logic.
+  # This allows pets to have profile pictures uploaded via Cloudinary.
+  include Avatarable
+
   # Validations
   # Ensures that a pet cannot be saved to the database without a name and species.
   validates :name, presence: true
