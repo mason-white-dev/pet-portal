@@ -24,8 +24,12 @@
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+one:
+  email: test1@example.com
+  first_name: John
+  last_name: Doe
+
+two:
+  email: test2@example.com
+  first_name: Jane
+  last_name: Smith
