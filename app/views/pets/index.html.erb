@@ -1,14 +1,31 @@
-<% content_for :title, "Pets" %>
+<% content_for :title, "My pets" %>
 
-<h1>Pets</h1>
-
-<div id="pets">
-  <% @pets.each do |pet| %>
-    <%= render pet %>
-    <p>
-      <%= link_to "Show this pet", pet %>
-    </p>
-  <% end %>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <div class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px; font-size: 0.75rem;">Household</div>
+    <h1 class="fw-bold mb-0 text-ink">My pets</h1>
+  </div>
+  <div>
+    <%= link_to "+ Add pet", new_pet_path, class: "btn bg-ink text-white rounded-pill px-4 fw-medium shadow-sm" %>
+  </div>
 </div>
 
-<%= link_to "New pet", new_pet_path %>
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4" id="pets">
+  <% @pets.each do |pet| %>
+    <div class="col">
+      <%= render "pets/pet_banner", pet: pet %>
+    </div>
+  <% end %>
+
+  <%# Empty State Card %>
+  <% if @pets.empty? %>
+    <div class="col">
+      <%= link_to new_pet_path, class: "card h-100 text-decoration-none shadow-sm d-flex align-items-center justify-content-center text-secondary rounded-3", style: "border: 2px dashed var(--bs-border-color) !important; min-height: 140px; background-color: transparent;" do %>
+        <div class="text-center">
+          <i class="fa-solid fa-plus fs-4 mb-2 text-muted"></i>
+          <div class="fw-medium text-muted">Add a pet</div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
