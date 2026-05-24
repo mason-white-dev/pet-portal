@@ -15,7 +15,7 @@
   <%# Tab Header Toggle (Sign In Active) %>
   <div class="d-flex border rounded-pill p-1 bg-light mb-4" style="height: 50px;">
     <%= link_to "Create account", new_user_registration_path, class: "btn btn-link text-muted text-decoration-none fw-semibold w-50 d-flex align-items-center justify-content-center" %>
-    <button class="btn btn-white rounded-pill fw-semibold w-50 shadow-sm border" type="button">Sign in</button>
+    <button class="btn bg-white rounded-pill fw-semibold w-50 shadow-sm border" type="button">Sign in</button>
   </div>
   <h2 class="h4 fw-bold mb-1">Welcome back</h2>
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { data: { turbo_frame: "_top" } }) do |f| %>

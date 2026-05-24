@@ -3,7 +3,7 @@
   #
   # This view provides the user interface for creating a new account.
   # Key features:
-  # - Wrapped in a Turbo Frame (`:auth_frame`) to allow seamless, SPA-like 
+  # - Wrapped in a Turbo Frame (`:auth_frame`) to allow seamless, SPA-like
   #   navigation between the "Sign In" and "Create account" tabs without full page reloads.
   # - Renders inline, per-field validation errors below each input.
   # - First/last name are real, validated fields (persisted on the User model).
@@ -15,7 +15,7 @@
 <%= turbo_frame_tag :auth_frame do %>
   <%# Tab Header Toggle (Sign Up Active) %>
   <div class="d-flex border rounded-pill p-1 bg-light mb-4" style="height: 50px;">
-    <button class="btn btn-white rounded-pill fw-semibold w-50 shadow-sm border" type="button">Create account</button>
+    <button class="btn bg-white rounded-pill fw-semibold w-50 shadow-sm border" type="button">Create account</button>
     <%= link_to "Sign in", new_user_session_path, class: "btn btn-link text-muted text-decoration-none fw-semibold w-50 d-flex align-items-center justify-content-center" %>
   </div>
   <h2 class="h4 fw-bold mb-1">Start your pet's chart</h2>
@@ -23,36 +23,40 @@
     <%# First Name Input %>
     <div class="mb-3">
       <%= f.label :first_name, class: "form-label text-uppercase text-muted fw-bold small", style: "font-size: 0.75rem;" %>
-      <%= f.text_field :first_name, autofocus: true, class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "John" %>
+      <%= f.text_field :first_name, autofocus: true, placeholder: "John",
+            class: [ "form-control py-2 px-3 rounded border-secondary-subtle", ("is-invalid" if resource.errors[:first_name].any?) ] %>
       <% if resource.errors[:first_name].any? %>
-        <div class="text-danger small mt-1 fw-medium"><i class="fa-solid fa-circle-exclamation me-1"></i>First name <%= resource.errors[:first_name].join(", ") %></div>
+        <div class="invalid-feedback"><i class="fa-solid fa-circle-exclamation me-1"></i>First name <%= resource.errors[:first_name].join(", ") %></div>
       <% end %>
     </div>
 
     <%# Last Name Input %>
     <div class="mb-3">
       <%= f.label :last_name, class: "form-label text-uppercase text-muted fw-bold small", style: "font-size: 0.75rem;" %>
-      <%= f.text_field :last_name, class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "Smith" %>
+      <%= f.text_field :last_name, placeholder: "Smith",
+            class: [ "form-control py-2 px-3 rounded border-secondary-subtle", ("is-invalid" if resource.errors[:last_name].any?) ] %>
       <% if resource.errors[:last_name].any? %>
-        <div class="text-danger small mt-1 fw-medium"><i class="fa-solid fa-circle-exclamation me-1"></i>Last name <%= resource.errors[:last_name].join(", ") %></div>
+        <div class="invalid-feedback"><i class="fa-solid fa-circle-exclamation me-1"></i>Last name <%= resource.errors[:last_name].join(", ") %></div>
       <% end %>
     </div>
 
     <%# Email Input %>
     <div class="mb-3">
       <%= f.label :email, class: "form-label text-uppercase text-muted fw-bold small", style: "font-size: 0.75rem;" %>
-      <%= f.email_field :email, autocomplete: "email", class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "you@email.com" %>
+      <%= f.email_field :email, autocomplete: "email", placeholder: "you@email.com",
+            class: [ "form-control py-2 px-3 rounded border-secondary-subtle", ("is-invalid" if resource.errors[:email].any?) ] %>
       <% if resource.errors[:email].any? %>
-        <div class="text-danger small mt-1 fw-medium"><i class="fa-solid fa-circle-exclamation me-1"></i>Email <%= resource.errors[:email].join(", ") %></div>
+        <div class="invalid-feedback"><i class="fa-solid fa-circle-exclamation me-1"></i>Email <%= resource.errors[:email].join(", ") %></div>
       <% end %>
     </div>
 
     <%# Password Input %>
     <div class="mb-4">
       <%= f.label :password, class: "form-label text-uppercase text-muted fw-bold small", style: "font-size: 0.75rem;" %>
-      <%= f.password_field :password, autocomplete: "new-password", class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "••••••••" %>
+      <%= f.password_field :password, autocomplete: "new-password", placeholder: "••••••••",
+            class: [ "form-control py-2 px-3 rounded border-secondary-subtle", ("is-invalid" if resource.errors[:password].any?) ] %>
       <% if resource.errors[:password].any? %>
-        <div class="text-danger small mt-1 fw-medium"><i class="fa-solid fa-circle-exclamation me-1"></i>Password <%= resource.errors[:password].join(", ") %></div>
+        <div class="invalid-feedback"><i class="fa-solid fa-circle-exclamation me-1"></i>Password <%= resource.errors[:password].join(", ") %></div>
       <% end %>
     </div>
 

@@ -48,7 +48,7 @@
           <%# Dashboard (Active State) %>
           <%= link_to root_path, class: "nav-link d-flex align-items-center justify-content-between text-dark fw-medium rounded-pill bg-white border border-secondary-subtle px-3 py-2 shadow-sm" do %>
             <div class="d-flex align-items-center gap-2">
-              <span style="width: 6px; height: 6px; background-color: #e07a5f; border-radius: 50%;"></span>
+              <span class="rounded-circle" style="width: 6px; height: 6px; background-color: #e07a5f;"></span>
               Dashboard
             </div>
           <% end %>
@@ -56,7 +56,7 @@
           <%# My Pets (Inactive State) %>
           <%= link_to "#", class: "nav-link d-flex align-items-center justify-content-between text-secondary fw-medium px-3 py-2" do %>
             <div class="d-flex align-items-center gap-2">
-              <span style="width: 6px; height: 6px; background-color: #adb5bd; border-radius: 50%;"></span>
+              <span class="rounded-circle" style="width: 6px; height: 6px; background-color: #adb5bd;"></span>
               My pets
             </div>
           <% end %>
@@ -66,7 +66,7 @@
         <div class="pt-4 mt-4 px-3 w-100" style="border-top: 1px dashed rgba(0,0,0,0.15);">
           <div class="d-flex align-items-center gap-3">
             <%# Avatar Circle %>
-            <div class="rounded-circle border border-dark d-flex align-items-center justify-content-center bg-white" style="width: 38px; height: 38px; flex-shrink: 0;">
+            <div class="rounded-circle border border-dark d-flex align-items-center justify-content-center bg-white flex-shrink-0" style="width: 38px; height: 38px;">
               <% if current_user.first_name.present? %>
                 <span class="fw-bold text-muted small"><%= current_user.first_name[0] %></span>
               <% else %>
