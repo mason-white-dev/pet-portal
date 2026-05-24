@@ -5,7 +5,8 @@
   # Key features:
   # - Wrapped in a Turbo Frame (`:auth_frame`) to allow seamless, SPA-like 
   #   navigation between the "Create account" and "Sign In" tabs without full page reloads.
-  # - Renders flash alerts (e.g., invalid credentials).
+  # - Sign-in feedback (e.g. invalid credentials) is delivered via Rails flash,
+  #   which is rendered globally at the layout level (pending the toast work).
   #
   # Wire Frame Reference:
   # https://github.com/mason-white-dev/pet-portal/blob/main/wireframes/Landing%20page.png
@@ -29,6 +30,6 @@
       <%= f.password_field :password, autocomplete: "current-password", class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "••••••••" %>
     </div>
     <%# Submit Button %>
-    <%= f.button "Sign in &rarr;".html_safe, type: :submit, class: "btn btn-dark w-100 py-3 rounded-pill fw-bold mb-4", style: "background-color: #1e1e1e;" %>
+    <%= f.button "Sign in &rarr;".html_safe, class: "btn btn-dark w-100 py-3 rounded-pill fw-bold mb-4", style: "background-color: #1e1e1e;" %>
   <% end %>
 <% end %>
