@@ -21,7 +21,20 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "is valid with a first name, last name, email, and password" do
+    user = User.new(email: "new@example.com", password: "password", first_name: "Pat", last_name: "Lee")
+    assert user.valid?
+  end
+
+  test "requires a first name" do
+    user = User.new(email: "new@example.com", password: "password", last_name: "Lee")
+    assert_not user.valid?
+    assert_includes user.errors[:first_name], "can't be blank"
+  end
+
+  test "requires a last name" do
+    user = User.new(email: "new@example.com", password: "password", first_name: "Pat")
+    assert_not user.valid?
+    assert_includes user.errors[:last_name], "can't be blank"
+  end
 end

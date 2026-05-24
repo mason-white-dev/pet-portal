@@ -6,4 +6,9 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
     get root_url
     assert_response :success
   end
+
+  test "redirects to sign in when not authenticated" do
+    get root_url
+    assert_redirected_to new_user_session_path
+  end
 end
