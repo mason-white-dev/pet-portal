@@ -41,8 +41,6 @@
             Each section computes its own "active" rule (Dashboard is a single
             page; My pets stays lit across the whole pets controller). %>
         <nav class="nav flex-column gap-2 mb-auto px-1 w-100">
-          <%= render "shared/nav_item", label: "Dashboard", path: root_path,
-                active: current_page?(root_path) %>
           <%= render "shared/nav_item", label: "My Pets", path: pets_path,
                 active: current_page?(pets_path) || params[:controller] == "pets" %>
         </nav>

@@ -56,5 +56,5 @@ Rails.application.routes.draw do
   # =========================================================================
   resources :pets
 
-  root "dashboard#index"
+  root "pets#index"
 end
