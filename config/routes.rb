@@ -35,5 +35,26 @@ Rails.application.routes.draw do
   # =========================================================================
   devise_for :users
 
+  # =========================================================================
+  # Standard CRUD Routes for :pets Cheat Sheet
+  # =========================================================================
+  #
+  # INDEX / CREATE
+  #   GET    /pets                       => pets#index                 (pets_path)
+  #   POST   /pets                       => pets#create                (pets_path)
+  #
+  # NEW / EDIT
+  #   GET    /pets/new                   => pets#new                   (new_pet_path)
+  #   GET    /pets/:id/edit              => pets#edit                  (edit_pet_path)
+  #
+  # SHOW / UPDATE / DELETE
+  #   GET    /pets/:id                   => pets#show                  (pet_path)
+  #   PATCH  /pets/:id                   => pets#update                (pet_path)
+  #   PUT    /pets/:id                   => pets#update                (pet_path)
+  #   DELETE /pets/:id                   => pets#destroy               (pet_path)
+  #
+  # =========================================================================
+  resources :pets
+
   root "dashboard#index"
 end

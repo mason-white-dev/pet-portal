@@ -37,23 +37,14 @@
         <%# Desktop Logo (Hidden on mobile) %>
         <%= render "shared/brand_logo", classes: "d-none d-md-flex align-items-center gap-2 mb-5 px-3 text-ink" %>
 
-        <%# Navigation Links %>
+        <%# Navigation Links — see shared/_nav_item for the pill + dot markup.
+            Each section computes its own "active" rule (Dashboard is a single
+            page; My pets stays lit across the whole pets controller). %>
         <nav class="nav flex-column gap-2 mb-auto px-1 w-100">
-          <%# Dashboard (Active State) — accent dot marks the current section %>
-          <%= link_to root_path, class: "nav-link d-flex align-items-center justify-content-between text-dark fw-medium rounded-pill bg-white border border-secondary-subtle px-3 py-2 shadow-sm" do %>
-            <div class="d-flex align-items-center gap-2">
-              <span class="rounded-circle bg-accent" style="width: 6px; height: 6px;"></span>
-              Dashboard
-            </div>
-          <% end %>
-
-          <%# My Pets (Inactive State) — muted dot (Bootstrap's gray-500 token) %>
-          <%= link_to "#", class: "nav-link d-flex align-items-center justify-content-between text-secondary fw-medium px-3 py-2" do %>
-            <div class="d-flex align-items-center gap-2">
-              <span class="rounded-circle" style="width: 6px; height: 6px; background-color: var(--bs-gray-500);"></span>
-              My pets
-            </div>
-          <% end %>
+          <%= render "shared/nav_item", label: "Dashboard", path: root_path,
+                active: current_page?(root_path) %>
+          <%= render "shared/nav_item", label: "My pets", path: pets_path,
+                active: current_page?(pets_path) || params[:controller] == "pets" %>
         </nav>
 
         <%# User Profile / Settings (Bottom) %>
