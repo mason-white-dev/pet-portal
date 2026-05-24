@@ -4,7 +4,7 @@
       
       <%# Profile Image / Stub %>
       <% if pet.avatar_image.attached? %>
-        <%= image_tag pet.avatar_image, class: "rounded-4 border border-secondary-subtle object-fit-cover", style: "width: 168px; height: 168px; flex-shrink: 0;" %>
+        <%= image_tag pet.avatar_image, alt: pet.name, class: "rounded-4 border border-secondary-subtle object-fit-cover", style: "width: 168px; height: 168px; flex-shrink: 0;" %>
       <% else %>
         <div class="rounded-4 bg-light d-flex align-items-center justify-content-center border border-secondary-subtle" style="width: 168px; height: 168px; flex-shrink: 0;">
           <span class="display-1 fw-bold text-secondary pp-handwritten"><%= pet.name.present? ? pet.name[0].upcase : "?" %></span>
