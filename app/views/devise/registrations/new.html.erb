@@ -34,7 +34,7 @@
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { data: { turbo_frame: "_top" } }) do |f| %>
     <%# First Name Input %>
     <div class="mb-3">
-      <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;"><%= f.label :first_name %></label>
+      <%= f.label :first_name, class: "form-label text-uppercase text-muted fw-bold small", style: "font-size: 0.75rem;" %>
       <%= f.text_field :first_name, autofocus: true, class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "John" %>
       <% if resource.errors[:first_name].any? %>
         <div class="text-danger small mt-1 fw-medium"><i class="fa-solid fa-circle-exclamation me-1"></i>First name <%= resource.errors[:first_name].join(", ") %></div>
@@ -43,7 +43,7 @@
 
     <%# Last Name Input %>
     <div class="mb-3">
-      <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;"><%= f.label :last_name %></label>
+      <%= f.label :last_name, class: "form-label text-uppercase text-muted fw-bold small", style: "font-size: 0.75rem;" %>
       <%= f.text_field :last_name, class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "Smith" %>
       <% if resource.errors[:last_name].any? %>
         <div class="text-danger small mt-1 fw-medium"><i class="fa-solid fa-circle-exclamation me-1"></i>Last name <%= resource.errors[:last_name].join(", ") %></div>
@@ -52,7 +52,7 @@
 
     <%# Email Input %>
     <div class="mb-3">
-      <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;"><%= f.label :email %></label>
+      <%= f.label :email, class: "form-label text-uppercase text-muted fw-bold small", style: "font-size: 0.75rem;" %>
       <%= f.email_field :email, autocomplete: "email", class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "you@email.com" %>
       <% if resource.errors[:email].any? %>
         <div class="text-danger small mt-1 fw-medium"><i class="fa-solid fa-circle-exclamation me-1"></i>Email <%= resource.errors[:email].join(", ") %></div>
@@ -61,7 +61,7 @@
 
     <%# Password Input %>
     <div class="mb-4">
-      <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;"><%= f.label :password %></label>
+      <%= f.label :password, class: "form-label text-uppercase text-muted fw-bold small", style: "font-size: 0.75rem;" %>
       <%= f.password_field :password, autocomplete: "new-password", class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "••••••••" %>
       <% if resource.errors[:password].any? %>
         <div class="text-danger small mt-1 fw-medium"><i class="fa-solid fa-circle-exclamation me-1"></i>Password <%= resource.errors[:password].join(", ") %></div>
@@ -69,8 +69,6 @@
     </div>
 
     <%# Submit Button %>
-    <button type="submit" class="btn btn-dark w-100 py-3 rounded-pill fw-bold mb-4" style="background-color: #1e1e1e;">
-      Create my account &rarr;
-    </button>
+    <%= f.button "Create my account &rarr;".html_safe, type: :submit, class: "btn btn-dark w-100 py-3 rounded-pill fw-bold mb-4", style: "background-color: #1e1e1e;" %>
   <% end %>
 <% end %>

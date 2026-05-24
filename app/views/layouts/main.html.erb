@@ -88,20 +88,6 @@
 
     <%# --- RIGHT COLUMN (MAIN CONTENT) --- %>
     <main class="flex-grow-1 p-4 p-md-5 overflow-auto">
-      <%# Global Flash Messages %>
-      <% if notice %>
-        <div class="alert alert-success alert-dismissible fade show py-2 small rounded-3" role="alert">
-          <%= notice %>
-          <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close" style="padding: 0.75rem;"></button>
-        </div>
-      <% end %>
-      <% if alert %>
-        <div class="alert alert-danger alert-dismissible fade show py-2 small rounded-3" role="alert">
-          <%= alert %>
-          <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close" style="padding: 0.75rem;"></button>
-        </div>
-      <% end %>
-
       <%# Injects the specific view (e.g. dashboard/index) %>
       <%= yield %>
     </main>

@@ -32,17 +32,15 @@
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { data: { turbo_frame: "_top" } }) do |f| %>
     <%# Email Input %>
     <div class="mb-3">
-      <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;"><%= f.label :email %></label>
+      <%= f.label :email, class: "form-label text-uppercase text-muted fw-bold small", style: "font-size: 0.75rem;" %>
       <%= f.email_field :email, autocomplete: "email", class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "you@email.com", autofocus: true %>
     </div>
     <%# Password Input %>
     <div class="mb-4">
-      <label class="form-label text-uppercase text-muted fw-bold small" style="font-size: 0.75rem;"><%= f.label :password %></label>
+      <%= f.label :password, class: "form-label text-uppercase text-muted fw-bold small", style: "font-size: 0.75rem;" %>
       <%= f.password_field :password, autocomplete: "current-password", class: "form-control py-2 px-3 rounded border-secondary-subtle", placeholder: "••••••••" %>
     </div>
     <%# Submit Button %>
-    <button type="submit" class="btn btn-dark w-100 py-3 rounded-pill fw-bold mb-4" style="background-color: #1e1e1e;">
-      Sign in &rarr;
-    </button>
+    <%= f.button "Sign in &rarr;".html_safe, type: :submit, class: "btn btn-dark w-100 py-3 rounded-pill fw-bold mb-4", style: "background-color: #1e1e1e;" %>
   <% end %>
 <% end %>
