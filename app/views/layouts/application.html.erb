@@ -23,12 +23,25 @@
     <%= javascript_importmap_tags %>
   </head>
   <body>
+    <%# 
+      # Global Flash Messages
+      # Displays transient notifications to the user (e.g., successful login, errors).
+      # 'notice' is typically used for success/informational messages.
+      # 'alert' is typically used for warnings/errors.
+    %>
     <% if notice %>
       <p class="notice" style="color: green;"><%= notice %></p>
     <% end %>
     <% if alert %>
       <p class="alert" style="color: red;"><%= alert %></p>
     <% end %>
+
+    <%# 
+      # Dynamic Layout Rendering
+      # If a nested layout (like auth.html.erb) captured its content using `content_for :content`,
+      # we render that specific block here. Otherwise, we fall back to a standard `yield` to render the view directly.
+      # This allows multiple specialized layouts to share this application.html.erb file as their base HTML wrapper.
+    %>
     <%= content_for?(:content) ? yield(:content) : yield %>
     <%# Bootstrap JS Bundle %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

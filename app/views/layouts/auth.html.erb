@@ -86,7 +86,17 @@
             </div>
           </div>
         </div>
-        <%# Right Column: Authentication Form (Yield) %>
+        <%# 
+          # Right Column: Authentication Form
+          # This area renders the specific form (e.g., Login or Sign Up) via `yield`.
+          # 
+          # Turbo Frame:
+          # Both the `sessions/new` and `registrations/new` views wrap their contents 
+          # in a `<turbo-frame id="auth_frame">`. When you click the toggle links to switch 
+          # between Sign In and Sign Up, Turbo intercepts the request, fetches the new page,
+          # and seamlessly swaps *only* this form container.
+          # The left column (marketing copy) stays completely untouched, creating a fast, SPA-like transition!
+        %>
         <div class="col-lg-5 offset-lg-1 col-md-8 mx-auto">
           <div class="card p-4 p-md-5 border border-secondary-subtle rounded-4 shadow-sm bg-white">
             <%= yield %>
