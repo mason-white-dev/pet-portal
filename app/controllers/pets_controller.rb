@@ -3,7 +3,9 @@ class PetsController < ApplicationController
 
   # GET /pets or /pets.json
   def index
-    @pets = current_user.pets
+    # with_attached_avatar_image eager-loads the attachment + blob so the roster
+    # doesn't fire a query per pet when rendering avatars (avoids N+1).
+    @pets = current_user.pets.with_attached_avatar_image
   end
 
   # GET /pets/1 or /pets/1.json
@@ -65,6 +67,6 @@ class PetsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def pet_params
-      params.expect(pet: [ :name, :species, :sex, :breed, :date_of_birth, :microchip, :neutered, :notes ])
+      params.expect(pet: [ :name, :species, :sex, :breed, :date_of_birth, :microchip, :neutered, :notes, :avatar_image ])
     end
 end

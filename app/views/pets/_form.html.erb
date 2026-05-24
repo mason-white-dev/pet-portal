@@ -11,6 +11,10 @@
     </div>
   <% end %>
 
+  <div>
+    <%= form.label :avatar_image, "Profile Image", style: "display: block" %>
+    <%= form.file_field :avatar_image, accept: "image/*" %>
+  </div>
 
 
   <div>

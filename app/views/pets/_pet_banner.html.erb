@@ -1,11 +1,15 @@
-<%= link_to pet_path(pet), id: dom_id(pet), class: "card h-100 shadow-sm border border-secondary-subtle rounded-3 text-ink text-decoration-none" do %>
+<%= link_to pet_path(pet), id: dom_id(pet), class: "card h-100 shadow-sm border border-secondary-subtle rounded-4 text-ink text-decoration-none" do %>
   <div class="card-body p-4">
-    <div class="d-flex align-items-center gap-3">
+    <div class="d-flex align-items-center gap-4">
       
-      <%# Profile Image Stub %>
-      <div class="rounded-circle bg-light d-flex align-items-center justify-content-center border border-secondary-subtle" style="width: 72px; height: 72px; flex-shrink: 0;">
-        <span class="fs-4 fw-bold text-secondary pp-handwritten"><%= pet.name.present? ? pet.name[0].upcase : "?" %></span>
-      </div>
+      <%# Profile Image / Stub %>
+      <% if pet.avatar_image.attached? %>
+        <%= image_tag pet.avatar_image, alt: pet.name, class: "rounded-4 border border-secondary-subtle object-fit-cover", style: "width: 168px; height: 168px; flex-shrink: 0;" %>
+      <% else %>
+        <div class="rounded-4 bg-light d-flex align-items-center justify-content-center border border-secondary-subtle" style="width: 168px; height: 168px; flex-shrink: 0;">
+          <span class="display-1 fw-bold text-secondary pp-handwritten"><%= pet.name.present? ? pet.name[0].upcase : "?" %></span>
+        </div>
+      <% end %>
       
       <div>
         <h4 class="fw-bold mb-1"><%= pet.name %></h4>

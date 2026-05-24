@@ -22,7 +22,6 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
-
   # Associations
   # A User can have multiple pets. The `dependent: :destroy` option ensures that
   # if a user deletes their account, all of their associated pets are also deleted

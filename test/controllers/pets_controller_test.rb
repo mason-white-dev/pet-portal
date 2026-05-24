@@ -78,4 +78,28 @@ class PetsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :not_found
   end
+
+  # --- Avatar upload (end-to-end param path) ---------------------------------
+  # Confirms :avatar_image flows through pet_params and attaches via the form.
+  # Runs on the :test disk service (see config/environments/test.rb), so nothing
+  # touches Cloudinary.
+
+  test "attaches an avatar image when creating a pet" do
+    assert_difference("Pet.count") do
+      post pets_url, params: { pet: {
+        name: "Pixel", species: "cat",
+        avatar_image: fixture_file_upload("avatar.png", "image/png")
+      } }
+    end
+    assert Pet.last.avatar_image.attached?
+    assert_redirected_to pet_url(Pet.last)
+  end
+
+  test "attaches an avatar image when updating a pet" do
+    patch pet_url(@pet), params: { pet: {
+      avatar_image: fixture_file_upload("avatar.png", "image/png")
+    } }
+    assert @pet.reload.avatar_image.attached?
+    assert_redirected_to pet_url(@pet)
+  end
 end
