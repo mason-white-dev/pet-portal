@@ -30,4 +30,9 @@ class Pet < ApplicationRecord
   # This automatically gives you methods like `@pet.male?` or `Pet.dog` (to get all dogs).
   enum :sex, { male: "male", female: "female" }
   enum :species, { dog: "dog", cat: "cat", other: "other" }
+
+  # Validations
+  # Ensures that a pet cannot be saved to the database without a name and species.
+  validates :name, presence: true
+  validates :species, presence: true
 end

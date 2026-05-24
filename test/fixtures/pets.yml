@@ -27,22 +27,22 @@
 #
 one:
   user: one
-  name: MyString
-  species: 1
-  sex: 1
-  breed: MyString
-  date_of_birth: 2026-05-24
-  microchip: MyString
-  neutered: false
-  notes: MyText
+  name: Bella
+  species: dog
+  sex: female
+  breed: Mini Aussie
+  date_of_birth: 2022-05-24
+  microchip: 981020000000000
+  neutered: true
+  notes: Very energetic!
 
 two:
   user: two
-  name: MyString
-  species: 1
-  sex: 1
-  breed: MyString
-  date_of_birth: 2026-05-24
-  microchip: MyString
-  neutered: false
-  notes: MyText
+  name: Miso
+  species: cat
+  sex: female
+  breed: Tortoiseshell
+  date_of_birth: 2024-05-24
+  microchip: 981020000000001
+  neutered: true
+  notes: Loves to sleep.

@@ -3,6 +3,8 @@ require "test_helper"
 class PetsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @pet = pets(:one)
+    # We must sign in the user who owns this pet to pass the Devise `authenticate_user!` before_action
+    sign_in @pet.user
   end
 
   test "should get index" do
