@@ -1,12 +1,22 @@
-<% content_for :title, "Editing pet" %>
+<% content_for :title, "Editing #{@pet.name}" %>
 
-<h1>Editing pet</h1>
+<div class="max-w-4xl mx-auto">
+  <%= render "pets/profile_header", pet: @pet %>
 
-<%= render "form", pet: @pet %>
-
-<br>
-
-<div>
-  <%= link_to "Show this pet", @pet %> |
-  <%= link_to "Back to pets", pets_path %>
+  <%= turbo_frame_tag "pet_content", data: { turbo_action: "advance" } do %>
+    <%= render "pets/nav_tabs", pet: @pet, active_tab: :edit %>
+    
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <div class="card shadow-sm border border-secondary-subtle rounded-4 mb-4">
+          <div class="card-header bg-transparent border-0 pt-4 pb-0 px-4">
+            <div class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Edit Details</div>
+          </div>
+          <div class="card-body p-4">
+            <%= render "form", pet: @pet %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>

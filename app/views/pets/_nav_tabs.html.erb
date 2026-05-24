@@ -1,0 +1,20 @@
+<ul class="nav nav-underline border-bottom mb-4">
+  <li class="nav-item">
+    <%= link_to "About", pet_path(pet), class: "nav-link fw-bold #{active_tab == :about ? 'active text-ink' : 'text-secondary'}", aria: { current: (active_tab == :about ? "page" : nil) } %>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link text-secondary" href="#">Vaccines</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link text-secondary" href="#">Issues & visits</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link text-secondary" href="#">Daily care</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link text-secondary" href="#">Memories</a>
+  </li>
+  <li class="nav-item">
+    <%= link_to "Edit", edit_pet_path(pet), class: "nav-link #{active_tab == :edit ? 'active fw-bold text-ink' : 'text-secondary'}", aria: { current: (active_tab == :edit ? "page" : nil) } %>
+  </li>
+</ul>

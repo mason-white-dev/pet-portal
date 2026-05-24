@@ -1,10 +1,12 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, @pet.name %>
 
-<%= render @pet %>
+<div class="max-w-4xl mx-auto">
+  <%# --- 1. PROFILE HEADER --- %>
+  <%= render "pets/profile_header", pet: @pet %>
 
-<div>
-  <%= link_to "Edit this pet", edit_pet_path(@pet) %> |
-  <%= link_to "Back to pets", pets_path %>
-
-  <%= button_to "Destroy this pet", @pet, method: :delete %>
+  <%# --- 2. HORIZONTAL NAV BAR & MAIN CONTENT --- %>
+  <%= turbo_frame_tag "pet_content", data: { turbo_action: "advance" } do %>
+    <%= render "pets/nav_tabs", pet: @pet, active_tab: :about %>
+    <%= render "pets/about", pet: @pet %>
+  <% end %>
 </div>

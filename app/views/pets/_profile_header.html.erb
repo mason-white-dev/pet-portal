@@ -1,0 +1,36 @@
+<div class="d-flex align-items-center justify-content-between mb-4">
+  <div class="d-flex align-items-center gap-3">
+    <%= link_to pets_path, class: "text-secondary text-decoration-none px-2" do %>
+      <i class="fa-solid fa-chevron-left small"></i>
+    <% end %>
+    
+    <%# Avatar %>
+    <% if pet.avatar_image.attached? %>
+      <%= image_tag pet.avatar_image, class: "rounded-circle border border-dark object-fit-cover", style: "width: 48px; height: 48px; flex-shrink: 0;" %>
+    <% else %>
+      <div class="rounded-circle border border-dark d-flex align-items-center justify-content-center bg-white flex-shrink-0" style="width: 48px; height: 48px;">
+        <span class="fw-bold text-secondary pp-handwritten fs-5"><%= pet.name[0].upcase %></span>
+      </div>
+    <% end %>
+    
+    <%# Info %>
+    <div class="lh-sm">
+      <h1 class="h4 fw-bold mb-0 text-ink"><%= pet.name %></h1>
+      <div class="text-secondary small">
+        <% details = [pet.breed.presence, pet.species&.humanize.presence].compact %>
+        <% breed_info = details.join(" • ") %>
+        
+        <% if pet.date_of_birth.present? %>
+          <% age_info = time_ago_in_words(pet.date_of_birth).gsub("about ", "").gsub(" years", " yr").gsub(" year", " yr") %>
+          <%= [breed_info.presence, age_info].compact.join(" • ") %>
+        <% else %>
+          <%= breed_info %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <div class="d-flex align-items-center gap-3">
+    <button class="btn bg-ink text-white rounded-pill px-4 fw-medium shadow-sm">+ Record</button>
+  </div>
+</div>
