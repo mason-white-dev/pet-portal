@@ -26,8 +26,10 @@
 class Pet < ApplicationRecord
   belongs_to :user
 
-  # Enums map string values (like 'male' or 'dog') to integers in the database.
-  # This automatically gives you methods like `@pet.male?` or `Pet.dog` (to get all dogs).
+  # String-backed enums: each value is stored verbatim as a string in the DB
+  # (e.g. "male", "dog"), not as an integer. You still get the helpers like
+  # `@pet.male?` and scopes like `Pet.dog`, while the raw column values stay
+  # human-readable.
   enum :sex, { male: "male", female: "female" }
   enum :species, { dog: "dog", cat: "cat", other: "other" }
 
