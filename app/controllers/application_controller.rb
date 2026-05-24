@@ -18,12 +18,12 @@ class ApplicationController < ActionController::Base
   private
 
   # Use the "auth" layout for Devise controllers (like login/signup) when the user
-  # is not yet authenticated. Otherwise, use the standard "application" layout.
+  # is not yet authenticated. When they are logged in, use the "main" layout.
   def layout_by_resource
     if devise_controller? && !user_signed_in?
       "auth"
     else
-      "application"
+      "main"
     end
   end
 

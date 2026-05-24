@@ -1,0 +1,15 @@
+<%# locals: (label: "Pet Portal", size: "fs-4", classes: "d-flex align-items-center gap-2 text-ink") %>
+<%#
+  # Brand logo — the paw icon + handwritten "Pet Portal" wordmark.
+  #
+  # Lives in one place so the auth and main layouts (and anywhere else) share the
+  # same mark. Strict locals (declared above) give every caller sensible defaults:
+  #   label:   wordmark text (e.g. pass "Menu" for the mobile drawer header)
+  #   size:    Bootstrap font-size class applied to both the icon and the text
+  #   classes: wrapper classes — override when the context needs different layout
+  #            or responsive visibility (e.g. the desktop-only sidebar logo)
+%>
+<div class="<%= classes %>">
+  <i class="fa-solid fa-paw <%= size %>"></i>
+  <span class="<%= size %> fw-bold pp-handwritten pp-wordmark"><%= label %></span>
+</div>

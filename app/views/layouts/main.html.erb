@@ -1,0 +1,93 @@
+<%#
+  # Main Layout (Nested Layout)
+  #
+  # This layout is used for authenticated users browsing the main application.
+  # It provides a standard dashboard structure:
+  # - Left column: Fixed vertical navigation sidebar.
+  # - Right column: Flexible content area for the specific view template.
+  #
+  # Brand colors and the logo come from shared sources: `bg-brand`/`text-ink`/
+  # `bg-accent` (see application.css) and the shared/brand_logo partial.
+  #
+  # Wire Frame Reference:
+  # https://github.com/mason-white-dev/pet-portal/blob/main/wireframes/Dashboard.png
+%>
+
+<% content_for :content do %>
+  <div class="d-flex flex-column flex-md-row min-vh-100 bg-brand">
+
+    <%# --- MOBILE TOP NAV (Visible only on small screens) --- %>
+    <nav class="navbar navbar-light bg-transparent border-bottom border-secondary-subtle px-3 d-md-none">
+      <%= render "shared/brand_logo" %>
+      <button class="navbar-toggler border-0 px-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
+
+    <%# --- LEFT COLUMN / OFFCANVAS SIDEBAR --- %>
+    <aside class="offcanvas-md offcanvas-start d-md-flex flex-column border-end border-secondary-subtle px-3 py-4 flex-shrink-0 bg-brand" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel" style="width: 280px;">
+
+      <%# Mobile Offcanvas Header %>
+      <div class="offcanvas-header d-md-none">
+        <%= render "shared/brand_logo", label: "Menu" %>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
+      </div>
+
+      <div class="offcanvas-body d-flex flex-column flex-grow-1 p-0">
+        <%# Desktop Logo (Hidden on mobile) %>
+        <%= render "shared/brand_logo", classes: "d-none d-md-flex align-items-center gap-2 mb-5 px-3 text-ink" %>
+
+        <%# Navigation Links %>
+        <nav class="nav flex-column gap-2 mb-auto px-1 w-100">
+          <%# Dashboard (Active State) — accent dot marks the current section %>
+          <%= link_to root_path, class: "nav-link d-flex align-items-center justify-content-between text-dark fw-medium rounded-pill bg-white border border-secondary-subtle px-3 py-2 shadow-sm" do %>
+            <div class="d-flex align-items-center gap-2">
+              <span class="rounded-circle bg-accent" style="width: 6px; height: 6px;"></span>
+              Dashboard
+            </div>
+          <% end %>
+
+          <%# My Pets (Inactive State) — muted dot (Bootstrap's gray-500 token) %>
+          <%= link_to "#", class: "nav-link d-flex align-items-center justify-content-between text-secondary fw-medium px-3 py-2" do %>
+            <div class="d-flex align-items-center gap-2">
+              <span class="rounded-circle" style="width: 6px; height: 6px; background-color: var(--bs-gray-500);"></span>
+              My pets
+            </div>
+          <% end %>
+        </nav>
+
+        <%# User Profile / Settings (Bottom) %>
+        <div class="pt-4 mt-4 px-3 w-100" style="border-top: 1px dashed rgba(0,0,0,0.15);">
+          <div class="d-flex align-items-center gap-3">
+            <%# Avatar Circle %>
+            <div class="rounded-circle border border-dark d-flex align-items-center justify-content-center bg-white flex-shrink-0" style="width: 38px; height: 38px;">
+              <% if current_user.first_name.present? %>
+                <span class="fw-bold text-muted small"><%= current_user.first_name[0] %></span>
+              <% else %>
+                <i class="fa-solid fa-user text-muted small"></i>
+              <% end %>
+            </div>
+
+            <%# Name and Settings Link %>
+            <div class="lh-sm">
+              <div class="fw-bold text-dark" style="font-size: 0.9rem;">
+                <%= current_user.first_name %> <%= current_user.last_name&.first %>.
+              </div>
+              <%= link_to "Settings", edit_user_registration_path, class: "text-muted text-decoration-none small", style: "font-size: 0.75rem;" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <%# --- RIGHT COLUMN (MAIN CONTENT) --- %>
+    <main class="flex-grow-1 p-4 p-md-5 overflow-auto">
+      <%# Injects the specific view (e.g. dashboard/index) %>
+      <%= yield %>
+    </main>
+
+  </div>
+<% end %>
+
+<%# Inherit the base HTML structure from application.html.erb %>
+<%= render template: "layouts/application" %>
