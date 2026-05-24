@@ -6,6 +6,9 @@
   # - Wrapped in a Turbo Frame (`:auth_frame`) to allow seamless, SPA-like 
   #   navigation between the "Create account" and "Sign In" tabs without full page reloads.
   # - Renders flash alerts (e.g., invalid credentials).
+  #
+  # Wire Frame Reference:
+  # https://github.com/masonwhite/pet-portal/blob/main/wireframes/Landing%20page.png
 %>
 <%= turbo_frame_tag :auth_frame do %>
   <%# Tab Header Toggle (Sign In Active) %>
