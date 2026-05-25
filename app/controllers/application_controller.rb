@@ -2,21 +2,21 @@ class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
-  # Require user authentication for all actions by default.
-  before_action :authenticate_user!
-
-  # Ensure custom fields (like first_name, last_name) are permitted through Strong Parameters
-  # whenever a Devise controller handles user registration or profile updates.
-  before_action :configure_permitted_parameters, if: :devise_controller?
-
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
-  # Dynamically determine the layout to use based on the controller and user state.
+  # Require user authentication through Devise for all actions by default.
+  before_action :authenticate_user!
+
+  # Ensure custom fields (like first_name, last_name) are permitted through Strong Parameters
+  # whenever a Devise controller handles user registration or profile updates (see below method).
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+  # Dynamically determine the layout to use based on the controller and user state (see below method).
   layout :layout_by_resource
 
-  private
 
+  private
   # Use the "auth" layout for Devise controllers (like login/signup) when the user
   # is not yet authenticated. When they are logged in, use the "main" layout.
   def layout_by_resource
