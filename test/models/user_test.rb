@@ -5,8 +5,6 @@
 #  id                     :bigint           not null, primary key
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
-#  first_name             :string
-#  last_name              :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
@@ -30,18 +28,6 @@ class UserTest < ActiveSupport::TestCase
     assert @valid_user.valid?
   end
 
-  test "requires a first name" do
-    @valid_user.first_name = nil
-    assert_not @valid_user.valid?
-    assert_includes @valid_user.errors[:first_name], "can't be blank"
-  end
-
-  test "requires a last name" do
-    @valid_user.last_name = nil
-    assert_not @valid_user.valid?
-    assert_includes @valid_user.errors[:last_name], "can't be blank"
-  end
-
   test "requires an email" do
     @valid_user.email = nil
     assert_not @valid_user.valid?
@@ -51,14 +37,14 @@ class UserTest < ActiveSupport::TestCase
   test "requires a password on creation" do
     # Devise only validates password presence on *creation*, not on updates.
     # Therefore, we still need to build a new record for this specific test.
-    new_user = User.new(first_name: "Pat", last_name: "Lee", email: "new@example.com")
+    new_user = User.new(email: "new@example.com")
     assert_not new_user.valid?
     assert_includes new_user.errors[:password], "can't be blank"
   end
 
   test "requires a unique email" do
     # Attempt to create a new user using the email of our existing @valid_user fixture
-    new_user = User.new(first_name: "Pat", last_name: "Lee", password: "password", email: @valid_user.email)
+    new_user = User.new(password: "password", email: @valid_user.email)
     assert_not new_user.valid?
     assert_includes new_user.errors[:email], "has already been taken"
   end

@@ -5,8 +5,6 @@
 #  id                     :bigint           not null, primary key
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
-#  first_name             :string
-#  last_name              :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
@@ -27,9 +25,4 @@ class User < ApplicationRecord
   # if a user deletes their account, all of their associated pets are also deleted
   # from the database automatically to prevent orphaned records.
   has_many :pets, dependent: :destroy
-
-  # Ensures that users cannot sign up or update their profile with blank names.
-  # If left blank, Devise will automatically block the form submission and show an error.
-  validates :first_name, presence: true
-  validates :last_name, presence: true
 end

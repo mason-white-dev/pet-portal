@@ -17,33 +17,38 @@
   # `text-accent` (see application.css) and the shared/brand_logo partial.
   #
   # Wire Frame Reference:
-  # https://github.com/mason-white-dev/pet-portal/blob/main/wireframes/LandingPage.png
+  # wireframes/landing_page
 %>
 
 <% content_for :content do %>
   <div class="min-vh-100 d-flex flex-column justify-content-between p-4 bg-brand text-ink">
+    
     <%# --- 1. HEADER --- %>
     <header class="d-flex justify-content-between align-items-center mb-5 px-md-4">
       <%= render "shared/brand_logo" %>
     </header>
+    
     <%# --- 2. MAIN CONTAINER --- %>
     <main class="container my-auto">
       <div class="row align-items-center gy-5">
-        <%# Left Column: Marketing Copy & Visual Mockups %>
+        
+        <%# --- Left Column: Marketing Copy & Visual Mockups --- %>
         <div class="col-lg-6 pe-lg-5">
           <h1 class="display-4 fw-bold mt-2 mb-4" style="letter-spacing: -1px; line-height: 1.15;">
             Every vet visit, vaccine, and quiet afternoon &mdash; in <span class="text-decoration-underline" style="text-decoration-color: var(--pp-accent);">one place.</span>
           </h1>
           <p class="lead text-secondary mb-5 fs-5">
-            Pet Portal is a private chart for your pet's medical records, daily care, and photo memories. Built for the anxious pet parent in all of us.
+            Pet Portal is a private chart for your pet's medical records, daily care, and photo memories.
           </p>
-          <%# Visual Mockups (Hidden on smaller screens) %>
+          
+          <%# --- Visual Mockups (Hidden on smaller screens) --- %>
           <div class="position-relative mt-4 d-none d-md-block" style="height: 320px;">
-            <%# Example Pet Chart Card Widget %>
+            
+            <%# --- Example Pet Chart Card Widget --- %>
             <div class="card p-3 shadow-sm border border-secondary-subtle rounded-3 position-absolute top-0 start-0" style="width: 320px; z-index: 2;">
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center gap-2">
-                  <div class="rounded-circle bg-light d-flex align-items-center justify-content-center fw-bold text-muted border" style="width: 40px; height: 40px;">P</div>
+                  <%= image_tag "landing_page_assets/dog_profile_picture.png", alt: "Pickle", class: "rounded-circle border shadow-sm", style: "width: 40px; height: 40px; object-fit: cover;" %>
                   <div>
                     <h6 class="mb-0 fw-bold">Pickle's chart</h6>
                     <small class="text-muted">Mini Aussie • 4 yr</small>
@@ -69,26 +74,30 @@
                 <span class="text-success"><i class="fa-solid fa-check me-1"></i> Morning walk</span> • <span class="text-success">Apoquel</span> • <span class="text-muted">2 more today</span>
               </div>
             </div>
-            <%# Polaroid 1 (Park Day) %>
+            
+            <%# --- Polaroid 1 (Sun Bathing) --- %>
             <div class="bg-white p-2 shadow border position-absolute" style="width: 140px; transform: rotate(-8deg); z-index: 3; top: 30px; left: 240px;">
-              <div class="bg-light border-bottom d-flex align-items-center justify-content-center" style="height: 120px;">
-                <i class="fa-solid fa-tree text-secondary opacity-50 fs-3"></i>
+              <div class="bg-light border-bottom position-relative overflow-hidden" style="height: 120px;">
+                <%= image_tag "landing_page_assets/cat_sun_bathing.png", alt: "Cat sun bathing", class: "w-100 h-100", style: "object-fit: cover;" %>
+              </div>
+              <div class="text-center pt-2 pp-handwritten" style="font-size: 0.8rem;">sun bathing</div>
+            </div>
+            
+            <%# --- Polaroid 2 (Park Day) --- %>
+            <div class="bg-white p-2 shadow border position-absolute" style="width: 140px; transform: rotate(5deg); z-index: 4; top: 70px; left: 340px;">
+              <div class="bg-light border-bottom position-relative overflow-hidden" style="height: 120px;">
+                <%= image_tag "landing_page_assets/dog_park_day.png", alt: "Dog at the park", class: "w-100 h-100", style: "object-fit: cover;" %>
               </div>
               <div class="text-center pt-2 pp-handwritten" style="font-size: 0.8rem;">park day</div>
             </div>
-            <%# Polaroid 2 (Nap Time) %>
-            <div class="bg-white p-2 shadow border position-absolute" style="width: 140px; transform: rotate(5deg); z-index: 4; top: 70px; left: 340px;">
-              <div class="bg-light border-bottom d-flex align-items-center justify-content-center" style="height: 120px;">
-                <i class="fa-solid fa-mountain text-secondary opacity-50 fs-3"></i>
-              </div>
-              <div class="text-center pt-2 pp-handwritten" style="font-size: 0.8rem;">nap time</div>
-            </div>
-            <%# Red label indicator %>
+            
+            <%# --- Red label indicator --- %>
             <div class="position-absolute text-danger pp-handwritten fst-italic" style="top: 250px; left: 80px; z-index: 5;">
-              your pet's whole story &rarr;
+              because keeping track of their health shouldn't be as chaotic as a trip to the vet &rarr;
             </div>
           </div>
         </div>
+        
         <%#
           # Right Column: Authentication Form
           # This area renders the specific form (e.g., Login or Sign Up) via `yield`.
@@ -107,12 +116,13 @@
         </div>
       </div>
     </main>
+    
     <%# --- 3. FOOTER --- %>
-    <footer class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-5 pt-4 border-top border-secondary-subtle px-md-4 small text-muted">
+    <footer class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-5 pt-4 border-top border-secondary-subtle px-md-4 text-secondary">
       <div class="d-flex gap-3 mb-2 mb-md-0">
       </div>
-      <div>
-        Made for the anxious pet parent in all of us <i class="fa-solid fa-paw ms-1"></i>
+      <div class="fw-medium" style="letter-spacing: 0.3px;">
+        Made for the anxious pet parent in all of us <i class="fa-solid fa-paw ms-2"></i>
       </div>
     </footer>
   </div>

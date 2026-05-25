@@ -16,7 +16,7 @@
 <% content_for :content do %>
   <div class="d-flex flex-column flex-md-row vh-100 bg-brand">
 
-    <%# --- MOBILE TOP NAV (Visible only on small screens) --- %>
+    <%# --- TOP NAV: MOBILE ONLY --- %>
     <nav class="navbar navbar-light bg-transparent border-bottom border-secondary-subtle px-3 d-md-none">
       <%= render "shared/brand_logo" %>
       <button class="navbar-toggler border-0 px-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,59 +24,60 @@
       </button>
     </nav>
 
-    <%# --- LEFT COLUMN / OFFCANVAS SIDEBAR --- %>
+    <%# --- LEFT COLUMN / OFFCANVAS SIDEBAR: PRIMARY NAVIGATION --- %>
     <aside class="offcanvas-md offcanvas-start d-md-flex flex-column border-end border-secondary-subtle px-3 py-4 flex-shrink-0 bg-brand" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel" style="width: 280px;">
 
-      <%# Mobile Offcanvas Header %>
+      <%# --- OFFCANVAS HEADER: MOBILE ONLY --- %>
       <div class="offcanvas-header d-md-none">
         <%= render "shared/brand_logo", label: "Menu" %>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
       </div>
 
+      <%# --- NAVIGATION BAR --- %>
       <div class="offcanvas-body d-flex flex-column flex-grow-1 p-0">
-        <%# Desktop Logo (Hidden on mobile) %>
+
+        <%# --- DESKTOP LOGO --- %>
         <%= render "shared/brand_logo", classes: "d-none d-md-flex align-items-center gap-2 mb-5 px-3 text-ink" %>
 
-        <%# Navigation Links — see shared/_nav_item for the pill + dot markup.
-            "My Pets" stays lit across the whole pets controller (index, show,
-            new/edit), not just its index page. %>
+        <%# --- MY PETS NAV LINK --- %>
         <nav class="nav flex-column gap-2 mb-auto px-1 w-100">
-          <%= render "shared/nav_item", label: "My Pets", path: pets_path,
-                active: current_page?(pets_path) || params[:controller] == "pets" %>
+          <%= render "shared/nav_item", label: "My Pets", path: pets_path, active: current_page?(pets_path) || params[:controller] == "pets" %>
+            <%# --- current_page? activates the link when viewing the index list (/pets) --- %>
+            <%# --- params[:controller] keeps it active when viewing or editing a specific pet (/pets/1) --- %>
         </nav>
 
-        <%# User Profile / Settings (Bottom) %>
+        <%# --- USER PROFILE / SETTINGS NAV LINK --- %>
         <div class="pt-4 mt-4 px-3 w-100" style="border-top: 1px dashed rgba(0,0,0,0.15);">
           <div class="d-flex align-items-center gap-3">
-            <%# Avatar Circle %>
+            
+            <%# --- User Avatar --- %>
             <div class="rounded-circle border border-dark d-flex align-items-center justify-content-center bg-white flex-shrink-0" style="width: 38px; height: 38px;">
-              <% if current_user.first_name.present? %>
-                <span class="fw-bold text-muted small"><%= current_user.first_name[0] %></span>
-              <% else %>
-                <i class="fa-solid fa-user text-muted small"></i>
-              <% end %>
+              <span class="fw-bold text-muted small">
+                <%= current_user.email[0].upcase %>
+              </span>
             </div>
 
-            <%# Name and Settings Link %>
+            <%# --- User Name and Settings Link --- %>
             <div class="lh-sm">
-              <div class="fw-bold text-dark" style="font-size: 0.9rem;">
-                <%= current_user.first_name %> <%= current_user.last_name&.first %>.
+              <div class="fw-bold text-dark text-truncate" style="font-size: 0.9rem; max-width: 160px;" title="<%= current_user.email %>">
+                <%= current_user.email %>
               </div>
               <%= link_to "Settings", edit_user_registration_path, class: "text-muted text-decoration-none small", style: "font-size: 0.75rem;" %>
             </div>
           </div>
         </div>
+
       </div>
     </aside>
 
     <%# --- RIGHT COLUMN (MAIN CONTENT) --- %>
     <main class="flex-grow-1 p-4 p-md-5 overflow-auto">
-      <%# Injects the specific view (e.g. pets/index) %>
+      <%# --- Injects the view tied to the active nav bar item (e.g. pets/index) --- %>
       <%= yield %>
     </main>
 
   </div>
 <% end %>
 
-<%# Inherit the base HTML structure from application.html.erb %>
+<%# --- Inherit the base HTML structure from application.html.erb --- %>
 <%= render template: "layouts/application" %>
