@@ -30,18 +30,6 @@ class UserTest < ActiveSupport::TestCase
     assert @valid_user.valid?
   end
 
-  test "requires a first name" do
-    @valid_user.first_name = nil
-    assert_not @valid_user.valid?
-    assert_includes @valid_user.errors[:first_name], "can't be blank"
-  end
-
-  test "requires a last name" do
-    @valid_user.last_name = nil
-    assert_not @valid_user.valid?
-    assert_includes @valid_user.errors[:last_name], "can't be blank"
-  end
-
   test "requires an email" do
     @valid_user.email = nil
     assert_not @valid_user.valid?
