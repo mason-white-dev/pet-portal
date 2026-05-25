@@ -1,8 +1,4 @@
 <div class="d-flex flex-column h-100">
-  <%= link_to pets_path, class: "text-secondary text-decoration-none small mb-4", data: { turbo_frame: "_top" } do %>
-    <i class="fa-solid fa-chevron-left small me-1"></i> My pets
-  <% end %>
-  
   <%# Avatar %>
   <div class="mb-4">
     <% if pet.avatar_image.attached? %>

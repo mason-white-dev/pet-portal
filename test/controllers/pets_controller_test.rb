@@ -12,6 +12,16 @@ class PetsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  # Guards the app's auth boundary: an unauthenticated visitor to the pets roster
+  # (now the root path) is bounced to sign in by Devise's authenticate_user!
+  # before_action. Re-added here after the dashboard — which used to hold this
+  # test — was removed.
+  test "redirects to sign in when not authenticated" do
+    sign_out @pet.user
+    get pets_url
+    assert_redirected_to new_user_session_path
+  end
+
   test "should get new" do
     get new_pet_url
     assert_response :success
