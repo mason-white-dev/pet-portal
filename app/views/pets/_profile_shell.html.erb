@@ -1,0 +1,31 @@
+<%#
+  Shared shell for a pet's profile tabs (About, Edit, and future tabs).
+
+  Left column  = locked sidebar (header + nav) — does NOT scroll.
+  Right column = the tab's content, and it's the ONLY thing that scrolls
+                 (h-100 bounds it to the viewport; overflow-auto scrolls inside).
+                 Because the content column owns the scroll, the sidebar stays put.
+
+  Every tab renders through here, so they all share identical structure and
+  can't drift apart.
+
+  Locals:
+    pet              - the Pet record
+    active_tab       - which tab is current (:about, :edit, …)
+    content_partial  - partial to render in the content area (e.g. "pets/about")
+%>
+<%= turbo_frame_tag "pet_content", data: { turbo_action: "advance" } do %>
+  <div class="row g-0 h-100">
+
+    <%# Locked sidebar %>
+    <div class="col-12 col-md-4 col-xl-3 border-end border-secondary-subtle pe-4 pb-4">
+      <%= render "pets/profile_header", pet: pet, active_tab: active_tab %>
+    </div>
+
+    <%# Scrollable content (only this column scrolls) %>
+    <div class="col-12 col-md-8 col-xl-9 ps-4 ps-md-5 h-100 overflow-auto">
+      <%= render content_partial, pet: pet %>
+    </div>
+
+  </div>
+<% end %>

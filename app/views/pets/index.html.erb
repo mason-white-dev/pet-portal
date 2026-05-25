@@ -12,7 +12,7 @@
 <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4" id="pets">
   <% @pets.each do |pet| %>
     <div class="col">
-      <%= render "pets/pet_banner", pet: pet %>
+      <%= render "pets/pet_card", pet: pet %>
     </div>
   <% end %>
 
