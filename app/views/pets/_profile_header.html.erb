@@ -1,6 +1,15 @@
 <%# Horizontal profile header: pet name + subtitle on the left, tab nav pushed
     to the right, with a divider beneath. The avatar now lives in the About
     photo card, not here. Per-section "add" actions live inside each tab. %>
+
+<%# Back to the roster — a light "kicker" hugging the title above. The sidebar
+    already carries primary nav, so this stays feather-light. turbo_frame: "_top"
+    breaks out of the pet_content frame to navigate the whole page. %>
+<%= link_to pets_path, class: "back-link text-secondary text-decoration-none small fw-medium d-inline-flex align-items-center gap-2 mb-2", data: { turbo_frame: "_top" } do %>
+  <i class="fa-solid fa-arrow-left"></i>
+  My Pets
+<% end %>
+
 <div class="d-flex align-items-center flex-wrap gap-4 border-bottom border-secondary-subtle pb-3 mb-4">
 
   <%# Title %>

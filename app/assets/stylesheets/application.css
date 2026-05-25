@@ -92,3 +92,9 @@
 .pet-card-add:hover .pet-card-add__icon {
   background-color: rgba(224, 122, 95, 0.12);
 }
+
+/* "← My Pets" back link on a pet profile: darkens to ink and nudges left on
+ * hover, mirroring the gallery card's arrow motion. */
+.back-link .fa-arrow-left { transition: transform 0.15s ease; }
+.back-link:hover { color: var(--pp-ink) !important; }
+.back-link:hover .fa-arrow-left { transform: translateX(-2px); }
