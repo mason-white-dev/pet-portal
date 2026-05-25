@@ -37,13 +37,58 @@
 .pp-wordmark    { font-style: italic; letter-spacing: -0.5px; }
 
 /* ============================================================================
- * My Pets list rows
+ * My Pets gallery
  *
- * Each pet on the index renders as a full-width banner row (pets/_pet_card).
- * These add the interactive feel: a faint background tint on hover and a small
- * rightward chevron nudge to signal the whole row is a link to the profile.
+ * Photo-forward cards on the index (pets/_pet_card) plus the dashed "add a pet"
+ * tile. The interactions are the crisp/snappy bit: cards lift on hover, the
+ * coral "go" button fills and nudges, and the add tile warms to the accent.
  * ==========================================================================*/
-.pet-row { transition: background-color 0.12s ease; }
-.pet-row:hover { background-color: rgba(0, 0, 0, 0.025); }
-.pet-row .fa-chevron-right { transition: transform 0.12s ease; }
-.pet-row:hover .fa-chevron-right { transform: translateX(2px); }
+
+/* Pet card: lift + deepen shadow on hover. */
+.pet-card { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.pet-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Monogram fallback for pets without a photo: soft coral wash + accent initial. */
+.pet-card__monogram {
+  background: linear-gradient(135deg, rgba(224, 122, 95, 0.18), rgba(224, 122, 95, 0.06));
+  color: var(--pp-accent);
+}
+
+/* Coral "go" button — tinted at rest, fills + nudges right on card hover. */
+.pet-card__go {
+  width: 40px;
+  height: 40px;
+  background-color: rgba(224, 122, 95, 0.12);
+  color: var(--pp-accent);
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+.pet-card:hover .pet-card__go {
+  background-color: var(--pp-accent);
+  color: #fff;
+  transform: translateX(3px);
+}
+
+/* Ghost "add a pet" tile: dashed outline that warms to coral on hover. */
+.pet-card-add {
+  min-height: 200px;
+  border: 2px dashed rgba(0, 0, 0, 0.15);
+  background-color: transparent;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+.pet-card-add:hover {
+  border-color: var(--pp-accent);
+  color: var(--pp-accent) !important;
+  background-color: rgba(224, 122, 95, 0.04);
+}
+.pet-card-add__icon {
+  width: 48px;
+  height: 48px;
+  background-color: rgba(0, 0, 0, 0.04);
+  transition: background-color 0.15s ease;
+}
+.pet-card-add:hover .pet-card-add__icon {
+  background-color: rgba(224, 122, 95, 0.12);
+}
