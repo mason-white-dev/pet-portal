@@ -1,17 +1,16 @@
-<div class="d-flex flex-column gap-1">
-  <%= link_to pet_path(pet), class: "text-decoration-none px-3 py-1 #{active_tab == :about ? 'border border-dark bg-white rounded-3 fw-bold text-ink shadow-sm' : 'text-secondary'}", aria: { current: (active_tab == :about ? "page" : nil) } do %>
+<%# Horizontal tab nav. Active tab = bold ink text; the rest are muted.
+    About → show, Edit → edit; the middle tabs are placeholders pending #3–#6. %>
+<div class="d-flex align-items-center flex-wrap gap-5">
+  <%= link_to pet_path(pet), class: "text-decoration-none #{active_tab == :about ? 'fw-bold text-ink' : 'text-secondary'}", aria: { current: (active_tab == :about ? "page" : nil) } do %>
     About
   <% end %>
-  
-  <a href="#" class="text-decoration-none px-3 py-1 text-secondary">Vaccines</a>
-  
-  <a href="#" class="text-decoration-none px-3 py-1 text-secondary">Issues & visits</a>
-  
-  <a href="#" class="text-decoration-none px-3 py-1 text-secondary">Daily care</a>
-  
-  <a href="#" class="text-decoration-none px-3 py-1 text-secondary">Memories</a>
-  
-  <%= link_to edit_pet_path(pet), class: "text-decoration-none px-3 py-1 #{active_tab == :edit ? 'border border-dark bg-white rounded-3 fw-bold text-ink shadow-sm' : 'text-secondary'}", aria: { current: (active_tab == :edit ? "page" : nil) } do %>
+
+  <a href="#" class="text-decoration-none text-secondary">Vaccines</a>
+  <a href="#" class="text-decoration-none text-secondary">Issues &amp; visits</a>
+  <a href="#" class="text-decoration-none text-secondary">Daily care</a>
+  <a href="#" class="text-decoration-none text-secondary">Memories</a>
+
+  <%= link_to edit_pet_path(pet), class: "text-decoration-none #{active_tab == :edit ? 'fw-bold text-ink' : 'text-secondary'}", aria: { current: (active_tab == :edit ? "page" : nil) } do %>
     Edit
   <% end %>
 </div>
