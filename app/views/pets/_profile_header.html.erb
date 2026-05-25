@@ -1,40 +1,16 @@
-<div class="d-flex flex-column h-100">
-  
-  <%# Avatar %>
-  <div class="mb-4">
-    <% if pet.avatar_image.attached? %>
-      <%= image_tag pet.avatar_image, class: "rounded-4 border border-dark object-fit-cover", style: "width: 85%; aspect-ratio: 1 / 1;" %>
-    <% else %>
-      <div class="rounded-4 border border-dark d-flex align-items-center justify-content-center bg-light" style="width: 85%; aspect-ratio: 1 / 1; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px);">
-        <span class="fw-bold text-secondary pp-handwritten fs-1"><%= pet.name[0].upcase %></span>
-      </div>
-    <% end %>
-  </div>
-  
-  <%# Info %>
-  <div class="lh-sm mb-4">
-    <h1 class="fw-bold mb-1 text-ink"><%= pet.name %></h1>
-    <div class="text-secondary small">
-      <% details = [pet.breed.presence, pet.species&.humanize.presence].compact %>
-      <% breed_info = details.join(" • ") %>
-      
-      <% if pet.date_of_birth.present? %>
-        <% age_info = time_ago_in_words(pet.date_of_birth).gsub("about ", "").gsub(" years", " yr").gsub(" year", " yr") %>
-        <%= [breed_info.presence, age_info].compact.join(" • ") %>
-      <% else %>
-        <%= breed_info %>
-      <% end %>
-    </div>
+<%# Horizontal profile header: pet name + subtitle on the left, tab nav pushed
+    to the right, with a divider beneath. The avatar now lives in the About
+    photo card, not here. Per-section "add" actions live inside each tab. %>
+<div class="d-flex align-items-center flex-wrap gap-4 border-bottom border-secondary-subtle pb-3 mb-4">
+
+  <%# Title %>
+  <div class="lh-sm">
+    <h1 class="fw-bold mb-0 text-ink"><%= pet.name %></h1>
+    <div class="text-secondary small"><%= pet_subtitle(pet) %></div>
   </div>
 
-  
-  <%# Nav Tabs %>
-  <div class="mb-5">
+  <%# Tab nav — pushed to the right edge %>
+  <div class="ms-auto">
     <%= render "pets/nav_tabs", pet: pet, active_tab: active_tab %>
-  </div>
-  
-  <%# Actions %>
-  <div class="mt-auto pb-4">
-    <button class="btn bg-ink text-white w-100 rounded-pill py-2 fw-medium shadow-sm">+ Record</button>
   </div>
 </div>
