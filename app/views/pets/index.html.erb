@@ -1,8 +1,9 @@
 <%#
   # Pets Index View
   #
-  # This view serves as the primary dashboard where users can see all their 
-  # registered pets displayed as a responsive grid of cards. 
+  # Primary dashboard: a calm, scannable list of the user's pets. Each pet is a
+  # horizontal banner row (see pets/_pet_card). Constrained to a comfortable
+  # reading width rather than stretching the full main-content area.
   #
   # Wire Frame Reference:
   # https://github.com/mason-white-dev/pet-portal/blob/main/wireframes/MyPets.png
@@ -10,42 +11,32 @@
 
 <% content_for :title, "My Pets" %>
 
-<%# --- PAGE HEADER --- %>
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <div>
+<div class="mx-auto" style="max-width: 960px;">
+
+  <%# --- PAGE HEADER --- %>
+  <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fw-bold mb-0 text-ink">My Pets</h1>
-  </div>
-  <div>
     <%= link_to "+ Add pet", new_pet_path, class: "btn bg-ink text-white rounded-pill px-4 fw-medium shadow-sm" %>
   </div>
-</div>
 
-<%# --------------- PETS GRID ----------------- %>
-<%# ----- Responsive grid configuration: ------ %>
-<%# ----- Mobile (col-1): 1 card per row ------ %>
-<%# --- Tablet (col-md-3): 3 cards per row ---- %>
-<%# --- Desktop (col-xl-5): 5 cards per row --- %>
+  <%# --- PETS LIST (thin top border + per-row dividers enclose the list) --- %>
+  <div id="pets" class="border-top border-secondary-subtle">
 
-<div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4" id="pets">
-  
-  <%# --- RENDER PET CARDS --- %>
-  <% @pets.each do |pet| %>
-    <div class="col">
+    <%# --- RENDER PET ROWS --- %>
+    <% @pets.each do |pet| %>
       <%= render "pets/pet_card", pet: pet %>
-    </div>
-  <% end %>
+    <% end %>
 
-  <%# --- EMPTY STATE (NO PETS) --- %>
-  <% if @pets.empty? %>
-    <%# --- If there are no pets, display an empty state card that prompts the user to add a pet ---- %>
-    <div class="col">
-      <%= link_to new_pet_path, class: "card h-100 text-decoration-none shadow-sm d-flex align-items-center justify-content-center text-secondary rounded-3", style: "border: 2px dashed var(--bs-border-color) !important; min-height: 140px; background-color: transparent;" do %>
-        <div class="text-center">
-          <i class="fa-solid fa-plus fs-4 mb-2 text-muted"></i>
-          <div class="fw-medium text-muted">Add a pet</div>
+    <%# --- EMPTY STATE (NO PETS): keep the row rhythm, prompt to add one --- %>
+    <% if @pets.empty? %>
+      <%= link_to new_pet_path,
+            class: "pet-row d-flex align-items-center gap-3 gap-md-4 py-4 px-2 px-md-3 text-decoration-none text-secondary border-bottom border-secondary-subtle" do %>
+        <div class="rounded-3 bg-light d-flex align-items-center justify-content-center flex-shrink-0" style="width: 64px; height: 64px;">
+          <i class="fa-solid fa-plus"></i>
         </div>
+        <div class="fw-medium">Add your first pet</div>
       <% end %>
-    </div>
-  <% end %>
+    <% end %>
 
+  </div>
 </div>

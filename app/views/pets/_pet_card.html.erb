@@ -1,17 +1,34 @@
-<%= link_to pet_path(pet), id: dom_id(pet), class: "card h-100 shadow-sm border border-secondary-subtle rounded-4 text-ink text-decoration-none overflow-hidden" do %>
-  
-  <%# Top Image Section %>
-  <% if pet.avatar_image.attached? %>
-    <%= image_tag pet.avatar_image, alt: pet.name, class: "card-img-top object-fit-cover", style: "aspect-ratio: 3 / 4;" %>
-  <% else %>
-    <div class="card-img-top bg-light d-flex align-items-center justify-content-center border-bottom border-secondary-subtle" style="aspect-ratio: 3 / 4; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px);">
-      <span class="badge bg-white text-secondary border border-secondary-subtle text-lowercase fw-normal font-monospace px-3 py-1"><%= pet.name %></span>
-    </div>
-  <% end %>
+<%#
+  # Pet Card (list row)
+  #
+  # One pet rendered as a horizontal banner row for the My Pets index: a small
+  # square thumbnail, the pet's name + one-line subtitle, and a chevron affordance.
+  # The whole row is a single link to the pet's profile. Rows are separated by a
+  # thin bottom divider; hover styling lives in `.pet-row` (application.css).
+%>
+<%= link_to pet_path(pet), id: dom_id(pet),
+      class: "pet-row d-flex align-items-center gap-3 gap-md-4 py-3 px-2 px-md-3 text-ink text-decoration-none border-bottom border-secondary-subtle" do %>
 
-  <%# Bottom Text Section %>
-  <div class="card-body p-4 bg-white">
-    <h3 class="fw-bold mb-1"><%= pet.name %></h3>
-    <div class="text-secondary small"><%= pet_subtitle(pet) %></div>
+  <%# --- Thumbnail (fixed square so mismatched source photos read as a tidy set) --- %>
+  <div class="flex-shrink-0">
+    <% if pet.avatar_image.attached? %>
+      <%= image_tag pet.avatar_image, alt: pet.name,
+            class: "rounded-3 object-fit-cover", style: "width: 72px; height: 72px;" %>
+    <% else %>
+      <%# --- No photo yet: neutral placeholder tile, not a broken-image panel --- %>
+      <div class="rounded-3 bg-light d-flex align-items-center justify-content-center text-secondary"
+           style="width: 72px; height: 72px;">
+        <i class="fa-solid fa-paw"></i>
+      </div>
+    <% end %>
   </div>
+
+  <%# --- Name + subtitle (min-width:0 lets long names truncate instead of overflow) --- %>
+  <div class="flex-grow-1" style="min-width: 0;">
+    <div class="fw-bold fs-5 text-truncate"><%= pet.name %></div>
+    <div class="text-secondary small text-truncate"><%= pet_subtitle(pet) %></div>
+  </div>
+
+  <%# --- Navigability affordance --- %>
+  <i class="fa-solid fa-chevron-right small text-secondary flex-shrink-0"></i>
 <% end %>

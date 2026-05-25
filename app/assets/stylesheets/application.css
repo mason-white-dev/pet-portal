@@ -35,3 +35,15 @@
  * `.pp-handwritten`); `.pp-handwritten` alone is for incidental handwritten bits. */
 .pp-handwritten { font-family: "Comic Sans MS", cursive, sans-serif; }
 .pp-wordmark    { font-style: italic; letter-spacing: -0.5px; }
+
+/* ============================================================================
+ * My Pets list rows
+ *
+ * Each pet on the index renders as a full-width banner row (pets/_pet_card).
+ * These add the interactive feel: a faint background tint on hover and a small
+ * rightward chevron nudge to signal the whole row is a link to the profile.
+ * ==========================================================================*/
+.pet-row { transition: background-color 0.12s ease; }
+.pet-row:hover { background-color: rgba(0, 0, 0, 0.025); }
+.pet-row .fa-chevron-right { transition: transform 0.12s ease; }
+.pet-row:hover .fa-chevron-right { transform: translateX(2px); }
