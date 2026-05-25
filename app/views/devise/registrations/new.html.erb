@@ -10,7 +10,7 @@
   # - Other sign-up feedback (flash) is rendered globally at the layout level.
   #
   # Wire Frame Reference:
-  # https://github.com/mason-white-dev/pet-portal/blob/main/wireframes/Landing%20page.png
+  # https://github.com/mason-white-dev/pet-portal/blob/main/wireframes/LandingPage.png
 %>
 <%= turbo_frame_tag :auth_frame do %>
   <%#
@@ -30,9 +30,9 @@
   <h2 class="h4 fw-bold mb-1">Start your pet's chart</h2>
   <%#
     # The form lives inside `auth_frame`, but `turbo_frame: "_top"` makes it submit
-    # against the WHOLE page. That's deliberate: on success Devise redirects to the
-    # dashboard, and on failure it re-renders this view with errors — both should take
-    # over the full page rather than get trapped inside this little frame container.
+    # against the WHOLE page. That's deliberate: on success Devise redirects into
+    # the app (the pets roster), and on failure it re-renders this view with errors —
+    # both should take over the full page rather than get trapped inside this frame.
   %>
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { data: { turbo_frame: "_top" } }) do |f| %>
     <%#

@@ -2,7 +2,6 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
   <div>
-    <div class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px; font-size: 0.75rem;">Household</div>
     <h1 class="fw-bold mb-0 text-ink">My Pets</h1>
   </div>
   <div>
@@ -10,10 +9,10 @@
   </div>
 </div>
 
-<div class="row row-cols-1 row-cols-xl-2 g-4" id="pets">
+<div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4" id="pets">
   <% @pets.each do |pet| %>
     <div class="col">
-      <%= render "pets/pet_banner", pet: pet %>
+      <%= render "pets/pet_card", pet: pet %>
     </div>
   <% end %>
 

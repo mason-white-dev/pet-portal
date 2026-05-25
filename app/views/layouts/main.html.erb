@@ -2,7 +2,7 @@
   # Main Layout (Nested Layout)
   #
   # This layout is used for authenticated users browsing the main application.
-  # It provides a standard dashboard structure:
+  # It provides the standard authenticated app structure:
   # - Left column: Fixed vertical navigation sidebar.
   # - Right column: Flexible content area for the specific view template.
   #
@@ -10,11 +10,11 @@
   # `bg-accent` (see application.css) and the shared/brand_logo partial.
   #
   # Wire Frame Reference:
-  # https://github.com/mason-white-dev/pet-portal/blob/main/wireframes/Dashboard.png
+  # https://github.com/mason-white-dev/pet-portal/blob/main/wireframes/MyPets.png
 %>
 
 <% content_for :content do %>
-  <div class="d-flex flex-column flex-md-row min-vh-100 bg-brand">
+  <div class="d-flex flex-column flex-md-row vh-100 bg-brand">
 
     <%# --- MOBILE TOP NAV (Visible only on small screens) --- %>
     <nav class="navbar navbar-light bg-transparent border-bottom border-secondary-subtle px-3 d-md-none">
@@ -38,11 +38,9 @@
         <%= render "shared/brand_logo", classes: "d-none d-md-flex align-items-center gap-2 mb-5 px-3 text-ink" %>
 
         <%# Navigation Links — see shared/_nav_item for the pill + dot markup.
-            Each section computes its own "active" rule (Dashboard is a single
-            page; My pets stays lit across the whole pets controller). %>
+            "My Pets" stays lit across the whole pets controller (index, show,
+            new/edit), not just its index page. %>
         <nav class="nav flex-column gap-2 mb-auto px-1 w-100">
-          <%= render "shared/nav_item", label: "Dashboard", path: root_path,
-                active: current_page?(root_path) %>
           <%= render "shared/nav_item", label: "My Pets", path: pets_path,
                 active: current_page?(pets_path) || params[:controller] == "pets" %>
         </nav>
@@ -73,7 +71,7 @@
 
     <%# --- RIGHT COLUMN (MAIN CONTENT) --- %>
     <main class="flex-grow-1 p-4 p-md-5 overflow-auto">
-      <%# Injects the specific view (e.g. dashboard/index) %>
+      <%# Injects the specific view (e.g. pets/index) %>
       <%= yield %>
     </main>
 

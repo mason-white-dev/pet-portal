@@ -1,0 +1,27 @@
+<%= link_to pet_path(pet), id: dom_id(pet), class: "card h-100 shadow-sm border border-secondary-subtle rounded-4 text-ink text-decoration-none overflow-hidden" do %>
+  
+  <%# Top Image Section %>
+  <% if pet.avatar_image.attached? %>
+    <%= image_tag pet.avatar_image, alt: pet.name, class: "card-img-top object-fit-cover", style: "aspect-ratio: 3 / 4;" %>
+  <% else %>
+    <div class="card-img-top bg-light d-flex align-items-center justify-content-center border-bottom border-secondary-subtle" style="aspect-ratio: 3 / 4; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px);">
+      <span class="badge bg-white text-secondary border border-secondary-subtle text-lowercase fw-normal font-monospace px-3 py-1"><%= pet.name %></span>
+    </div>
+  <% end %>
+
+  <%# Bottom Text Section %>
+  <div class="card-body p-4 bg-white">
+    <h3 class="fw-bold mb-1"><%= pet.name %></h3>
+    <div class="text-secondary small">
+      <% details = [pet.breed.presence, pet.species&.humanize.presence].compact %>
+      <% breed_info = details.join(" • ") %>
+      
+      <% if pet.date_of_birth.present? %>
+        <% age_info = time_ago_in_words(pet.date_of_birth).gsub("about ", "").gsub(" years", " yr").gsub(" year", " yr") %>
+        <%= [breed_info.presence, age_info].compact.join(" • ") %>
+      <% else %>
+        <%= breed_info %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

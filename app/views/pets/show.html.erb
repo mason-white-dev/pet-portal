@@ -1,10 +1,3 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, @pet.name %>
 
-<%= render @pet %>
-
-<div>
-  <%= link_to "Edit this pet", edit_pet_path(@pet) %> |
-  <%= link_to "Back to pets", pets_path %>
-
-  <%= button_to "Destroy this pet", @pet, method: :delete %>
-</div>
+<%= render "pets/profile_shell", pet: @pet, active_tab: :about, content_partial: "pets/about" %>

@@ -1,12 +1,3 @@
-<% content_for :title, "Editing pet" %>
+<% content_for :title, "Editing #{@pet.name}" %>
 
-<h1>Editing pet</h1>
-
-<%= render "form", pet: @pet %>
-
-<br>
-
-<div>
-  <%= link_to "Show this pet", @pet %> |
-  <%= link_to "Back to pets", pets_path %>
-</div>
+<%= render "pets/profile_shell", pet: @pet, active_tab: :edit, content_partial: "pets/edit_form" %>
