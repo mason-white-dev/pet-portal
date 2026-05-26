@@ -5,22 +5,12 @@
   # change control on the LEFT, the editable identity fields on the RIGHT, using
   # the shared `.field-label` style — so the modal reads as "the card, made
   # editable." Rendered inside the modal's "drawer" frame via pets/edit.html.erb.
+  #
+  # Validation errors are shown INLINE, per field: each input gets `is-invalid`
+  # (Bootstrap's red border + icon) and a message underneath via the field_error
+  # helper — same treatment as the sign-up form, rather than one summary alert.
 %>
 <%= form_with(model: pet) do |form| %>
-
-  <%# --- ERROR SUMMARY --- %>
-  <%# On a failed save the controller re-renders :edit (422), so this lands %>
-  <%# back in the drawer frame and the errors show in the still-open modal. %>
-  <% if pet.errors.any? %>
-    <div class="alert alert-danger" role="alert">
-      <div class="fw-bold mb-1"><%= pluralize(pet.errors.count, "error") %> stopped this from saving:</div>
-      <ul class="mb-0 ps-3">
-        <% pet.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
 
   <div class="row g-4">
 
@@ -76,6 +66,8 @@
           <i class="fa-solid fa-trash"></i>
         </button>
       </div>
+      <%# avatar_image errors (wrong type / too large) surface here, under the buttons. %>
+      <%= field_error pet, :avatar_image %>
     </div>
 
     <%# --- RIGHT: editable identity fields (mirrors the card's detail grid) --- %>
@@ -84,32 +76,38 @@
 
         <div class="col-sm-6">
           <%= form.label :name, class: "field-label" %>
-          <%= form.text_field :name, class: "form-control" %>
+          <%= form.text_field :name, class: [ "form-control", ("is-invalid" if pet.errors[:name].any?) ] %>
+          <%= field_error pet, :name %>
         </div>
 
         <div class="col-sm-6">
           <%= form.label :species, class: "field-label" %>
-          <%= form.select :species, Pet.species.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select species" }, class: "form-select" %>
+          <%= form.select :species, Pet.species.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select species" }, class: [ "form-select", ("is-invalid" if pet.errors[:species].any?) ] %>
+          <%= field_error pet, :species %>
         </div>
 
         <div class="col-sm-6">
           <%= form.label :breed, class: "field-label" %>
-          <%= form.text_field :breed, class: "form-control" %>
+          <%= form.text_field :breed, class: [ "form-control", ("is-invalid" if pet.errors[:breed].any?) ] %>
+          <%= field_error pet, :breed %>
         </div>
 
         <div class="col-sm-6">
           <%= form.label :sex, class: "field-label" %>
-          <%= form.select :sex, Pet.sexes.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select sex" }, class: "form-select" %>
+          <%= form.select :sex, Pet.sexes.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select sex" }, class: [ "form-select", ("is-invalid" if pet.errors[:sex].any?) ] %>
+          <%= field_error pet, :sex %>
         </div>
 
         <div class="col-sm-6">
           <%= form.label :date_of_birth, "Birthday", class: "field-label" %>
-          <%= form.date_field :date_of_birth, class: "form-control" %>
+          <%= form.date_field :date_of_birth, class: [ "form-control", ("is-invalid" if pet.errors[:date_of_birth].any?) ] %>
+          <%= field_error pet, :date_of_birth %>
         </div>
 
         <div class="col-sm-6">
           <%= form.label :microchip, class: "field-label" %>
-          <%= form.text_field :microchip, class: "form-control" %>
+          <%= form.text_field :microchip, class: [ "form-control", ("is-invalid" if pet.errors[:microchip].any?) ] %>
+          <%= field_error pet, :microchip %>
         </div>
 
         <%# Neutered: boolean, so a checkbox rather than a value --- %>
@@ -122,7 +120,8 @@
 
         <div class="col-12">
           <%= form.label :notes, class: "field-label" %>
-          <%= form.text_area :notes, rows: 4, class: "form-control" %>
+          <%= form.text_area :notes, rows: 4, class: [ "form-control", ("is-invalid" if pet.errors[:notes].any?) ] %>
+          <%= field_error pet, :notes %>
         </div>
 
       </div>
