@@ -1,0 +1,65 @@
+<%# --- IDENTITY CARD --- %>
+<%# A two-column grid displaying the pet's core attributes %>
+<div id="<%= dom_id(pet, :pet_identity_card) %>" class="col-lg-5">
+  <div class="card shadow-sm border border-secondary-subtle rounded-4 h-100">
+    <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-4 pb-0 px-4">
+      <div class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Identity</div>
+      <%= link_to "Edit &rarr;".html_safe, edit_pet_path(pet), class: "text-secondary text-decoration-none small", data: { turbo_frame: "drawer" } %>
+    </div>
+    <div class="card-body p-4">
+      <div class="row g-4">
+        <div class="col-sm-6">
+          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Name</div>
+          <div class="fw-medium text-ink"><%= pet.name %></div>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Species</div>
+          <div class="fw-medium text-ink"><%= pet.species&.humanize || "—" %></div>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Breed</div>
+          <div class="fw-medium text-ink"><%= pet.breed.presence || "—" %></div>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Sex</div>
+          <div class="fw-medium text-ink">
+            <%= pet.sex&.humanize || "—" %>
+            <% if pet.neutered %>
+              <span class="text-secondary">· <%= pet.sex == "female" ? "spayed" : "neutered" %></span>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Birthday</div>
+          <div class="fw-medium text-ink">
+            <% if pet.date_of_birth.present? %>
+              <%= pet.date_of_birth.strftime("%B %-d, %Y") %>
+              <span class="text-secondary d-block">(<%= time_ago_in_words(pet.date_of_birth) %>)</span>
+            <% else %>
+              —
+            <% end %>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Microchip</div>
+          <div class="fw-medium text-ink">
+            <%= pet.microchip.presence || "—" %>
+            <% if pet.microchip.present? %>
+              <span class="badge bg-light text-secondary border border-secondary-subtle fw-normal d-inline-block mt-1">registered</span>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Notes</div>
+          <div class="fw-medium text-ink">
+            <% if pet.notes.present? %>
+              <div class="text-ink" style="line-height: 1.6;"><%= simple_format pet.notes %></div>
+            <% else %>
+              <div class="text-muted fst-italic">No notes recorded yet.</div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

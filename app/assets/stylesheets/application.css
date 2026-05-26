@@ -20,21 +20,74 @@
  * To rebrand (new colors or a real wordmark font), change it here only.
  * ==========================================================================*/
 :root {
-  --pp-bg: #f6f5f1;      /* warm off-white page background */
-  --pp-ink: #1e1e1e;     /* near-black brand ink (body text + dark buttons) */
-  --pp-accent: #e07a5f;  /* coral accent (active states, highlights) */
+  --pp-bg: #f6f5f1;
+  /* warm off-white page background */
+  --pp-ink: #1e1e1e;
+  /* near-black brand ink (body text + dark buttons) */
+  --pp-accent: #e07a5f;
+  /* coral accent (active states, highlights) */
 }
 
-.bg-brand    { background-color: var(--pp-bg); }
-.text-ink    { color: var(--pp-ink); }
-.bg-ink      { background-color: var(--pp-ink); }
-.text-accent { color: var(--pp-accent); }
-.bg-accent   { background-color: var(--pp-accent); }
+.bg-brand {
+  background-color: var(--pp-bg);
+}
+
+.text-ink {
+  color: var(--pp-ink);
+}
+
+.bg-ink {
+  background-color: var(--pp-ink);
+}
+
+.text-accent {
+  color: var(--pp-accent);
+}
+
+.bg-accent {
+  background-color: var(--pp-accent);
+}
+
+/* Brand "ink" button. A proper Bootstrap button variant (not the `bg-ink`
+ * utility), so hover/active/focus are handled by Bootstrap's own machinery — a
+ * plain `.btn` defines no hover background, which made `bg-ink` collapse to the
+ * page color on hover. Use `btn btn-ink` instead of `btn bg-ink text-white`. */
+.btn-ink {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--pp-ink);
+  --bs-btn-border-color: var(--pp-ink);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #404040;
+  --bs-btn-hover-border-color: #404040;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #0f0f0f;
+  --bs-btn-active-border-color: #0f0f0f;
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: var(--pp-ink);
+  --bs-btn-disabled-border-color: var(--pp-ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+/* Lift + shadow on hover so feedback is obvious even though the color barely
+ * shifts on a near-black button (mirrors the gallery cards' hover motion). */
+.btn-ink:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
+}
+.btn-ink:active {
+  transform: translateY(0);
+}
 
 /* Handwritten brand font. `.pp-wordmark` is the logo treatment (pair it with
  * `.pp-handwritten`); `.pp-handwritten` alone is for incidental handwritten bits. */
-.pp-handwritten { font-family: "Comic Sans MS", cursive, sans-serif; }
-.pp-wordmark    { font-style: italic; letter-spacing: -0.5px; }
+.pp-handwritten {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.pp-wordmark {
+  font-style: italic;
+  letter-spacing: -0.5px;
+}
 
 /* ============================================================================
  * My Pets gallery
@@ -45,7 +98,10 @@
  * ==========================================================================*/
 
 /* Pet card: lift + deepen shadow on hover. */
-.pet-card { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.pet-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
 .pet-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12) !important;
@@ -65,6 +121,7 @@
   color: var(--pp-accent);
   transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
 }
+
 .pet-card:hover .pet-card__go {
   background-color: var(--pp-accent);
   color: #fff;
@@ -78,23 +135,34 @@
   background-color: transparent;
   transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
 }
+
 .pet-card-add:hover {
   border-color: var(--pp-accent);
   color: var(--pp-accent) !important;
   background-color: rgba(224, 122, 95, 0.04);
 }
+
 .pet-card-add__icon {
   width: 48px;
   height: 48px;
   background-color: rgba(0, 0, 0, 0.04);
   transition: background-color 0.15s ease;
 }
+
 .pet-card-add:hover .pet-card-add__icon {
   background-color: rgba(224, 122, 95, 0.12);
 }
 
 /* "← My Pets" back link on a pet profile: darkens to ink and nudges left on
  * hover, mirroring the gallery card's arrow motion. */
-.back-link .fa-arrow-left { transition: transform 0.15s ease; }
-.back-link:hover { color: var(--pp-ink) !important; }
-.back-link:hover .fa-arrow-left { transform: translateX(-2px); }
+.back-link .fa-arrow-left {
+  transition: transform 0.15s ease;
+}
+
+.back-link:hover {
+  color: var(--pp-ink) !important;
+}
+
+.back-link:hover .fa-arrow-left {
+  transform: translateX(-2px);
+}

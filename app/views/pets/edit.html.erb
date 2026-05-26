@@ -1,3 +1,6 @@
-<% content_for :title, "Editing #{@pet.name}" %>
-
-<%= render "pets/profile_shell", pet: @pet, active_tab: :edit, content_partial: "pets/edit_form" %>
+<%= turbo_frame_tag "drawer" do %>
+  <div class="modal-header">
+    <h5 class="modal-title">Edit Identity</h5>
+    <button class="btn-close" data-bs-dismiss="modal"></button></div>
+  <div class="modal-body"><%= render "form", pet: @pet, section: params[:section] %></div>
+<% end %>

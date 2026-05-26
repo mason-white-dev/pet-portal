@@ -2,7 +2,6 @@
   <% if pet.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(pet.errors.count, "error") %> prohibited this pet from being saved:</h2>
-
       <ul>
         <% pet.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -10,53 +9,42 @@
       </ul>
     </div>
   <% end %>
-
   <div>
     <%= form.label :avatar_image, "Profile Image", style: "display: block" %>
     <%= form.file_field :avatar_image, accept: "image/*" %>
   </div>
-
-
   <div>
     <%= form.label :name, style: "display: block" %>
     <%= form.text_field :name %>
   </div>
-
   <div>
     <%= form.label :species, style: "display: block" %>
     <%= form.select :species, Pet.species.keys.map { |k| [k.humanize, k] }, { prompt: "Select species" } %>
   </div>
-
   <div>
     <%= form.label :sex, style: "display: block" %>
     <%= form.select :sex, Pet.sexes.keys.map { |k| [k.humanize, k] }, { prompt: "Select sex" } %>
   </div>
-
   <div>
     <%= form.label :breed, style: "display: block" %>
     <%= form.text_field :breed %>
   </div>
-
   <div>
     <%= form.label :date_of_birth, style: "display: block" %>
     <%= form.date_field :date_of_birth %>
   </div>
-
   <div>
     <%= form.label :microchip, style: "display: block" %>
     <%= form.text_field :microchip %>
   </div>
-
   <div>
     <%= form.label :neutered, style: "display: block" %>
     <%= form.checkbox :neutered %>
   </div>
-
   <div>
     <%= form.label :notes, style: "display: block" %>
     <%= form.textarea :notes %>
   </div>
-
   <div>
     <%= form.submit %>
   </div>

@@ -12,10 +12,8 @@
   # Wire Frame Reference:
   # https://github.com/mason-white-dev/pet-portal/blob/main/wireframes/MyPets.png
 %>
-
 <% content_for :content do %>
   <div class="d-flex flex-column flex-md-row vh-100 bg-brand">
-
     <%# --- TOP NAV: MOBILE ONLY --- %>
     <nav class="navbar navbar-light bg-transparent border-bottom border-secondary-subtle px-3 d-md-none">
       <%= render "shared/brand_logo" %>
@@ -23,40 +21,32 @@
         <span class="navbar-toggler-icon"></span>
       </button>
     </nav>
-
     <%# --- LEFT COLUMN / OFFCANVAS SIDEBAR: PRIMARY NAVIGATION --- %>
     <aside class="offcanvas-md offcanvas-start d-md-flex flex-column border-end border-secondary-subtle px-3 py-4 flex-shrink-0 bg-brand" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel" style="width: 280px;">
-
       <%# --- OFFCANVAS HEADER: MOBILE ONLY --- %>
       <div class="offcanvas-header d-md-none">
         <%= render "shared/brand_logo", label: "Menu" %>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
       </div>
-
       <%# --- NAVIGATION BAR --- %>
       <div class="offcanvas-body d-flex flex-column flex-grow-1 p-0">
-
         <%# --- DESKTOP LOGO --- %>
         <%= render "shared/brand_logo", classes: "d-none d-md-flex align-items-center gap-2 mb-5 px-3 text-ink" %>
-
         <%# --- MY PETS NAV LINK --- %>
         <nav class="nav flex-column gap-2 mb-auto px-1 w-100">
           <%= render "shared/nav_item", label: "My Pets", path: pets_path, active: current_page?(pets_path) || params[:controller] == "pets" %>
-            <%# --- current_page? activates the link when viewing the index list (/pets) --- %>
-            <%# --- params[:controller] keeps it active when viewing or editing a specific pet (/pets/1) --- %>
+          <%# --- current_page? activates the link when viewing the index list (/pets) --- %>
+          <%# --- params[:controller] keeps it active when viewing or editing a specific pet (/pets/1) --- %>
         </nav>
-
         <%# --- USER PROFILE / SETTINGS NAV LINK --- %>
         <div class="pt-4 mt-4 px-3 w-100" style="border-top: 1px dashed rgba(0,0,0,0.15);">
           <div class="d-flex align-items-center gap-3">
-            
             <%# --- User Avatar --- %>
             <div class="rounded-circle border border-dark d-flex align-items-center justify-content-center bg-white flex-shrink-0" style="width: 38px; height: 38px;">
               <span class="fw-bold text-muted small">
                 <%= current_user.email[0].upcase %>
               </span>
             </div>
-
             <%# --- User Name and Settings Link --- %>
             <div class="lh-sm">
               <div class="fw-bold text-dark text-truncate" style="font-size: 0.9rem; max-width: 160px;" title="<%= current_user.email %>">
@@ -66,18 +56,22 @@
             </div>
           </div>
         </div>
-
       </div>
     </aside>
-
     <%# --- RIGHT COLUMN (MAIN CONTENT) --- %>
     <main class="flex-grow-1 p-4 p-md-5 overflow-auto">
       <%# --- Injects the view tied to the active nav bar item (e.g. pets/index) --- %>
       <%= yield %>
     </main>
-
+  </div>
+  <!-- generic modal for new / edit forms -->
+  <div class="modal fade" id="appModal" tabindex="-1" data-controller="popup">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+      <div class="modal-content rounded-4">
+        <%= turbo_frame_tag "drawer" %>
+      </div>
+    </div>
   </div>
 <% end %>
-
 <%# --- Inherit the base HTML structure from application.html.erb --- %>
 <%= render template: "layouts/application" %>
