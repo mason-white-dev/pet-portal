@@ -5,7 +5,9 @@ class PetsController < ApplicationController
   def index
     # with_attached_avatar_image eager-loads the attachment + blob so the roster
     # doesn't fire a query per pet when rendering avatars (avoids N+1).
-    @pets = current_user.pets.with_attached_avatar_image
+    # Newest first, so a freshly-added pet (prepended by create.turbo_stream.erb)
+    # sits in the same spot after a reload.
+    @pets = current_user.pets.with_attached_avatar_image.order(created_at: :desc)
   end
 
   # GET /pets/1
@@ -15,6 +17,14 @@ class PetsController < ApplicationController
   # GET /pets/new
   def new
     @pet = current_user.pets.build
+    # New pets are only added through the modal (drawer frame) on the index — a
+    # direct visit to /pets/new gets bounced to the roster. On a frame request we
+    # send back just the frame (no layout), same as edit.
+    if turbo_frame_request?
+      render layout: false
+    else
+      redirect_to pets_path
+    end
   end
 
   # GET /pets/1/edit
@@ -29,16 +39,19 @@ class PetsController < ApplicationController
     end
   end
 
-  # POST /pets 
+  # POST /pets
   def create
     @pet = current_user.pets.build(pet_params)
 
-    respond_to do |format|
-      if @pet.save
+    if @pet.save
+      respond_to do |format|
+        format.turbo_stream                                       # → create.turbo_stream.erb
         format.html { redirect_to @pet, notice: "Pet was successfully created." }
-      else
-        format.html { render :new, status: :unprocessable_content }
       end
+    else
+      # Mirrors edit's failure path: re-render the form (422) into the drawer
+      # frame so errors show in the still-open modal.
+      render :new, status: :unprocessable_entity
     end
   end
 

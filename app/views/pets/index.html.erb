@@ -18,11 +18,13 @@
   <div class="d-flex justify-content-between align-items-end mb-4">
     <div>
       <h1 class="fw-bold mb-1 text-ink">My Pets</h1>
-      <p class="text-secondary mb-0">
-        <%= @pets.any? ? "#{pluralize(@pets.size, "companion")} in your care" : "Let's start your first chart" %>
-      </p>
+      <%# Subhead is a partial so create.turbo_stream.erb can refresh the count %>
+      <%# (and drop the empty-state message) when a pet is added via the modal. %>
+      <%= render "subhead", count: @pets.size %>
     </div>
-    <%= link_to "+ Add pet", new_pet_path, class: "btn btn-ink rounded-pill px-4 py-2 fw-medium shadow-sm" %>
+    <%# data-turbo-frame: "drawer" loads the new-pet form into the shared modal %>
+    <%# instead of navigating to a full /pets/new page. %>
+    <%= link_to "+ Add pet", new_pet_path, class: "btn btn-ink rounded-pill px-4 py-2 fw-medium shadow-sm", data: { turbo_frame: "drawer" } %>
   </div>
 
   <%# --------------- PETS GALLERY ----------------- %>
@@ -38,7 +40,7 @@
 
     <%# --- GHOST ADD TILE: closes the grid, and is the whole UI when empty --- %>
     <div class="col">
-      <%= link_to new_pet_path, class: "pet-card-add card h-100 rounded-4 d-flex align-items-center justify-content-center text-decoration-none text-secondary" do %>
+      <%= link_to new_pet_path, class: "pet-card-add card h-100 rounded-4 d-flex align-items-center justify-content-center text-decoration-none text-secondary", data: { turbo_frame: "drawer" } do %>
         <div class="text-center p-4">
           <span class="pet-card-add__icon d-inline-flex align-items-center justify-content-center rounded-circle mb-3">
             <i class="fa-solid fa-plus fs-5"></i>
