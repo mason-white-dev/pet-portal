@@ -9,11 +9,8 @@
   # Wire Frame Reference:
   # https://github.com/mason-white-dev/pet-portal/blob/main/wireframes/MyPets.png
 %>
-
 <% content_for :title, "My Pets" %>
-
 <div class="mx-auto" style="max-width: 1100px;">
-
   <%# --- PAGE HEADER --- %>
   <div class="d-flex justify-content-between align-items-end mb-4">
     <div>
@@ -26,18 +23,15 @@
     <%# instead of navigating to a full /pets/new page. %>
     <%= link_to "+ Add pet", new_pet_path, class: "btn btn-ink rounded-pill px-4 py-2 fw-medium shadow-sm", data: { turbo_frame: "drawer" } %>
   </div>
-
   <%# --------------- PETS GALLERY ----------------- %>
   <%# --- Responsive: 1 per row (mobile) / 2 (sm) / 3 (lg) --- %>
   <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4" id="pets">
-
     <%# --- RENDER PET CARDS --- %>
     <% @pets.each do |pet| %>
       <div class="col">
         <%= render "pets/pet_card", pet: pet %>
       </div>
     <% end %>
-
     <%# --- GHOST ADD TILE: closes the grid, and is the whole UI when empty --- %>
     <div class="col">
       <%= link_to new_pet_path, class: "pet-card-add card h-100 rounded-4 d-flex align-items-center justify-content-center text-decoration-none text-secondary", data: { turbo_frame: "drawer" } do %>
@@ -49,6 +43,5 @@
         </div>
       <% end %>
     </div>
-
   </div>
 </div>

@@ -160,10 +160,11 @@ class PetsControllerTest < ActionDispatch::IntegrationTest
     assert_no_match(/id="sidebarMenu"/, @response.body)
   end
 
-  test "update responds with a turbo stream that refreshes the identity card" do
+  test "update responds with a turbo stream that refreshes the card and header name" do
     patch pet_url(@pet), params: { pet: { name: "Bella Jr." } }, as: :turbo_stream
     assert_response :success
-    assert_includes @response.body, "pet_identity_card_pet_#{@pet.id}"
+    assert_includes @response.body, "pet_identity_card_pet_#{@pet.id}"  # card refresh
+    assert_includes @response.body, "pet_name_pet_#{@pet.id}"           # header name refresh
   end
 
   # --- Delete confirmation (modal) -------------------------------------------
