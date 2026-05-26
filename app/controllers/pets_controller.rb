@@ -1,12 +1,11 @@
 class PetsController < ApplicationController
   before_action :set_pet, only: %i[ show edit update destroy confirm_delete ]
 
-  # GET /pets 
+  # GET /pets
   def index
     # with_attached_avatar_image eager-loads the attachment + blob so the roster
     # doesn't fire a query per pet when rendering avatars (avoids N+1).
-    # Newest first, so a freshly-added pet (prepended by create.turbo_stream.erb)
-    # sits in the same spot after a reload.
+    # Newest first, so the most recently added pet leads the roster.
     @pets = current_user.pets.with_attached_avatar_image.order(created_at: :desc)
   end
 

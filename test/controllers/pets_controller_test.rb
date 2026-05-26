@@ -22,8 +22,15 @@ class PetsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
-  test "should get new" do
+  # `new` and `edit` are only meant to open in the modal (a turbo-frame request).
+  # A direct visit is bounced to the roster/profile; a frame request renders the form.
+  test "new redirects a direct (non-frame) visit to the roster" do
     get new_pet_url
+    assert_redirected_to pets_url
+  end
+
+  test "new renders the form for a turbo-frame request" do
+    get new_pet_url, headers: { "Turbo-Frame" => "drawer" }
     assert_response :success
   end
 
@@ -40,8 +47,13 @@ class PetsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get edit" do
+  test "edit redirects a direct (non-frame) visit to the pet" do
     get edit_pet_url(@pet)
+    assert_redirected_to pet_url(@pet)
+  end
+
+  test "edit renders the form for a turbo-frame request" do
+    get edit_pet_url(@pet), headers: { "Turbo-Frame" => "drawer" }
     assert_response :success
   end
 
@@ -111,5 +123,75 @@ class PetsControllerTest < ActionDispatch::IntegrationTest
     } }
     assert @pet.reload.avatar_image.attached?
     assert_redirected_to pet_url(@pet)
+  end
+
+  # --- Modal create / update responses ---------------------------------------
+  # The form lives in a turbo-frame, so success and failure take different routes:
+  # success returns a stream (create → a full-page "redirect" visit; update → an
+  # in-place card refresh), while a validation failure re-renders 422 back into
+  # the frame so errors show in the open modal.
+
+  test "create responds with a redirect stream for a turbo-stream request" do
+    assert_difference("Pet.count") do
+      post pets_url, params: { pet: { name: "Pixel", species: "cat" } }, as: :turbo_stream
+    end
+    assert_response :success
+    assert_match %r{<turbo-stream action="redirect"}, @response.body
+    assert_includes @response.body, pet_path(Pet.last)
+  end
+
+  test "create with invalid params re-renders the form unprocessable" do
+    assert_no_difference("Pet.count") do
+      post pets_url, params: { pet: { name: "", species: "" } }
+    end
+    assert_response :unprocessable_entity
+  end
+
+  test "update with invalid params re-renders the form unprocessable" do
+    original = @pet.name
+    patch pet_url(@pet), params: { pet: { name: "" } }
+    assert_response :unprocessable_entity
+    assert_equal original, @pet.reload.name
+  end
+
+  test "update responds with a turbo stream that refreshes the identity card" do
+    patch pet_url(@pet), params: { pet: { name: "Bella Jr." } }, as: :turbo_stream
+    assert_response :success
+    assert_includes @response.body, "pet_identity_card_pet_#{@pet.id}"
+  end
+
+  # --- Delete confirmation (modal) -------------------------------------------
+
+  test "confirm_delete renders for a turbo-frame request" do
+    get confirm_delete_pet_url(@pet), headers: { "Turbo-Frame" => "drawer" }
+    assert_response :success
+  end
+
+  test "confirm_delete redirects a direct (non-frame) visit to the pet" do
+    get confirm_delete_pet_url(@pet)
+    assert_redirected_to pet_url(@pet)
+  end
+
+  test "cannot reach confirm_delete for another user's pet" do
+    get confirm_delete_pet_url(pets(:two))
+    assert_response :not_found
+  end
+
+  # --- Avatar removal flag ---------------------------------------------------
+  # "Remove photo" sets pet[remove_avatar_image] = "1"; a successful update then
+  # purges the attached avatar.
+
+  test "removing the avatar purges it on update" do
+    @pet.avatar_image.attach(
+      io: File.open(Rails.root.join("test/fixtures/files/avatar.png")),
+      filename: "avatar.png", content_type: "image/png"
+    )
+    assert @pet.avatar_image.attached?
+
+    patch pet_url(@pet), params: { pet: {
+      name: @pet.name, species: @pet.species, remove_avatar_image: "1"
+    } }
+
+    assert_not @pet.reload.avatar_image.attached?
   end
 end
