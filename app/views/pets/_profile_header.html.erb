@@ -20,15 +20,13 @@
   <%# Tab nav, sitting just to the right of the name. %>
   <%= render "pets/nav_tabs", pet: pet, active_tab: active_tab %>
 
-  <%# Delete the ENTIRE pet (cascades to posts, vaccines, visits, care team, …),
-      pushed to the far right via ms-auto on the form. De-emphasized + confirmed
-      so it isn't a casual click. turbo_frame: "_top" makes the post-destroy
-      redirect a full-page nav to the roster (the pet_content frame this sits in
-      doesn't exist on the index). %>
-  <%= button_to pet_path(pet),
-        method: :delete,
-        class: "btn btn-outline-danger btn-sm rounded-pill",
-        form: { class: "ms-auto", data: { turbo_frame: "_top", turbo_confirm: "Delete #{pet.name} and everything in their chart (records, photos, care team)? This can't be undone." } } do %>
+  <%# Delete the ENTIRE pet. De-emphasized trigger pushed far right via ms-auto:
+      it loads a styled confirmation into the shared modal (drawer frame) rather
+      than firing the browser's native confirm() dialog. The real, filled Delete
+      button lives inside that confirmation (see pets/confirm_delete). %>
+  <%= link_to confirm_delete_pet_path(pet),
+        class: "btn btn-outline-danger btn-sm rounded-pill ms-auto",
+        data: { turbo_frame: "drawer" } do %>
     <i class="fa-solid fa-trash me-1"></i> Delete pet
   <% end %>
 </div>

@@ -1,5 +1,5 @@
 class PetsController < ApplicationController
-  before_action :set_pet, only: %i[ show edit update destroy ]
+  before_action :set_pet, only: %i[ show edit update destroy confirm_delete ]
 
   # GET /pets 
   def index
@@ -45,13 +45,27 @@ class PetsController < ApplicationController
 
     if @pet.save
       respond_to do |format|
-        format.turbo_stream                                       # → create.turbo_stream.erb
+        # The form lives inside the drawer frame, so a plain redirect would stay
+        # trapped in the frame. The custom "redirect" stream action (see
+        # application.js) does a full-page Turbo.visit to the new pet's profile.
+        format.turbo_stream { render turbo_stream: turbo_stream.action(:redirect, pet_path(@pet)) }
         format.html { redirect_to @pet, notice: "Pet was successfully created." }
       end
     else
       # Mirrors edit's failure path: re-render the form (422) into the drawer
       # frame so errors show in the still-open modal.
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  # GET /pets/1/confirm_delete
+  def confirm_delete
+    # Same modal-only pattern as new/edit: render just the drawer frame on a
+    # frame request, bounce a direct visit back to the profile.
+    if turbo_frame_request?
+      render layout: false
+    else
+      redirect_to pet_path(@pet)
     end
   end
 
