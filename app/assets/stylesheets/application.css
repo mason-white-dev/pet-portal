@@ -178,3 +178,20 @@
 .back-link:hover .fa-arrow-left {
   transform: translateX(-2px);
 }
+
+/* ============================================================================
+ * App modal (popup) — Turbo frame + Bootstrap scrollable fix
+ *
+ * The shared modal (main.html.erb) swaps content into a <turbo-frame> that sits
+ * between .modal-content and the .modal-header/.modal-body. That extra wrapper
+ * breaks the flex chain `modal-dialog-scrollable` relies on, so the body won't
+ * scroll when content overflows (only visible on short viewports — e.g. mobile).
+ *
+ * `display: contents` removes the frame's own box from layout, so the header and
+ * body become direct flex children of .modal-content again and scrolling works
+ * as Bootstrap intends. The frame still functions for Turbo — display has no
+ * effect on frame navigation.
+ * ==========================================================================*/
+#appModal .modal-content > turbo-frame {
+  display: contents;
+}

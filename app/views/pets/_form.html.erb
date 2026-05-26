@@ -1,10 +1,10 @@
 <%#
   # Pet Form (shared by new + edit)
   #
-  # Laid out to mirror the Identity card (pets/_pet_identity_card): the same
-  # two-column grid and the shared `.field-label` style, so editing reads as
-  # "the card, made editable." Rendered inside the modal's "drawer" frame via
-  # pets/edit.html.erb.
+  # Mirrors the merged Identity card (pets/_pet_identity_card): current photo +
+  # change control on the LEFT, the editable identity fields on the RIGHT, using
+  # the shared `.field-label` style — so the modal reads as "the card, made
+  # editable." Rendered inside the modal's "drawer" frame via pets/edit.html.erb.
 %>
 <%= form_with(model: pet) do |form| %>
 
@@ -22,55 +22,69 @@
     </div>
   <% end %>
 
-  <%# --- FIELDS: two-column grid mirroring the Identity card --- %>
-  <div class="row g-3">
+  <div class="row g-4">
 
-    <div class="col-sm-6">
-      <%= form.label :name, class: "field-label" %>
-      <%= form.text_field :name, class: "form-control" %>
+    <%# --- LEFT: current photo + change control (mirrors the card's photo) --- %>
+    <div class="col-md-4">
+      <% if pet.avatar_image.attached? %>
+        <%= image_tag pet.avatar_image, alt: pet.name, class: "w-100 rounded-3 object-fit-cover mb-3", style: "aspect-ratio: 1 / 1;" %>
+      <% else %>
+        <div class="w-100 rounded-3 bg-light d-flex align-items-center justify-content-center mb-3" style="aspect-ratio: 1 / 1; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px);">
+          <span class="badge bg-white text-secondary border border-secondary-subtle fw-normal">No photo yet</span>
+        </div>
+      <% end %>
+      <%= form.label :avatar_image, "Change photo", class: "field-label" %>
+      <%= form.file_field :avatar_image, accept: "image/*", class: "form-control form-control-sm" %>
     </div>
 
-    <div class="col-sm-6">
-      <%= form.label :species, class: "field-label" %>
-      <%= form.select :species, Pet.species.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select species" }, class: "form-select" %>
-    </div>
+    <%# --- RIGHT: editable identity fields (mirrors the card's detail grid) --- %>
+    <div class="col-md-8">
+      <div class="row g-3">
 
-    <div class="col-sm-6">
-      <%= form.label :breed, class: "field-label" %>
-      <%= form.text_field :breed, class: "form-control" %>
-    </div>
+        <div class="col-sm-6">
+          <%= form.label :name, class: "field-label" %>
+          <%= form.text_field :name, class: "form-control" %>
+        </div>
 
-    <div class="col-sm-6">
-      <%= form.label :sex, class: "field-label" %>
-      <%= form.select :sex, Pet.sexes.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select sex" }, class: "form-select" %>
-    </div>
+        <div class="col-sm-6">
+          <%= form.label :species, class: "field-label" %>
+          <%= form.select :species, Pet.species.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select species" }, class: "form-select" %>
+        </div>
 
-    <div class="col-sm-6">
-      <%= form.label :date_of_birth, "Birthday", class: "field-label" %>
-      <%= form.date_field :date_of_birth, class: "form-control" %>
-    </div>
+        <div class="col-sm-6">
+          <%= form.label :breed, class: "field-label" %>
+          <%= form.text_field :breed, class: "form-control" %>
+        </div>
 
-    <div class="col-sm-6">
-      <%= form.label :microchip, class: "field-label" %>
-      <%= form.text_field :microchip, class: "form-control" %>
-    </div>
+        <div class="col-sm-6">
+          <%= form.label :sex, class: "field-label" %>
+          <%= form.select :sex, Pet.sexes.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select sex" }, class: "form-select" %>
+        </div>
 
-    <%# Neutered: checkbox rather than a value, so it uses Bootstrap's form-check --- %>
-    <div class="col-12">
-      <div class="form-check">
-        <%= form.check_box :neutered, class: "form-check-input" %>
-        <%= form.label :neutered, class: "form-check-label" %>
+        <div class="col-sm-6">
+          <%= form.label :date_of_birth, "Birthday", class: "field-label" %>
+          <%= form.date_field :date_of_birth, class: "form-control" %>
+        </div>
+
+        <div class="col-sm-6">
+          <%= form.label :microchip, class: "field-label" %>
+          <%= form.text_field :microchip, class: "form-control" %>
+        </div>
+
+        <%# Neutered: boolean, so a checkbox rather than a value --- %>
+        <div class="col-12">
+          <div class="form-check">
+            <%= form.check_box :neutered, class: "form-check-input" %>
+            <%= form.label :neutered, class: "form-check-label" %>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <%= form.label :notes, class: "field-label" %>
+          <%= form.text_area :notes, rows: 4, class: "form-control" %>
+        </div>
+
       </div>
-    </div>
-
-    <div class="col-12">
-      <%= form.label :avatar_image, "Profile image", class: "field-label" %>
-      <%= form.file_field :avatar_image, accept: "image/*", class: "form-control" %>
-    </div>
-
-    <div class="col-12">
-      <%= form.label :notes, class: "field-label" %>
-      <%= form.text_area :notes, rows: 4, class: "form-control" %>
     </div>
 
   </div>
