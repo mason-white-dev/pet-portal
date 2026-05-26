@@ -1,27 +1,46 @@
-<%# --- IDENTITY CARD --- %>
-<%# A two-column grid displaying the pet's core attributes %>
+<%#
+  # Identity Card (partial)
+  #
+  # The pet's core attributes (name, species, breed, sex, birthday, microchip,
+  # notes) shown on the About tab. Rendered in two places, on purpose:
+  #   1. initial page load, from pets/_about, and
+  #   2. after a successful edit, from pets/update.turbo_stream.erb.
+  # Keeping the card markup in ONE partial means both paths render identical
+  # HTML — the live update can't drift from the first paint.
+  #
+  # The root <div>'s id is the Turbo Stream REPLACE target. dom_id(pet,
+  # :pet_identity_card) → "pet_identity_card_pet_42". This MUST match the
+  # dom_id used in update.turbo_stream.erb, or the post-save refresh silently
+  # does nothing (Turbo can't find the element to replace).
+%>
+<%# --- ROOT: id here is what the Turbo Stream replaces after a save --- %>
 <div id="<%= dom_id(pet, :pet_identity_card) %>" class="col-lg-5">
   <div class="card shadow-sm border border-secondary-subtle rounded-4 h-100">
     <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-4 pb-0 px-4">
       <div class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Identity</div>
+      <%# --- EDIT TRIGGER --- %>
+      <%# data-turbo-frame: "drawer" redirects this click AWAY from the %>
+      <%# pet_content frame this link sits inside, and into the modal's %>
+      <%# "drawer" frame instead. Without it, Turbo would try to load the %>
+      <%# edit response into pet_content (the whole profile) and fail. %>
       <%= link_to "Edit &rarr;".html_safe, edit_pet_path(pet), class: "text-secondary text-decoration-none small", data: { turbo_frame: "drawer" } %>
     </div>
     <div class="card-body p-4">
       <div class="row g-4">
         <div class="col-sm-6">
-          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Name</div>
+          <div class="field-label">Name</div>
           <div class="fw-medium text-ink"><%= pet.name %></div>
         </div>
         <div class="col-sm-6">
-          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Species</div>
+          <div class="field-label">Species</div>
           <div class="fw-medium text-ink"><%= pet.species&.humanize || "—" %></div>
         </div>
         <div class="col-sm-6">
-          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Breed</div>
+          <div class="field-label">Breed</div>
           <div class="fw-medium text-ink"><%= pet.breed.presence || "—" %></div>
         </div>
         <div class="col-sm-6">
-          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Sex</div>
+          <div class="field-label">Sex</div>
           <div class="fw-medium text-ink">
             <%= pet.sex&.humanize || "—" %>
             <% if pet.neutered %>
@@ -30,7 +49,7 @@
           </div>
         </div>
         <div class="col-sm-6">
-          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Birthday</div>
+          <div class="field-label">Birthday</div>
           <div class="fw-medium text-ink">
             <% if pet.date_of_birth.present? %>
               <%= pet.date_of_birth.strftime("%B %-d, %Y") %>
@@ -41,7 +60,7 @@
           </div>
         </div>
         <div class="col-sm-6">
-          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Microchip</div>
+          <div class="field-label">Microchip</div>
           <div class="fw-medium text-ink">
             <%= pet.microchip.presence || "—" %>
             <% if pet.microchip.present? %>
@@ -50,7 +69,7 @@
           </div>
         </div>
         <div class="col-sm-12">
-          <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Notes</div>
+          <div class="field-label">Notes</div>
           <div class="fw-medium text-ink">
             <% if pet.notes.present? %>
               <div class="text-ink" style="line-height: 1.6;"><%= simple_format pet.notes %></div>

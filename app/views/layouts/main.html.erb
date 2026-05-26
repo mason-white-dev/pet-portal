@@ -68,7 +68,7 @@
   <div class="modal fade" id="appModal" tabindex="-1" data-controller="popup">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
       <div class="modal-content rounded-4">
-        <%= turbo_frame_tag "drawer" %>
+        <%= turbo_frame_tag "drawer", data: { popup_target: "frame" } %>
       </div>
     </div>
   </div>

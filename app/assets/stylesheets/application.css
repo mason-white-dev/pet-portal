@@ -36,6 +36,18 @@
   color: var(--pp-ink);
 }
 
+/* Field label — the small uppercase caption used above a value. Shared by the
+ * Identity card (display) and the pet edit form (inputs) so the two views stay
+ * visually in sync; restyle labels here once and both follow. */
+.field-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--bs-secondary-color);
+}
+
 .bg-ink {
   background-color: var(--pp-ink);
 }
