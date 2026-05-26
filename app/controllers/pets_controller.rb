@@ -45,6 +45,12 @@ class PetsController < ApplicationController
   # PATCH/PUT /pets/1
   def update
     if @pet.update(pet_params)
+      # The modal's "Remove photo" button sets pet[remove_avatar_image] = "1".
+      # It's not a real attribute (so not in pet_params) — read it directly and
+      # purge after a successful save. Synchronous `purge` (not `purge_later`) so
+      # the turbo_stream below re-renders the card with the photo already gone.
+      @pet.avatar_image.purge if remove_avatar_image?
+
       respond_to do |format|
         format.turbo_stream                          # → update.turbo_stream.erb
         format.html { redirect_to pet_path(@pet) }   # fallback
@@ -72,5 +78,13 @@ class PetsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def pet_params
       params.expect(pet: [ :name, :species, :sex, :breed, :date_of_birth, :microchip, :neutered, :notes, :avatar_image ])
+    end
+
+    # True when the user asked to remove the photo AND didn't also pick a new one
+    # (the new-file check is belt-and-suspenders — the JS clears the flag on pick).
+    def remove_avatar_image?
+      ActiveModel::Type::Boolean.new.cast(params.dig(:pet, :remove_avatar_image)) &&
+        params.dig(:pet, :avatar_image).blank? &&
+        @pet.avatar_image.attached?
     end
 end

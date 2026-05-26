@@ -49,10 +49,27 @@
         <span class="badge bg-white text-secondary border border-secondary-subtle fw-normal">No photo yet</span>
       </div>
 
-      <%= form.label :avatar_image, "Change photo", class: "field-label" %>
-      <%# change->image-preview#update fires the live preview on each pick. %>
-      <%= form.file_field :avatar_image, accept: "image/*", class: "form-control form-control-sm",
-            data: { action: "change->image-preview#update" } %>
+      <%# Native file input, hidden — the buttons below drive it. It still %>
+      <%# submits the chosen file as pet[avatar_image] on save. %>
+      <%= form.file_field :avatar_image, accept: "image/*", class: "d-none",
+            data: { image_preview_target: "input", action: "change->image-preview#update" } %>
+
+      <%# "1" here tells PetsController#update to purge the stored photo on save. %>
+      <%# It's read directly from params, not via pet_params. %>
+      <%= hidden_field_tag "pet[remove_avatar_image]", "",
+            data: { image_preview_target: "removeFlag" } %>
+
+      <%# Prettier replacement for the default file UI: a button to open the %>
+      <%# picker, and one to clear the photo. The result is shown via the live %>
+      <%# preview above, so the file path/name is unnecessary. %>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill flex-grow-1" data-action="image-preview#choose">
+          <i class="fa-solid fa-camera me-1"></i> Change photo
+        </button>
+        <button type="button" class="btn btn-outline-danger btn-sm rounded-pill" data-action="image-preview#remove" title="Remove photo">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
     </div>
 
     <%# --- RIGHT: editable identity fields (mirrors the card's detail grid) --- %>
