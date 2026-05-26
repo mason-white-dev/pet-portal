@@ -12,22 +12,6 @@
 %>
 <%# --- ROW 1: PHOTO, IDENTITY, & DAILY SCHEDULE --- %>
 <div class="row g-4 mb-4">
-  <%# --- PHOTO & NAME CARD --- %>
-  <div class="col-lg-3">
-    <div class="card shadow-sm border border-secondary-subtle rounded-4 h-100 overflow-hidden">
-      <% if pet.avatar_image.attached? %>
-        <%= image_tag pet.avatar_image, class: "w-100 object-fit-cover", style: "aspect-ratio: 1 / 1;" %>
-      <% else %>
-        <div class="w-100 d-flex align-items-center justify-content-center bg-light" style="aspect-ratio: 1 / 1; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px);">
-          <span class="badge bg-white text-secondary border border-secondary-subtle fw-normal"><%= pet.name %></span>
-        </div>
-      <% end %>
-      <div class="card-body p-4">
-        <h2 class="h4 fw-bold mb-1 text-ink"><%= pet.name %></h2>
-        <div class="text-secondary small"><%= pet_subtitle(pet) %></div>
-      </div>
-    </div>
-  </div>
   <%# --- _pet_identity_card.html.erb --- %>
   <%= render "pet_identity_card", pet: pet %>
   <%# --- DAILY SCHEDULE CARD (PLACEHOLDER) --- %>
