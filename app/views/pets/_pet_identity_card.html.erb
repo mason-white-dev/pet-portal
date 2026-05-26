@@ -45,7 +45,9 @@
           <%# pet_content frame this link sits inside, and into the modal's %>
           <%# "drawer" frame instead. Without it, Turbo would try to load the %>
           <%# edit response into pet_content (the whole profile) and fail. %>
-          <%= link_to "Edit &rarr;".html_safe, edit_pet_path(pet), class: "text-secondary text-decoration-none small", data: { turbo_frame: "drawer" } %>
+          <%= link_to edit_pet_path(pet), class: "go-link text-secondary text-decoration-none small fw-medium d-inline-flex align-items-center gap-1", data: { turbo_frame: "drawer" } do %>
+            Edit <i class="fa-solid fa-arrow-right"></i>
+          <% end %>
         </div>
         <div class="card-body p-4">
           <div class="row g-4">

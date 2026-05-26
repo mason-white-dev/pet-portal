@@ -220,3 +220,21 @@
 .pet-tab.active {
   border-bottom-color: var(--pp-ink);
 }
+
+/* ============================================================================
+ * Forward "Edit →" link — the mirror of .back-link
+ *
+ * Darkens to ink and nudges its arrow to the RIGHT on hover (back-link nudges
+ * its arrow left). Used on the Identity card's Edit trigger.
+ * ==========================================================================*/
+.go-link .fa-arrow-right {
+  transition: transform 0.15s ease;
+}
+
+.go-link:hover {
+  color: var(--pp-ink) !important;
+}
+
+.go-link:hover .fa-arrow-right {
+  transform: translateX(2px);
+}
