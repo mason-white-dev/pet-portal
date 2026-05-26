@@ -1,6 +1,8 @@
-<%# Horizontal profile header: pet name + subtitle on the left, tab nav pushed
-    to the right, with a divider beneath. The avatar now lives in the About
-    photo card, not here. Per-section "add" actions live inside each tab. %>
+<%# Horizontal profile header: pet name on the left with the tab nav right beside
+    it, and a "Delete pet" action pushed to the far right, over a divider. The
+    avatar lives in the About photo card; per-section "add"/"edit" actions live
+    inside each tab. This header renders above EVERY tab (via _profile_shell), so
+    it's the right home for pet-level actions like delete. %>
 
 <%# Back to the roster — a light "kicker" hugging the title above. The sidebar
     already carries primary nav, so this stays feather-light. turbo_frame: "_top"
@@ -12,14 +14,21 @@
 
 <div class="d-flex align-items-center flex-wrap gap-4 border-bottom border-secondary-subtle pb-3 mb-4">
 
-  <%# Title %>
-  <div class="lh-sm">
-    <h1 class="fw-bold mb-0 text-ink"><%= pet.name %></h1>
-    <div class="text-secondary small"><%= pet_subtitle(pet) %></div>
-  </div>
+  <%# Pet name only — species/breed/age live in the Identity card now. %>
+  <h1 class="fw-bold mb-0 text-ink"><%= pet.name %></h1>
 
-  <%# Tab nav — pushed to the right edge %>
-  <div class="ms-auto">
-    <%= render "pets/nav_tabs", pet: pet, active_tab: active_tab %>
-  </div>
+  <%# Tab nav, sitting just to the right of the name. %>
+  <%= render "pets/nav_tabs", pet: pet, active_tab: active_tab %>
+
+  <%# Delete the ENTIRE pet (cascades to posts, vaccines, visits, care team, …),
+      pushed to the far right via ms-auto on the form. De-emphasized + confirmed
+      so it isn't a casual click. turbo_frame: "_top" makes the post-destroy
+      redirect a full-page nav to the roster (the pet_content frame this sits in
+      doesn't exist on the index). %>
+  <%= button_to pet_path(pet),
+        method: :delete,
+        class: "btn btn-outline-danger btn-sm rounded-pill",
+        form: { class: "ms-auto", data: { turbo_frame: "_top", turbo_confirm: "Delete #{pet.name} and everything in their chart (records, photos, care team)? This can't be undone." } } do %>
+    <i class="fa-solid fa-trash me-1"></i> Delete pet
+  <% end %>
 </div>
