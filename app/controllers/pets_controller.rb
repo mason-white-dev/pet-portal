@@ -51,9 +51,11 @@ class PetsController < ApplicationController
         format.html { redirect_to @pet, notice: "Pet was successfully created." }
       end
     else
-      # Mirrors edit's failure path: re-render the form (422) into the drawer
-      # frame so errors show in the still-open modal.
-      render :new, status: :unprocessable_entity
+      # Re-render the form (422) into the drawer frame so errors show in the
+      # still-open modal. layout: false keeps the response to just the frame —
+      # otherwise the full layout (with its own empty #drawer frame) is rendered
+      # and Turbo only picks the right frame by document-order luck.
+      render :new, status: :unprocessable_entity, layout: false
     end
   end
 
@@ -82,7 +84,9 @@ class PetsController < ApplicationController
         format.html { redirect_to pet_path(@pet) }   # fallback
       end
     else
-      render :edit, status: :unprocessable_entity
+      # Re-render into the drawer frame (errors in the open modal). layout: false
+      # keeps it frame-only — see the note in #create for why.
+      render :edit, status: :unprocessable_entity, layout: false
     end
   end
 

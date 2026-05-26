@@ -145,6 +145,10 @@ class PetsControllerTest < ActionDispatch::IntegrationTest
       post pets_url, params: { pet: { name: "", species: "" } }
     end
     assert_response :unprocessable_entity
+    # The errored form actually lands back in the frame...
+    assert_includes @response.body, "can&#39;t be blank"
+    # ...and the response is frame-only (layout: false), not the whole page.
+    assert_no_match(/id="sidebarMenu"/, @response.body)
   end
 
   test "update with invalid params re-renders the form unprocessable" do
@@ -152,6 +156,8 @@ class PetsControllerTest < ActionDispatch::IntegrationTest
     patch pet_url(@pet), params: { pet: { name: "" } }
     assert_response :unprocessable_entity
     assert_equal original, @pet.reload.name
+    assert_includes @response.body, "can&#39;t be blank"
+    assert_no_match(/id="sidebarMenu"/, @response.body)
   end
 
   test "update responds with a turbo stream that refreshes the identity card" do
