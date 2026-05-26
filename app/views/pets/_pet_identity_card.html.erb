@@ -21,12 +21,17 @@
     <%# row g-0 = zero gutters, so the photo and details sit flush as one card. %>
     <%# overflow-hidden on the card clips the image to the rounded corners.    %>
     <div class="row g-0 h-100">
-      <%# --- LEFT: profile photo, filling the card edge-to-edge --- %>
-      <div class="col-md-4">
+      <%# --- LEFT: profile photo. Absolutely positioned so it's OUT of the flow %>
+      <%#     and can't push the card taller. The card height is set by the      %>
+      <%#     details column on the right; the photo just fills that height and  %>
+      <%#     object-fit-cover crops to the center. min-height is the floor for   %>
+      <%#     small screens, where the columns stack and there's no sibling to    %>
+      <%#     stretch against. %>
+      <div class="col-md-4 position-relative" style="min-height: 450px;">
         <% if pet.avatar_image.attached? %>
-          <%= image_tag pet.avatar_image, alt: pet.name, class: "w-100 h-100 object-fit-cover" %>
+          <%= image_tag pet.avatar_image, alt: pet.name, class: "position-absolute top-0 start-0 w-100 h-100 object-fit-cover" %>
         <% else %>
-          <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light" style="min-height: 240px; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px);">
+          <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-light" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px);">
             <span class="badge bg-white text-secondary border border-secondary-subtle fw-normal"><%= pet.name %></span>
           </div>
         <% end %>
