@@ -20,21 +20,87 @@
  * To rebrand (new colors or a real wordmark font), change it here only.
  * ==========================================================================*/
 :root {
-  --pp-bg: #f6f5f1;      /* warm off-white page background */
-  --pp-ink: #1e1e1e;     /* near-black brand ink (body text + dark buttons) */
-  --pp-accent: #e07a5f;  /* coral accent (active states, highlights) */
+  --pp-bg: #f6f5f1;
+  /* warm off-white page background */
+  --pp-ink: #1e1e1e;
+  /* near-black brand ink (body text + dark buttons) */
+  --pp-accent: #e07a5f;
+  /* coral accent (active states, highlights) */
 }
 
-.bg-brand    { background-color: var(--pp-bg); }
-.text-ink    { color: var(--pp-ink); }
-.bg-ink      { background-color: var(--pp-ink); }
-.text-accent { color: var(--pp-accent); }
-.bg-accent   { background-color: var(--pp-accent); }
+.bg-brand {
+  background-color: var(--pp-bg);
+}
+
+.text-ink {
+  color: var(--pp-ink);
+}
+
+/* Field label — the small uppercase caption used above a value. Shared by the
+ * Identity card (display) and the pet edit form (inputs) so the two views stay
+ * visually in sync; restyle labels here once and both follow. */
+.field-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--bs-secondary-color);
+}
+
+.bg-ink {
+  background-color: var(--pp-ink);
+}
+
+.text-accent {
+  color: var(--pp-accent);
+}
+
+.bg-accent {
+  background-color: var(--pp-accent);
+}
+
+/* Brand "ink" button. A proper Bootstrap button variant (not the `bg-ink`
+ * utility), so hover/active/focus are handled by Bootstrap's own machinery — a
+ * plain `.btn` defines no hover background, which made `bg-ink` collapse to the
+ * page color on hover. Use `btn btn-ink` instead of `btn bg-ink text-white`. */
+.btn-ink {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--pp-ink);
+  --bs-btn-border-color: var(--pp-ink);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #404040;
+  --bs-btn-hover-border-color: #404040;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #0f0f0f;
+  --bs-btn-active-border-color: #0f0f0f;
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: var(--pp-ink);
+  --bs-btn-disabled-border-color: var(--pp-ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+/* Lift + shadow on hover so feedback is obvious even though the color barely
+ * shifts on a near-black button (mirrors the gallery cards' hover motion). */
+.btn-ink:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+.btn-ink:active {
+  transform: translateY(0);
+}
 
 /* Handwritten brand font. `.pp-wordmark` is the logo treatment (pair it with
  * `.pp-handwritten`); `.pp-handwritten` alone is for incidental handwritten bits. */
-.pp-handwritten { font-family: "Comic Sans MS", cursive, sans-serif; }
-.pp-wordmark    { font-style: italic; letter-spacing: -0.5px; }
+.pp-handwritten {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.pp-wordmark {
+  font-style: italic;
+  letter-spacing: -0.5px;
+}
 
 /* ============================================================================
  * My Pets gallery
@@ -45,7 +111,10 @@
  * ==========================================================================*/
 
 /* Pet card: lift + deepen shadow on hover. */
-.pet-card { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.pet-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
 .pet-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12) !important;
@@ -65,6 +134,7 @@
   color: var(--pp-accent);
   transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
 }
+
 .pet-card:hover .pet-card__go {
   background-color: var(--pp-accent);
   color: #fff;
@@ -78,23 +148,93 @@
   background-color: transparent;
   transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
 }
+
 .pet-card-add:hover {
   border-color: var(--pp-accent);
   color: var(--pp-accent) !important;
   background-color: rgba(224, 122, 95, 0.04);
 }
+
 .pet-card-add__icon {
   width: 48px;
   height: 48px;
   background-color: rgba(0, 0, 0, 0.04);
   transition: background-color 0.15s ease;
 }
+
 .pet-card-add:hover .pet-card-add__icon {
   background-color: rgba(224, 122, 95, 0.12);
 }
 
 /* "← My Pets" back link on a pet profile: darkens to ink and nudges left on
  * hover, mirroring the gallery card's arrow motion. */
-.back-link .fa-arrow-left { transition: transform 0.15s ease; }
-.back-link:hover { color: var(--pp-ink) !important; }
-.back-link:hover .fa-arrow-left { transform: translateX(-2px); }
+.back-link .fa-arrow-left {
+  transition: transform 0.15s ease;
+}
+
+.back-link:hover {
+  color: var(--pp-ink) !important;
+}
+
+.back-link:hover .fa-arrow-left {
+  transform: translateX(-2px);
+}
+
+/* ============================================================================
+ * App modal (popup) — Turbo frame + Bootstrap scrollable fix
+ *
+ * The shared modal (main.html.erb) swaps content into a <turbo-frame> that sits
+ * between .modal-content and the .modal-header/.modal-body. That extra wrapper
+ * breaks the flex chain `modal-dialog-scrollable` relies on, so the body won't
+ * scroll when content overflows (only visible on short viewports — e.g. mobile).
+ *
+ * `display: contents` removes the frame's own box from layout, so the header and
+ * body become direct flex children of .modal-content again and scrolling works
+ * as Bootstrap intends. The frame still functions for Turbo — display has no
+ * effect on frame navigation.
+ * ==========================================================================*/
+#appModal .modal-content>turbo-frame {
+  display: contents;
+}
+/* ============================================================================
+ * Profile tabs (pets/_nav_tabs)
+ *
+ * The active tab shows a bold underline that drops onto the header's divider
+ * line. Each tab reserves a transparent bottom border (so active/inactive don't
+ * shift the row), and the underline is pulled DOWN across the header row's pb-2
+ * gap onto the 1px divider via padding-bottom + a matching negative margin.
+ * NOTE: the 0.5rem below tracks the header row's `pb-2` — if you change that
+ * padding, change these to match.
+ * ==========================================================================*/
+.pet-tab {
+  border-bottom: 3px solid transparent;
+  padding-bottom: 0.5rem;
+  margin-bottom: calc(-0.5rem - 1px);
+  transition: border-color 0.15s ease;
+}
+
+.pet-tab:hover {
+  border-bottom-color: rgba(0, 0, 0, 0.15);
+}
+
+.pet-tab.active {
+  border-bottom-color: var(--pp-ink);
+}
+
+/* ============================================================================
+ * Forward "Edit →" link — the mirror of .back-link
+ *
+ * Darkens to ink and nudges its arrow to the RIGHT on hover (back-link nudges
+ * its arrow left). Used on the Identity card's Edit trigger.
+ * ==========================================================================*/
+.go-link .fa-arrow-right {
+  transition: transform 0.15s ease;
+}
+
+.go-link:hover {
+  color: var(--pp-ink) !important;
+}
+
+.go-link:hover .fa-arrow-right {
+  transform: translateX(2px);
+}

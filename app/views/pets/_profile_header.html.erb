@@ -1,7 +1,8 @@
-<%# Horizontal profile header: pet name + subtitle on the left, tab nav pushed
-    to the right, with a divider beneath. The avatar now lives in the About
-    photo card, not here. Per-section "add" actions live inside each tab. %>
-
+<%# Horizontal profile header: pet name on the left with the tab nav right beside
+    it, and a "Delete pet" action pushed to the far right, over a divider. The
+    avatar lives in the About photo card; per-section "add"/"edit" actions live
+    inside each tab. This header renders above EVERY tab (via _profile_shell), so
+    it's the right home for pet-level actions like delete. %>
 <%# Back to the roster — a light "kicker" hugging the title above. The sidebar
     already carries primary nav, so this stays feather-light. turbo_frame: "_top"
     breaks out of the pet_content frame to navigate the whole page. %>
@@ -9,17 +10,22 @@
   <i class="fa-solid fa-arrow-left"></i>
   My Pets
 <% end %>
-
-<div class="d-flex align-items-center flex-wrap gap-4 border-bottom border-secondary-subtle pb-3 mb-4">
-
-  <%# Title %>
-  <div class="lh-sm">
-    <h1 class="fw-bold mb-0 text-ink"><%= pet.name %></h1>
-    <div class="text-secondary small"><%= pet_subtitle(pet) %></div>
-  </div>
-
-  <%# Tab nav — pushed to the right edge %>
-  <div class="ms-auto">
+<div class="d-flex align-items-end flex-wrap gap-4 border-bottom border-secondary-subtle pb-2 mb-4">
+  <%# Pet name only — species/breed/age live in the Identity card now. The id
+      lets update.turbo_stream.erb refresh just this name after an edit. %>
+  <h1 id="<%= dom_id(pet, :pet_name) %>" class="fw-bold mb-0 text-ink"><%= pet.name %></h1>
+  <%# Tab nav — mx-auto centers it in the space between the name and the delete
+      action, so it isn't cramped up against the name. %>
+  <div class="mx-auto">
     <%= render "pets/nav_tabs", pet: pet, active_tab: active_tab %>
   </div>
+  <%# Delete the ENTIRE pet. De-emphasized trigger pushed far right via ms-auto:
+      it loads a styled confirmation into the shared modal (drawer frame) rather
+      than firing the browser's native confirm() dialog. The real, filled Delete
+      button lives inside that confirmation (see pets/confirm_delete). %>
+  <%= link_to confirm_delete_pet_path(pet),
+        class: "btn btn-outline-danger btn-sm rounded-pill",
+        data: { turbo_frame: "drawer" } do %>
+    <i class="fa-solid fa-trash me-1"></i> Delete pet
+  <% end %>
 </div>

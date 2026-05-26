@@ -54,7 +54,14 @@ Rails.application.routes.draw do
   #   DELETE /pets/:id                   => pets#destroy               (pet_path)
   #
   # =========================================================================
-  resources :pets
+  resources :pets do
+    # Styled delete confirmation, shown in the shared modal (drawer frame)
+    # instead of the browser's native confirm() dialog.
+    #   GET /pets/:id/confirm_delete => pets#confirm_delete (confirm_delete_pet_path)
+    member do
+      get :confirm_delete
+    end
+  end
 
   root "pets#index"
 end

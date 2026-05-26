@@ -1,86 +1,21 @@
-<%# Row 1: photo · identity · daily schedule %>
+<%#
+  # Pet Profile: "About" Tab
+  #
+  # This partial renders the main dashboard for a specific pet. It provides a
+  # bird's-eye view of the pet's core identity, schedule, and notes.
+  #
+  # Layout Structure:
+  # - Row 1: Pet Photo & Name, Identity details (breed, age, microchip), and a Daily Schedule preview.
+  # - Row 2: General Notes and the Care Team placeholder.
+  #
+  # Note: Daily Schedule and Care Team are currently placeholder stubs for future features.
+%>
+<%# --- ROW 1: PHOTO, IDENTITY, & DAILY SCHEDULE --- %>
 <div class="row g-4 mb-4">
-
-  <%# Photo + name card %>
-  <div class="col-lg-3">
-    <div class="card shadow-sm border border-secondary-subtle rounded-4 h-100 overflow-hidden">
-      <% if pet.avatar_image.attached? %>
-        <%= image_tag pet.avatar_image, class: "w-100 object-fit-cover", style: "aspect-ratio: 1 / 1;" %>
-      <% else %>
-        <div class="w-100 d-flex align-items-center justify-content-center bg-light" style="aspect-ratio: 1 / 1; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px);">
-          <span class="badge bg-white text-secondary border border-secondary-subtle fw-normal"><%= pet.name %></span>
-        </div>
-      <% end %>
-      <div class="card-body p-4">
-        <h2 class="h4 fw-bold mb-1 text-ink"><%= pet.name %></h2>
-        <div class="text-secondary small"><%= pet_subtitle(pet) %></div>
-      </div>
-    </div>
-  </div>
-
-  <%# Identity card — two-column field grid %>
-  <div class="col-lg-5">
-    <div class="card shadow-sm border border-secondary-subtle rounded-4 h-100">
-      <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-4 pb-0 px-4">
-        <div class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Identity</div>
-        <%= link_to "Edit &rarr;".html_safe, edit_pet_path(pet), class: "text-secondary text-decoration-none small", data: { turbo_frame: "_top" } %>
-      </div>
-      <div class="card-body p-4">
-        <div class="row g-4">
-
-          <div class="col-sm-6">
-            <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Name</div>
-            <div class="fw-medium text-ink"><%= pet.name %></div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Species</div>
-            <div class="fw-medium text-ink"><%= pet.species&.humanize || "—" %></div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Breed</div>
-            <div class="fw-medium text-ink"><%= pet.breed.presence || "—" %></div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Sex</div>
-            <div class="fw-medium text-ink">
-              <%= pet.sex&.humanize || "—" %>
-              <% if pet.neutered %>
-                <span class="text-secondary">· <%= pet.sex == "female" ? "spayed" : "neutered" %></span>
-              <% end %>
-            </div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Birthday</div>
-            <div class="fw-medium text-ink">
-              <% if pet.date_of_birth.present? %>
-                <%= pet.date_of_birth.strftime("%B %-d, %Y") %>
-                <span class="text-secondary d-block">(<%= time_ago_in_words(pet.date_of_birth) %>)</span>
-              <% else %>
-                —
-              <% end %>
-            </div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="text-muted text-uppercase small" style="letter-spacing: 0.5px;">Microchip</div>
-            <div class="fw-medium text-ink">
-              <%= pet.microchip.presence || "—" %>
-              <% if pet.microchip.present? %>
-                <span class="badge bg-light text-secondary border border-secondary-subtle fw-normal d-inline-block mt-1">registered</span>
-              <% end %>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <%# Daily Schedule — placeholder (Daily Care, #5) %>
+  <%# --- _pet_identity_card.html.erb --- %>
+  <%= render "pet_identity_card", pet: pet %>
+  <%# --- DAILY SCHEDULE CARD (PLACEHOLDER) --- %>
+  <%# Will display data from the future Daily Care feature %>
   <div class="col-lg-4">
     <div class="card shadow-sm border border-secondary-subtle rounded-4 h-100">
       <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-4 pb-0 px-4">
@@ -92,31 +27,12 @@
       </div>
     </div>
   </div>
-
 </div>
-
-<%# Row 2: notes · care team %>
+<%# --- ROW 2: NOTES & CARE TEAM --- %>
 <div class="row g-4">
-
-  <%# Notes card %>
-  <div class="col-lg-3">
-    <div class="card shadow-sm border border-secondary-subtle rounded-4 h-100">
-      <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-4 pb-0 px-4">
-        <div class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Notes</div>
-        <%= link_to "Edit &rarr;".html_safe, edit_pet_path(pet), class: "text-secondary text-decoration-none small", data: { turbo_frame: "_top" } %>
-      </div>
-      <div class="card-body p-4 pt-3">
-        <% if pet.notes.present? %>
-          <div class="text-ink" style="line-height: 1.6;"><%= simple_format pet.notes %></div>
-        <% else %>
-          <div class="text-muted fst-italic">No notes recorded yet.</div>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
-  <%# Care Team — placeholder (not modeled yet) %>
-  <div class="col-lg-9">
+  <%# --- CARE TEAM CARD (PLACEHOLDER) --- %>
+  <%# Will list vets, groomers, sitters, etc. in the future %>
+  <div class="col-lg-12">
     <div class="card shadow-sm border border-secondary-subtle rounded-4 h-100">
       <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-4 pb-0 px-4">
         <div class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Care Team</div>
@@ -127,5 +43,4 @@
       </div>
     </div>
   </div>
-
 </div>

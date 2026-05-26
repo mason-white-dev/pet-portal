@@ -1,11 +1,25 @@
-<% content_for :title, "New pet" %>
+<%#
+  # New Pet form (modal content)
+  #
+  # Served into the shared "drawer" frame — the SAME modal as edit. The "+ Add
+  # pet" links on the index target data-turbo-frame: "drawer", so Turbo loads
+  # this in, finds the matching frame, and swaps it into the modal. The wrapper
+  # id must be "drawer" to match (same rule as edit.html.erb).
+  #
+  # PetsController#new renders this WITHOUT the layout on frame requests, so the
+  # response is just this frame.
+%>
+<%= turbo_frame_tag "drawer" do %>
 
-<h1>New pet</h1>
+  <%# --- MODAL HEADER: title + close button --- %>
+  <div class="modal-header">
+    <h5 class="modal-title">Add a pet</h5>
+    <button class="btn-close" data-bs-dismiss="modal"></button>
+  </div>
 
-<%= render "form", pet: @pet %>
+  <%# --- MODAL BODY: the shared pet form (also used by edit) --- %>
+  <div class="modal-body">
+    <%= render "form", pet: @pet %>
+  </div>
 
-<br>
-
-<div>
-  <%= link_to "Back to pets", pets_path %>
-</div>
+<% end %>

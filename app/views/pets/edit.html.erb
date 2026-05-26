@@ -1,3 +1,31 @@
-<% content_for :title, "Editing #{@pet.name}" %>
-
-<%= render "pets/profile_shell", pet: @pet, active_tab: :edit, content_partial: "pets/edit_form" %>
+<%#
+  # Pet Edit Form (Modal Content)
+  #
+  # Rendered by PetsController#edit and served into the shared "drawer" turbo
+  # frame that lives in the modal (app/views/layouts/main.html.erb).
+  #
+  # Why the `turbo_frame_tag "drawer"` wrapper?
+  #   Turbo matches frames by id. The "Edit →" link (in _pet_identity_card)
+  #   sets data-turbo-frame: "drawer", which tells Turbo two things:
+  #     1. the navigation targets the page's <turbo-frame id="drawer"> slot, and
+  #     2. it should extract the frame with that SAME id out of THIS response.
+  #   With no matching wrapper here, Turbo finds nothing to extract and raises
+  #   "Content missing". So the id has to agree in three places: the link's
+  #   data-turbo-frame, this wrapper, and the slot in main.html.erb.
+  #
+  #   PetsController#edit renders this WITHOUT the layout on frame requests
+  #   (render layout: false), so the response IS just this frame — nothing for
+  #   Turbo to download then discard, and no duplicate "drawer" frame from the
+  #   layout to trip over.
+%>
+<%= turbo_frame_tag "drawer" do %>
+  <%# --- MODAL HEADER: title + close button --- %>
+  <div class="modal-header">
+    <h5 class="modal-title">Edit Identity</h5>
+    <button class="btn-close" data-bs-dismiss="modal"></button>
+  </div>
+  <%# --- MODAL BODY: the shared pet form (also used by new.html.erb) --- %>
+  <div class="modal-body">
+    <%= render "form", pet: @pet %>
+  </div>
+<% end %>
