@@ -15,9 +15,9 @@
   <div class="d-flex justify-content-between align-items-end mb-4">
     <div>
       <h1 class="fw-bold mb-1 text-ink">My Pets</h1>
-      <%# Subhead is a partial so create.turbo_stream.erb can refresh the count %>
-      <%# (and drop the empty-state message) when a pet is added via the modal. %>
-      <%= render "subhead", count: @pets.size %>
+      <p class="text-secondary mb-0">
+        <%= @pets.any? ? "#{pluralize(@pets.size, "companion")} in your care" : "Let's start your first chart" %>
+      </p>
     </div>
     <%# data-turbo-frame: "drawer" loads the new-pet form into the shared modal %>
     <%# instead of navigating to a full /pets/new page. %>
