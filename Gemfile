@@ -46,6 +46,9 @@ gem "devise"
 # Cloudinary gem for easy image uploads [https://github.com/cloudinary/cloudinary-gem]
 gem "cloudinary"
 
+# Smart performance profiler to identify slow requests and N+1 queries
+gem "skylight"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -59,6 +62,7 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
+  # Auto-generates schema documentation as comments in models and tests
   gem "annotaterb"
 end
 

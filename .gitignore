@@ -33,6 +33,9 @@
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
+# Ignore Skylight config — it holds the APM auth token (set SKYLIGHT_AUTHENTICATION in prod).
+/config/skylight.yml
+
 # Ignore editor and OS files.
 /.idea
 .DS_Store
