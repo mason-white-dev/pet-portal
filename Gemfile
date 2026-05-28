@@ -64,7 +64,6 @@ group :development, :test do
 
   # Auto-generates schema documentation as comments in models and tests
   gem "annotaterb"
-
 end
 
 group :development do
