@@ -1,0 +1,22 @@
+<%#
+  # Edit Care Team Member form (modal content)
+  #
+  # Served into the shared "drawer" frame — the SAME modal as new. Each "Edit"
+  # link on the pet profile's Care Team card targets data-turbo-frame: "drawer",
+  # so Turbo loads this in, finds the matching frame, and swaps it into the modal.
+  # The wrapper id must be "drawer" to match (same rule as new.html.erb).
+  #
+  # CareTeamMembersController#edit renders this WITHOUT the layout on frame
+  # requests, so the response is just this frame.
+%>
+<%= turbo_frame_tag "drawer" do %>
+  <%# --- MODAL HEADER: title + close button --- %>
+  <div class="modal-header">
+    <h5 class="modal-title">Edit Care Team Member</h5>
+    <button class="btn-close" data-bs-dismiss="modal"></button>
+  </div>
+  <%# --- MODAL BODY: the shared care team member form (also used by new) --- %>
+  <div class="modal-body">
+    <%= render "form", care_team_member: @care_team_member %>
+  </div>
+<% end %>

@@ -6,9 +6,9 @@
   #
   # Layout Structure:
   # - Row 1: Pet Photo & Name, Identity details (breed, age, microchip), and a Daily Schedule preview.
-  # - Row 2: General Notes and the Care Team placeholder.
+  # - Row 2: the Care Team list (vets, groomers, sitters, etc.).
   #
-  # Note: Daily Schedule and Care Team are currently placeholder stubs for future features.
+  # Note: Daily Schedule is still a placeholder stub for a future feature; Care Team is live.
 %>
 <%# --- ROW 1: PHOTO, IDENTITY, & DAILY SCHEDULE --- %>
 <div class="row g-4 mb-4">
@@ -28,18 +28,29 @@
     </div>
   </div>
 </div>
-<%# --- ROW 2: NOTES & CARE TEAM --- %>
+<%# --- ROW 2: CARE TEAM --- %>
 <div class="row g-4">
-  <%# --- CARE TEAM CARD (PLACEHOLDER) --- %>
-  <%# Will list vets, groomers, sitters, etc. in the future %>
+  <%# --- CARE TEAM CARD --- %>
+  <%# Lists the pet's vets, groomers, sitters, etc. "+ Add" and each "Edit" open %>
+  <%# the shared drawer modal. %>
   <div class="col-lg-12">
     <div class="card shadow-sm border border-secondary-subtle rounded-4 h-100">
       <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-4 pb-0 px-4">
         <div class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Care Team</div>
-        <span class="badge bg-light text-secondary border border-secondary-subtle fw-normal">Coming soon</span>
+        <%= link_to new_pet_care_team_member_path(pet), class: "go-link text-secondary text-decoration-none small fw-medium d-inline-flex align-items-center gap-1", data: { turbo_frame: "drawer" } do %>
+          <span>+ Add</span> <i class="fa-solid"></i>
+        <% end %>
       </div>
       <div class="card-body p-4 pt-3">
-        <div class="text-muted fst-italic">Vets, groomers, and sitters will live here.</div>
+        <% members = pet.care_team_members.to_a %>
+        <% if members.any? %>
+          <%# `gap-3` spaces the rows; each row is the _care_team_member partial. %>
+          <div class="d-flex flex-column gap-3">
+            <%= render partial: "care_team_members/care_team_member", collection: members, locals: { pet: pet } %>
+          </div>
+        <% else %>
+          <div class="text-muted fst-italic">No care team members yet. Add a vet, groomer, sitter, and more.</div>
+        <% end %>
       </div>
     </div>
   </div>

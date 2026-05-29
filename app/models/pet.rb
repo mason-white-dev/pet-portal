@@ -42,4 +42,7 @@ class Pet < ApplicationRecord
   # Ensures that a pet cannot be saved to the database without a name and species.
   validates :name, presence: true
   validates :species, presence: true
+
+  # app/models/pet.rb
+  has_many :care_team_members, dependent: :destroy
 end

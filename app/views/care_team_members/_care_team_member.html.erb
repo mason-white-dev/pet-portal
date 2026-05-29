@@ -1,0 +1,20 @@
+<%#
+  # Care Team Member row (one entry in the Care Team card on the pet profile)
+  #
+  # Rendered as a collection from pets/_about (`collection: pet.care_team_members`),
+  # so each iteration receives a `care_team_member` local. `pet` is passed through
+  # as an extra local because the "Edit" link needs the parent for its nested path.
+  #
+  # "Edit" opens the shared drawer modal (data-turbo-frame: "drawer") — the same
+  # modal used to add a member.
+%>
+<div class="d-flex justify-content-between align-items-center">
+  <div>
+    <div class="fw-bold"><%= care_team_member.name %></div>
+    <div class="text-muted"><%= care_team_member.role %></div>
+    <div class="text-muted"><%= care_team_member.notes %></div>
+  </div>
+  <%= link_to edit_pet_care_team_member_path(pet, care_team_member), class: "go-link text-secondary text-decoration-none small fw-medium d-inline-flex align-items-center gap-1", data: { turbo_frame: "drawer" } do %>
+    <span>Edit</span> <i class="fa-solid"></i>
+  <% end %>
+</div>

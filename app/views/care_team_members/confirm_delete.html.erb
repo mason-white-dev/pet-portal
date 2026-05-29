@@ -1,0 +1,34 @@
+<%#
+  # Delete confirmation (modal content)
+  #
+  # Served into the shared "drawer" frame, just like new/edit. The form's "Delete"
+  # link targets data-turbo-frame: "drawer", so this loads into the styled modal
+  # instead of the browser's native confirm() dialog. The actual delete happens
+  # via the button below: a real DELETE that breaks out to "_top" so destroy's
+  # redirect_to pet_path is a full-page nav back to the profile.
+%>
+<%= turbo_frame_tag "drawer" do %>
+
+  <div class="modal-header">
+    <h5 class="modal-title">Remove <%= @care_team_member.name %>?</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  </div>
+
+  <div class="modal-body">
+    <p class="mb-0">
+      This removes <strong><%= @care_team_member.name %></strong> from
+      <strong><%= @pet.name %></strong>'s care team. This can't be undone.
+    </p>
+  </div>
+
+  <div class="modal-footer border-0">
+    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+    <%# The deliberate, filled action (vs. the de-emphasized trigger in the form). %>
+    <%= button_to pet_care_team_member_path(@pet, @care_team_member), method: :delete,
+          class: "btn btn-danger rounded-pill px-4",
+          form: { data: { turbo_frame: "_top" } } do %>
+      <i class="fa-solid fa-trash me-1"></i> Remove
+    <% end %>
+  </div>
+
+<% end %>
