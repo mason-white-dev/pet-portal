@@ -3,10 +3,10 @@
 # Table name: care_team_members
 #
 #  id           :bigint           not null, primary key
-#  contact_name :string
 #  email        :string
 #  name         :string
 #  notes        :text
+#  organization :string
 #  phone        :string
 #  role         :string
 #  created_at   :datetime         not null

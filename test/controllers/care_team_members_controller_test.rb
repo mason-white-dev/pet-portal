@@ -42,7 +42,7 @@ class CareTeamMembersControllerTest < ActionDispatch::IntegrationTest
   test "should create a care team member under the pet" do
     assert_difference("CareTeamMember.count") do
       post pet_care_team_members_url(@pet), params: { care_team_member: {
-        role: "sitter", name: "Pet Nanny Co", contact_name: "Jo Lee",
+        role: "sitter", name: "Jo Lee", organization: "Pet Nanny Co",
         phone: "503-555-0123", email: "jo@example.com", notes: "Weekends only"
       } }
     end

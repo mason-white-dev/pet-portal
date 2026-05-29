@@ -94,6 +94,6 @@ class CareTeamMembersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def care_team_member_params
-      params.expect(care_team_member: [ :role, :name, :contact_name, :phone, :email, :notes ])
+      params.expect(care_team_member: [ :role, :name, :organization, :phone, :email, :notes ])
     end
 end

@@ -20,10 +20,10 @@
         <% end %>
       </div>
 
-      <%# Name + the person to contact %>
+      <%# Name (the person) + their organization %>
       <div class="fw-bold"><%= care_team_member.name %></div>
-      <% if care_team_member.contact_name.present? %>
-        <div class="text-muted small"><%= care_team_member.contact_name %></div>
+      <% if care_team_member.organization.present? %>
+        <div class="text-muted small"><%= care_team_member.organization %></div>
       <% end %>
 
       <%# Contact details %>

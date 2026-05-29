@@ -21,14 +21,14 @@
 
     <div class="col-sm-6">
       <%= form.label :name, class: "field-label" %>
-      <%= form.text_field :name, placeholder: "e.g. Banfield Pet Hospital", class: [ "form-control", ("is-invalid" if care_team_member.errors[:name].any?) ] %>
+      <%= form.text_field :name, placeholder: "e.g. Dr. Alice Nguyen", class: [ "form-control", ("is-invalid" if care_team_member.errors[:name].any?) ] %>
       <%= field_error care_team_member, :name %>
     </div>
 
     <div class="col-sm-6">
-      <%= form.label :contact_name, "Contact name", class: "field-label" %>
-      <%= form.text_field :contact_name, placeholder: "e.g. Dr. Alice Nguyen", class: [ "form-control", ("is-invalid" if care_team_member.errors[:contact_name].any?) ] %>
-      <%= field_error care_team_member, :contact_name %>
+      <%= form.label :organization, class: "field-label" %>
+      <%= form.text_field :organization, placeholder: "e.g. Banfield Pet Hospital", class: [ "form-control", ("is-invalid" if care_team_member.errors[:organization].any?) ] %>
+      <%= field_error care_team_member, :organization %>
     </div>
 
     <div class="col-sm-6">

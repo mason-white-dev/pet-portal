@@ -5,10 +5,10 @@
 # Table name: care_team_members
 #
 #  id           :bigint           not null, primary key
-#  contact_name :string
 #  email        :string
 #  name         :string
 #  notes        :text
+#  organization :string
 #  phone        :string
 #  role         :string
 #  created_at   :datetime         not null
@@ -29,8 +29,8 @@
 one:
   pet: one
   role: primary_vet
-  name: Banfield Pet Hospital
-  contact_name: Dr. Alice Nguyen
+  name: Dr. Alice Nguyen
+  organization: Banfield Pet Hospital
   phone: 503-555-0101
   email: care@banfield.example.com
   notes: Annual checkups and vaccinations.
@@ -38,8 +38,8 @@ one:
 two:
   pet: two
   role: groomer
-  name: Happy Tails Grooming
-  contact_name: Sam Rivera
+  name: Sam Rivera
+  organization: Happy Tails Grooming
   phone: 503-555-0199
   email: hello@happytails.example.com
   notes: Full groom every six weeks.
