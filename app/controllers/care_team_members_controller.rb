@@ -32,10 +32,9 @@ class CareTeamMembersController < ApplicationController
 
     if @care_team_member.save
       respond_to do |format|
-        # The form lives inside the drawer frame, so a plain redirect would stay
-        # trapped in the frame. The custom "redirect" stream action (see
-        # application.js) does a full-page Turbo.visit back to the pet profile.
-        format.turbo_stream { render turbo_stream: turbo_stream.action(:redirect, pet_path(@pet)) }
+        # Re-render the whole Care Team list (see list.turbo_stream.erb). The modal
+        # closes itself via popup_controller.js on turbo:submit-end success.
+        format.turbo_stream { render :list }
         format.html { redirect_to pet_path(@pet), notice: "Care team member was successfully added." }
       end
     else
@@ -49,7 +48,7 @@ class CareTeamMembersController < ApplicationController
   def update
     if @care_team_member.update(care_team_member_params)
       respond_to do |format|
-        format.turbo_stream
+        format.turbo_stream { render :list }
         format.html { redirect_to pet_path(@pet), notice: "Care team member was successfully updated." }
       end
     else
@@ -75,6 +74,7 @@ class CareTeamMembersController < ApplicationController
     @care_team_member.destroy!
 
     respond_to do |format|
+      format.turbo_stream { render :list }
       format.html { redirect_to pet_path(@pet), notice: "Care team member was successfully removed.", status: :see_other }
     end
   end

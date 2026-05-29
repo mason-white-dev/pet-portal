@@ -3,9 +3,10 @@
   #
   # Served into the shared "drawer" frame, just like new/edit. The form's "Delete"
   # link targets data-turbo-frame: "drawer", so this loads into the styled modal
-  # instead of the browser's native confirm() dialog. The actual delete happens
-  # via the button below: a real DELETE that breaks out to "_top" so destroy's
-  # redirect_to pet_path is a full-page nav back to the profile.
+  # instead of the browser's native confirm() dialog. The DELETE button below
+  # submits as a Turbo Stream request; destroy responds with list.turbo_stream.erb,
+  # which refreshes the Care Team list in place (no full reload). The modal closes
+  # itself via popup_controller.js on turbo:submit-end success.
 %>
 <%= turbo_frame_tag "drawer" do %>
 
@@ -25,8 +26,7 @@
     <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
     <%# The deliberate, filled action (vs. the de-emphasized trigger in the form). %>
     <%= button_to pet_care_team_member_path(@pet, @care_team_member), method: :delete,
-          class: "btn btn-danger rounded-pill px-4",
-          form: { data: { turbo_frame: "_top" } } do %>
+          class: "btn btn-danger rounded-pill px-4" do %>
       <i class="fa-solid fa-trash me-1"></i> Remove
     <% end %>
   </div>
