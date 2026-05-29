@@ -1,67 +1,69 @@
-<%= form_with(model: [ pet, care_team_member ]) do |f| %>
-  <%# --- ERROR MESSAGES (rendered only in the drawer frame) --- %>
-  <% if care_team_member.errors.any? %>
-    <div class="alert alert-danger p-3 mb-3" role="alert">
-      <h6 class="alert-heading mb-1">Please fix the following</h6>
-      <ul class="mb-0 small">
-        <% care_team_member.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+<%#
+  # Care Team Member form (shared by new + edit)
+  #
+  # Styled to match pets/_form so the modal reads like the Care Team cards "made
+  # editable": a `row g-3` field grid, the shared `.field-label` style, and
+  # INLINE per-field validation (each input gets `is-invalid`, with the message
+  # rendered underneath by the field_error helper) rather than one summary alert.
+  #
+  # Fully local-driven: needs `pet` and `care_team_member` locals (passed from
+  # new.html.erb / edit.html.erb). Rendered inside the modal's "drawer" frame.
+%>
+<%= form_with(model: [ pet, care_team_member ]) do |form| %>
+
+  <div class="row g-3">
+
+    <div class="col-sm-6">
+      <%= form.label :role, class: "field-label" %>
+      <%= form.select :role, CareTeamMember.roles.keys.map { |k| [ k.titleize, k ] }, { prompt: "Select a role" }, class: [ "form-select", ("is-invalid" if care_team_member.errors[:role].any?) ] %>
+      <%= field_error care_team_member, :role %>
     </div>
-  <% end %>
-  <%# --- ROLE SELECT (dropdown) --- %>
-  <div class="mb-3">
-    <%= f.label :role, class: "form-label fw-bold" %>
-    <%= f.select :role, CareTeamMember.roles.keys.map { |r| [r.titleize, r] }, {}, class: "form-select" %>
-    <div class="form-text">Select the role for this care team member.</div>
+
+    <div class="col-sm-6">
+      <%= form.label :name, class: "field-label" %>
+      <%= form.text_field :name, placeholder: "e.g. Banfield Pet Hospital", class: [ "form-control", ("is-invalid" if care_team_member.errors[:name].any?) ] %>
+      <%= field_error care_team_member, :name %>
+    </div>
+
+    <div class="col-sm-6">
+      <%= form.label :contact_name, "Contact name", class: "field-label" %>
+      <%= form.text_field :contact_name, placeholder: "e.g. Dr. Alice Nguyen", class: [ "form-control", ("is-invalid" if care_team_member.errors[:contact_name].any?) ] %>
+      <%= field_error care_team_member, :contact_name %>
+    </div>
+
+    <div class="col-sm-6">
+      <%= form.label :phone, class: "field-label" %>
+      <%= form.telephone_field :phone, class: [ "form-control", ("is-invalid" if care_team_member.errors[:phone].any?) ] %>
+      <%= field_error care_team_member, :phone %>
+    </div>
+
+    <div class="col-12">
+      <%= form.label :email, class: "field-label" %>
+      <%= form.email_field :email, class: [ "form-control", ("is-invalid" if care_team_member.errors[:email].any?) ] %>
+      <%= field_error care_team_member, :email %>
+    </div>
+
+    <div class="col-12">
+      <%= form.label :notes, class: "field-label" %>
+      <%= form.text_area :notes, rows: 3, class: [ "form-control", ("is-invalid" if care_team_member.errors[:notes].any?) ] %>
+      <%= field_error care_team_member, :notes %>
+    </div>
+
   </div>
-  <%# --- CONTACT NAME (text) --- %>
-  <div class="mb-3">
-    <%= f.label :contact_name, class: "form-label fw-bold" %>
-    <%= f.text_field :contact_name, class: "form-control" %>
-    <div class="form-text">Who should be contacted in this role?</div>
-  </div>
-  <%# --- NAME (text) --- %>
-  <div class="mb-3">
-    <%= f.label :name, class: "form-label fw-bold" %>
-    <%= f.text_field :name, class: "form-control" %>
-    <div class="form-text">The name of the care team member</div>
-  </div>
-  <%# --- PHONE (tel) --- %>
-  <div class="mb-3">
-    <%= f.label :phone, class: "form-label fw-bold" %>
-    <%= f.text_field :phone, class: "form-control" %>
-    <div class="form-text">Phone number (optional)</div>
-  </div>
-  <%# --- EMAIL (email) --- %>
-  <div class="mb-3">
-    <%= f.label :email, class: "form-label fw-bold" %>
-    <%= f.email_field :email, class: "form-control" %>
-    <div class="form-text">Email address (optional)</div>
-  </div>
-  <%# --- NOTES (rich text) --- %>
-  <div class="mb-3">
-    <%= f.label :notes, class: "form-label fw-bold" %>
-    <%= f.text_area :notes, class: "form-control" %>
-    <div class="form-text">Any notes about this team member (optional)</div>
-  </div>
-  <%# --- FOOTER WITH BUTTONS (same as edit.html.erb) --- %>
-  <div class="modal-footer border-0 px-0 pb-0 d-flex justify-content-between">
-    <%# Delete button shown only when editing an existing member; always hidden in the new form %>
+
+  <%# --- ACTIONS: Delete (edit only) on the left; Cancel + Save pushed right by ms-auto --- %>
+  <div class="d-flex align-items-center mt-4">
     <% if care_team_member.persisted? %>
-      <%= link_to confirm_delete_pet_care_team_member_path(pet, care_team_member), class: "btn btn-link text-danger text-decoration-none d-inline-flex align-items-center gap-1", data: { turbo_frame: "drawer" } do %>
+      <%= link_to confirm_delete_pet_care_team_member_path(pet, care_team_member), class: "btn btn-link text-danger text-decoration-none px-0 d-inline-flex align-items-center gap-1", data: { turbo_frame: "drawer" } do %>
         <i class="fa-regular fa-trash-can"></i>
         <span>Delete</span>
       <% end %>
-    <% else %>
-      <%# Spacer when new:pushes "Cancel" and "Save" together %>
-      <div class="d-inline-flex"><!----></div>
     <% end %>
-    <%# Cancel and save buttons %>
-    <div class="d-flex gap-2">
+
+    <div class="d-flex gap-2 ms-auto">
       <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-      <%= f.submit "Save", class: "btn btn-ink rounded-pill px-4 fw-medium" %>
+      <%= form.submit "Save", class: "btn btn-ink rounded-pill px-4" %>
     </div>
   </div>
+
 <% end %>
