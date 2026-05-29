@@ -1,3 +1,11 @@
+<%#
+  # Care Team list (the card body on the pet profile)
+  #
+  # The single source of truth for how the care team renders. Drawn directly by
+  # pets/_about on first load, and re-rendered by list.turbo_stream.erb after any
+  # create/update/destroy. Its root carries dom_id(pet, :care_team_members) — the
+  # target the stream replaces. Needs a `pet` local.
+%>
 <div id="<%= dom_id(pet, :care_team_members) %>" class="card-body p-4 pt-3">
   <% members = pet.care_team_members.ordered.to_a %>
   <% if members.any? %>
