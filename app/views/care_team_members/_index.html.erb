@@ -1,0 +1,11 @@
+<div id="<%= dom_id(pet, :care_team_members) %>" class="card-body p-4 pt-3">
+  <% members = pet.care_team_members.to_a %>
+  <% if members.any? %>
+    <%# `gap-3` spaces the rows; each row is the _care_team_member partial. %>
+    <div class="d-flex flex-column gap-3">
+      <%= render partial: "care_team_members/care_team_member", collection: members, locals: { pet: pet } %>
+    </div>
+  <% else %>
+    <div class="text-muted fst-italic">No care team members yet. Add a vet, groomer, sitter, and more.</div>
+  <% end %>
+</div>

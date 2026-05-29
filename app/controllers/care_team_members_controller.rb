@@ -49,7 +49,7 @@ class CareTeamMembersController < ApplicationController
   def update
     if @care_team_member.update(care_team_member_params)
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.action(:redirect, pet_path(@pet)) }
+        format.turbo_stream
         format.html { redirect_to pet_path(@pet), notice: "Care team member was successfully updated." }
       end
     else

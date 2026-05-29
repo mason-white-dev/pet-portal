@@ -22,10 +22,5 @@
   # turbo:submit-end success) — this stream only refreshes the card.
 %>
 <%# 1) Swap the whole Identity card. %>
-<%= turbo_stream.replace dom_id(@pet, :pet_identity_card),
-      partial: "pets/pet_identity_card", locals: { pet: @pet } %>
-<%# 2) Refresh just the name in the profile header. We do NOT re-render the
-       whole profile_header partial: it has no single root (the "← My Pets" back
-       link and the header row are siblings), so re-rendering it would duplicate
-       the back link. Updating the <h1> alone touches only what changed. %>
-<%= turbo_stream.update dom_id(@pet, :pet_name) do %><%= @pet.name %><% end %>
+<%= turbo_stream.replace dom_id(@pet, :care_team_members),
+      partial: "care_team_members/index", locals: { pet: @pet } %>

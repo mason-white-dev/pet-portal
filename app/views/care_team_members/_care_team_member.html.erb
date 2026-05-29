@@ -8,7 +8,7 @@
   # "Edit" opens the shared drawer modal (data-turbo-frame: "drawer") — the same
   # modal used to add a member.
 %>
-<div class="d-flex justify-content-between align-items-center">
+<div id="<%= dom_id(care_team_member, :care_team_member) %>" class="d-flex justify-content-between align-items-center">
   <div>
     <div class="fw-bold"><%= care_team_member.name %></div>
     <div class="text-muted"><%= care_team_member.role %></div>
