@@ -37,4 +37,14 @@ class CareTeamMember < ApplicationRecord
   validates :name, presence: true
   validates :role, presence: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
+
+  # Care team is shown vets-first — the enum is declared in priority order, so
+  # in_order_of sorts by that declaration — then alphabetically by name within a
+  # role. Passing every role key means no member is ever filtered out.
+  scope :ordered, -> { in_order_of(:role, roles.keys).order(:name) }
+
+  # Human-friendly version of the stored role: "primary_vet" -> "Primary Vet".
+  def role_label
+    role&.titleize
+  end
 end

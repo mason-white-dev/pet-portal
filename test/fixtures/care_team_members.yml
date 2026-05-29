@@ -23,20 +23,23 @@
 #
 #  fk_rails_...  (pet_id => pets.id)
 #
+# `one` belongs to pets(:one) -> users(:one) (the account we sign in as in tests).
+# `two` belongs to pets(:two) -> users(:two), so it's used to prove cross-account
+# access is impossible.
 one:
   pet: one
-  role: MyString
-  name: MyString
-  contact_name: MyString
-  phone: MyString
-  email: MyString
-  notes: MyText
+  role: primary_vet
+  name: Banfield Pet Hospital
+  contact_name: Dr. Alice Nguyen
+  phone: 503-555-0101
+  email: care@banfield.example.com
+  notes: Annual checkups and vaccinations.
 
 two:
   pet: two
-  role: MyString
-  name: MyString
-  contact_name: MyString
-  phone: MyString
-  email: MyString
-  notes: MyText
+  role: groomer
+  name: Happy Tails Grooming
+  contact_name: Sam Rivera
+  phone: 503-555-0199
+  email: hello@happytails.example.com
+  notes: Full groom every six weeks.

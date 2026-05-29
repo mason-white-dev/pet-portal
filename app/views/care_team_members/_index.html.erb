@@ -1,8 +1,10 @@
 <div id="<%= dom_id(pet, :care_team_members) %>" class="card-body p-4 pt-3">
-  <% members = pet.care_team_members.to_a %>
+  <% members = pet.care_team_members.ordered.to_a %>
   <% if members.any? %>
-    <%# `gap-3` spaces the rows; each row is the _care_team_member partial. %>
-    <div class="d-flex flex-column gap-3">
+    <%# Responsive grid: cards wrap and stack horizontally — 1 column on phones, %>
+    <%# 2 on medium screens, 3 on extra-wide. Each cell is the _care_team_member %>
+    <%# partial (its root is the `col`); `g-3` is the gutter between cards. %>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 g-3">
       <%= render partial: "care_team_members/care_team_member", collection: members, locals: { pet: pet } %>
     </div>
   <% else %>
