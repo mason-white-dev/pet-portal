@@ -36,17 +36,15 @@
       <%# --- BODY: avatar tile + field grid, stacking on phones --- %>
       <div class="d-flex flex-column flex-sm-row gap-4">
 
-        <%# Contained, rounded avatar with a fixed width. align-self-stretch makes
-            it fill the full height of the field grid beside it (the fields set
-            the card height); the image fills via w-100 h-100 + object-fit-cover.
-            min-height keeps it a clean square on phones, where the columns stack
-            and there's no sibling to stretch against. Monogram fallback reuses
-            the gallery's coral wash when there's no photo yet. %>
-        <div class="flex-shrink-0 align-self-stretch mx-auto mx-sm-0" style="width: 200px;">
+        <%# Contained, rounded avatar at a FIXED 200×240 portrait size, so the tile
+            never changes shape with the photo's own dimensions. object-fit-cover
+            center-crops the image to fill the box without distortion. Monogram
+            fallback (same fixed size) reuses the gallery's coral wash. %>
+        <div class="flex-shrink-0 mx-auto mx-sm-0" style="width: 200px; height: 240px;">
           <% if pet.avatar_image.attached? %>
-            <%= image_tag pet.avatar_image, alt: pet.name, class: "rounded-4 object-fit-cover shadow-sm w-100 h-100", style: "min-height: 200px;" %>
+            <%= image_tag pet.avatar_image, alt: pet.name, class: "rounded-4 object-fit-cover shadow-sm w-100 h-100" %>
           <% else %>
-            <div class="pet-card__monogram rounded-4 d-flex align-items-center justify-content-center w-100 h-100" style="min-height: 200px;">
+            <div class="pet-card__monogram rounded-4 d-flex align-items-center justify-content-center w-100 h-100">
               <span class="display-4 fw-bold"><%= pet.name.to_s.first&.upcase %></span>
             </div>
           <% end %>

@@ -16,6 +16,11 @@
   # hooks below are load-bearing — picking a file points the <img> at a local
   # object URL (no upload until submit). Restyle freely, but keep those hooks.
 %>
+<%# Password managers (1Password, LastPass) mistake non-credential fields like
+    "Name" for account fields. The `pm_off` helper (application_helper) adds the
+    opt-out attributes per FIELD — they only reliably suppress the "save to
+    1Password?" prompt on the input itself, not on the <form>. So every field
+    below is wrapped in pm_off(...). %>
 <%= form_with(model: pet) do |form| %>
 
   <div class="row g-4">
@@ -58,8 +63,8 @@
 
       <%# Native file input, hidden — the buttons below drive it. It still %>
       <%# submits the chosen file as pet[avatar_image] on save. %>
-      <%= form.file_field :avatar_image, accept: "image/*", class: "d-none",
-            data: { image_preview_target: "input", action: "change->image-preview#update" } %>
+      <%= form.file_field :avatar_image, accept: "image/*", **pm_off(class: "d-none",
+            data: { image_preview_target: "input", action: "change->image-preview#update" }) %>
 
       <%# "1" here tells PetsController#update to purge the stored photo on save. %>
       <%# It's read directly from params, not via pet_params. %>
@@ -89,7 +94,7 @@
           <%= form.label :name, class: "field-label" do %>
 <%= pet_field_icon(:name) %>Name
           <% end %>
-          <%= form.text_field :name, placeholder: "e.g. Scout", class: [ "form-control", ("is-invalid" if pet.errors[:name].any?) ] %>
+          <%= form.text_field :name, **pm_off(placeholder: "e.g. Scout", class: [ "form-control", ("is-invalid" if pet.errors[:name].any?) ]) %>
           <%= field_error pet, :name %>
         </div>
 
@@ -97,7 +102,7 @@
           <%= form.label :species, class: "field-label" do %>
 <%= pet_field_icon(:species) %>Species
           <% end %>
-          <%= form.select :species, Pet.species.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select species" }, class: [ "form-select", ("is-invalid" if pet.errors[:species].any?) ] %>
+          <%= form.select :species, Pet.species.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select species" }, **pm_off(class: [ "form-select", ("is-invalid" if pet.errors[:species].any?) ]) %>
           <%= field_error pet, :species %>
         </div>
 
@@ -105,7 +110,7 @@
           <%= form.label :breed, class: "field-label" do %>
 <%= pet_field_icon(:breed) %>Breed
           <% end %>
-          <%= form.text_field :breed, placeholder: "e.g. Mixed Breed", class: [ "form-control", ("is-invalid" if pet.errors[:breed].any?) ] %>
+          <%= form.text_field :breed, **pm_off(placeholder: "e.g. Mixed Breed", class: [ "form-control", ("is-invalid" if pet.errors[:breed].any?) ]) %>
           <%= field_error pet, :breed %>
         </div>
 
@@ -113,7 +118,7 @@
           <%= form.label :sex, class: "field-label" do %>
 <%= pet_field_icon(:sex) %>Sex
           <% end %>
-          <%= form.select :sex, Pet.sexes.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select sex" }, class: [ "form-select", ("is-invalid" if pet.errors[:sex].any?) ] %>
+          <%= form.select :sex, Pet.sexes.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select sex" }, **pm_off(class: [ "form-select", ("is-invalid" if pet.errors[:sex].any?) ]) %>
           <%= field_error pet, :sex %>
         </div>
 
@@ -121,7 +126,7 @@
           <%= form.label :date_of_birth, class: "field-label" do %>
 <%= pet_field_icon(:date_of_birth) %>Birthday
           <% end %>
-          <%= form.date_field :date_of_birth, class: [ "form-control", ("is-invalid" if pet.errors[:date_of_birth].any?) ] %>
+          <%= form.date_field :date_of_birth, **pm_off(class: [ "form-control", ("is-invalid" if pet.errors[:date_of_birth].any?) ]) %>
           <%= field_error pet, :date_of_birth %>
         </div>
 
@@ -129,7 +134,7 @@
           <%= form.label :microchip, class: "field-label" do %>
 <%= pet_field_icon(:microchip) %>Microchip
           <% end %>
-          <%= form.text_field :microchip, placeholder: "e.g. Tag-12345", class: [ "form-control", ("is-invalid" if pet.errors[:microchip].any?) ] %>
+          <%= form.text_field :microchip, **pm_off(placeholder: "e.g. Tag-12345", class: [ "form-control", ("is-invalid" if pet.errors[:microchip].any?) ]) %>
           <%= field_error pet, :microchip %>
         </div>
 
@@ -141,7 +146,7 @@
         <div class="col-sm-6">
           <div class="field-label"><%= pet_field_icon(:neutered) %>Spayed / neutered</div>
           <div class="form-check form-switch">
-            <%= form.check_box :neutered, class: "form-check-input", role: "switch" %>
+            <%= form.check_box :neutered, **pm_off(class: "form-check-input", role: "switch") %>
             <%= form.label :neutered, "Yes", class: "form-check-label text-ink" %>
           </div>
         </div>
@@ -150,7 +155,7 @@
           <%= form.label :notes, class: "field-label" do %>
             <%= pet_field_icon(:notes) %>Notes
           <% end %>
-          <%= form.text_area :notes, rows: 4, placeholder: "Anything worth remembering — temperament, allergies, routines…", class: [ "form-control", ("is-invalid" if pet.errors[:notes].any?) ] %>
+          <%= form.text_area :notes, rows: 4, **pm_off(placeholder: "Anything worth remembering — temperament, allergies, routines…", class: [ "form-control", ("is-invalid" if pet.errors[:notes].any?) ]) %>
           <%= field_error pet, :notes %>
         </div>
 
