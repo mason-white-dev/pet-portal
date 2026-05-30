@@ -22,18 +22,14 @@
     1Password?" prompt on the input itself, not on the <form>. So every field
     below is wrapped in pm_off(...). %>
 <%= form_with(model: pet) do |form| %>
-
   <div class="row g-4">
-
     <%# --- LEFT: current photo + change control (mirrors the card's photo) --- %>
     <div class="col-md-4" data-controller="image-preview">
-
       <%# A just-uploaded file on an UNSAVED pet (e.g. a validation-error re-render) %>
       <%# is attached but its blob isn't persisted — image_tag can't build a URL for %>
       <%# it ("Cannot get a signed_id for a new record"). So treat it as a real photo %>
       <%# only when the blob is persisted; otherwise fall back to the placeholder. %>
       <% has_photo = pet.avatar_image.attached? && pet.avatar_image.blob&.persisted? %>
-
       <%# Preview <img>. Shown when there's a saved photo; otherwise a src-less %>
       <%# hidden <img> waits to be filled by the controller on file pick. %>
       <% if has_photo %>
@@ -46,7 +42,6 @@
              style="aspect-ratio: 1 / 1;"
              data-image-preview-target="image">
       <% end %>
-
       <%# Coral monogram placeholder (matches the profile card + gallery), hidden %>
       <%# once a photo exists or is picked. On a brand-new pet with no name yet, %>
       <%# show a neutral camera prompt instead of an initial. %>
@@ -60,17 +55,14 @@
           <span class="small fw-medium">Add a photo</span>
         <% end %>
       </div>
-
       <%# Native file input, hidden — the buttons below drive it. It still %>
       <%# submits the chosen file as pet[avatar_image] on save. %>
       <%= form.file_field :avatar_image, accept: "image/*", **pm_off(class: "d-none",
             data: { image_preview_target: "input", action: "change->image-preview#update" }) %>
-
       <%# "1" here tells PetsController#update to purge the stored photo on save. %>
       <%# It's read directly from params, not via pet_params. %>
       <%= hidden_field_tag "pet[remove_avatar_image]", "",
             data: { image_preview_target: "removeFlag" } %>
-
       <%# Prettier replacement for the default file UI: a button to open the %>
       <%# picker, and one to clear the photo. The result is shown via the live %>
       <%# preview above, so the file path/name is unnecessary. %>
@@ -85,59 +77,51 @@
       <%# avatar_image errors (wrong type / too large) surface here, under the buttons. %>
       <%= field_error pet, :avatar_image %>
     </div>
-
     <%# --- RIGHT: editable identity fields (mirrors the card's detail grid) --- %>
     <div class="col-md-8">
       <div class="row g-3">
-
         <div class="col-sm-6">
           <%= form.label :name, class: "field-label" do %>
-<%= pet_field_icon(:name) %>Name
+            <%= pet_field_icon(:name) %>Name
           <% end %>
           <%= form.text_field :name, **pm_off(placeholder: "e.g. Scout", class: [ "form-control", ("is-invalid" if pet.errors[:name].any?) ]) %>
           <%= field_error pet, :name %>
         </div>
-
         <div class="col-sm-6">
           <%= form.label :species, class: "field-label" do %>
-<%= pet_field_icon(:species) %>Species
+            <%= pet_field_icon(:species) %>Species
           <% end %>
           <%= form.select :species, Pet.species.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select species" }, **pm_off(class: [ "form-select", ("is-invalid" if pet.errors[:species].any?) ]) %>
           <%= field_error pet, :species %>
         </div>
-
         <div class="col-sm-6">
           <%= form.label :breed, class: "field-label" do %>
-<%= pet_field_icon(:breed) %>Breed
+            <%= pet_field_icon(:breed) %>Breed
           <% end %>
           <%= form.text_field :breed, **pm_off(placeholder: "e.g. Mixed Breed", class: [ "form-control", ("is-invalid" if pet.errors[:breed].any?) ]) %>
           <%= field_error pet, :breed %>
         </div>
-
         <div class="col-sm-6">
           <%= form.label :sex, class: "field-label" do %>
-<%= pet_field_icon(:sex) %>Sex
+            <%= pet_field_icon(:sex) %>Sex
           <% end %>
           <%= form.select :sex, Pet.sexes.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select sex" }, **pm_off(class: [ "form-select", ("is-invalid" if pet.errors[:sex].any?) ]) %>
           <%= field_error pet, :sex %>
         </div>
-
         <div class="col-sm-6">
           <%= form.label :date_of_birth, class: "field-label" do %>
-<%= pet_field_icon(:date_of_birth) %>Birthday
+            <%= pet_field_icon(:date_of_birth) %>Birthday
           <% end %>
           <%= form.date_field :date_of_birth, **pm_off(class: [ "form-control", ("is-invalid" if pet.errors[:date_of_birth].any?) ]) %>
           <%= field_error pet, :date_of_birth %>
         </div>
-
         <div class="col-sm-6">
           <%= form.label :microchip, class: "field-label" do %>
-<%= pet_field_icon(:microchip) %>Microchip
+            <%= pet_field_icon(:microchip) %>Microchip
           <% end %>
           <%= form.text_field :microchip, **pm_off(placeholder: "e.g. Tag-12345", class: [ "form-control", ("is-invalid" if pet.errors[:microchip].any?) ]) %>
           <%= field_error pet, :microchip %>
         </div>
-
         <%# Neutered: matches the other fields — a coral-icon field-label header
             with the control beneath. The control is a plain inline Bootstrap
             switch (no box; a bordered well would make a toggle look like a text
@@ -150,7 +134,6 @@
             <%= form.label :neutered, "Yes", class: "form-check-label text-ink" %>
           </div>
         </div>
-
         <div class="col-12">
           <%= form.label :notes, class: "field-label" do %>
             <%= pet_field_icon(:notes) %>Notes
@@ -158,16 +141,12 @@
           <%= form.text_area :notes, rows: 4, **pm_off(placeholder: "Anything worth remembering — temperament, allergies, routines…", class: [ "form-control", ("is-invalid" if pet.errors[:notes].any?) ]) %>
           <%= field_error pet, :notes %>
         </div>
-
       </div>
     </div>
-
   </div>
-
   <%# --- ACTIONS: divided off; Cancel dismisses the modal, Save submits --- %>
   <div class="d-flex justify-content-end gap-2 border-top border-secondary-subtle mt-4 pt-3">
     <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
     <%= form.submit "Save changes", class: "btn btn-ink rounded-pill px-4" %>
   </div>
-
 <% end %>
