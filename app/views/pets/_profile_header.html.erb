@@ -1,31 +1,38 @@
-<%# Horizontal profile header: pet name on the left with the tab nav right beside
-    it, and a "Delete pet" action pushed to the far right, over a divider. The
-    avatar lives in the About photo card; per-section "add"/"edit" actions live
-    inside each tab. This header renders above EVERY tab (via _profile_shell), so
-    it's the right home for pet-level actions like delete. %>
-<%# Back to the roster — a light "kicker" hugging the title above. The sidebar
-    already carries primary nav, so this stays feather-light. turbo_frame: "_top"
-    breaks out of the pet_content frame to navigate the whole page. %>
+<%# Profile header: a light "← My Pets" kicker, then the pet name, then a tab row
+    that carries the section nav on the left and a de-emphasized "Delete pet"
+    action on the right, all sitting on a hairline divider. The avatar lives in
+    the About Identity card; per-section add/edit actions live in each tab.
+    Renders above EVERY tab (via _profile_shell), so it's the home for pet-level
+    actions like delete. %>
+<%# turbo_frame: "_top" breaks out of the pet_content frame to navigate the whole
+    page back to the roster. %>
 <%= link_to pets_path, class: "back-link text-secondary text-decoration-none small fw-medium d-inline-flex align-items-center gap-2 mb-2", data: { turbo_frame: "_top" } do %>
   <i class="fa-solid fa-arrow-left"></i>
   My Pets
 <% end %>
-<div class="d-flex align-items-end flex-wrap gap-4 border-bottom border-secondary-subtle pb-2 mb-4">
-  <%# Pet name only — species/breed/age live in the Identity card now. The id
-      lets update.turbo_stream.erb refresh just this name after an edit. %>
-  <h1 id="<%= dom_id(pet, :pet_name) %>" class="fw-bold mb-0 text-ink"><%= pet.name %></h1>
-  <%# Tab nav — mx-auto centers it in the space between the name and the delete
-      action, so it isn't cramped up against the name. %>
-  <div class="mx-auto">
-    <%= render "pets/nav_tabs", pet: pet, active_tab: active_tab %>
+
+<div class="mb-4">
+  <%# Pet name only — species/breed/age live in the Identity card. The id lets
+      update.turbo_stream.erb refresh just this name after an edit. %>
+  <h1 id="<%= dom_id(pet, :pet_name) %>" class="fw-bold mb-3 text-ink text-truncate"><%= pet.name %></h1>
+
+  <%# Tab row: nav on the left, Delete pushed right (ms-auto), aligned to their
+      bottoms so both sit on the divider. Keeps pb-2 + a bottom border so the
+      active .pet-tab underline lands cleanly on it (its negative margin is tuned
+      to this pb-2). gap-3 keeps the button off the tabs when they get wide. %>
+  <div class="d-flex align-items-end gap-3 border-bottom border-secondary-subtle pb-2">
+    <div class="flex-grow-1" style="min-width: 0;">
+      <%= render "pets/nav_tabs", pet: pet, active_tab: active_tab %>
+    </div>
+    <%# Delete the ENTIRE pet: a de-emphasized trigger that loads a styled
+        confirmation into the shared modal (drawer frame) rather than the
+        browser's native confirm(). The real, filled Delete button lives inside
+        that confirmation (see pets/confirm_delete). %>
+    <%= link_to confirm_delete_pet_path(pet),
+          class: "btn btn-sm btn-outline-danger rounded-pill flex-shrink-0 d-inline-flex align-items-center gap-2",
+          data: { turbo_frame: "drawer" } do %>
+      <i class="fa-regular fa-trash-can"></i>
+      <span class="d-none d-sm-inline">Delete pet</span>
+    <% end %>
   </div>
-  <%# Delete the ENTIRE pet. De-emphasized trigger pushed far right via ms-auto:
-      it loads a styled confirmation into the shared modal (drawer frame) rather
-      than firing the browser's native confirm() dialog. The real, filled Delete
-      button lives inside that confirmation (see pets/confirm_delete). %>
-  <%= link_to confirm_delete_pet_path(pet),
-        class: "btn btn-outline-danger btn-sm rounded-pill",
-        data: { turbo_frame: "drawer" } do %>
-    <i class="fa-solid fa-trash me-1"></i> Delete pet
-  <% end %>
 </div>
