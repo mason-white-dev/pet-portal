@@ -60,7 +60,30 @@ Rails.application.routes.draw do
     #   GET /pets/:id/confirm_delete => pets#confirm_delete (confirm_delete_pet_path)
     get :confirm_delete, on: :member
 
+    # =====================================================================
+    # Care Team Routes (nested under :pets) Cheat Sheet
+    # =====================================================================
+    #
+    # A pet's care team (vets, groomers, sitters, etc.). Nested because a
+    # member only exists in the context of one pet. There is no index/show:
+    # the team is rendered on the pet profile and all CRUD runs through the
+    # shared modal.
+    #
+    # NEW / CREATE
+    #   GET    /pets/:pet_id/care_team_members/new      => care_team_members#new    (new_pet_care_team_member_path)
+    #   POST   /pets/:pet_id/care_team_members          => care_team_members#create (pet_care_team_members_path)
+    #
+    # EDIT / UPDATE / DELETE
+    #   GET    /pets/:pet_id/care_team_members/:id/edit => care_team_members#edit    (edit_pet_care_team_member_path)
+    #   PATCH  /pets/:pet_id/care_team_members/:id      => care_team_members#update  (pet_care_team_member_path)
+    #   PUT    /pets/:pet_id/care_team_members/:id      => care_team_members#update  (pet_care_team_member_path)
+    #   DELETE /pets/:pet_id/care_team_members/:id      => care_team_members#destroy (pet_care_team_member_path)
+    #
+    # =====================================================================
     resources :care_team_members, only: %i[new create edit update destroy] do
+      # Styled delete confirmation, shown in the shared modal (drawer frame)
+      # instead of the browser's native confirm() dialog.
+      #   GET /pets/:pet_id/care_team_members/:id/confirm_delete => care_team_members#confirm_delete (confirm_delete_pet_care_team_member_path)
       get :confirm_delete, on: :member
     end
   end

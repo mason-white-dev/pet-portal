@@ -74,6 +74,7 @@ class CareTeamMembersController < ApplicationController
     @care_team_member.destroy!
 
     respond_to do |format|
+      # Re-render the whole Care Team list (see list.turbo_stream.erb).
       format.turbo_stream { render :list }
       format.html { redirect_to pet_path(@pet), notice: "Care team member was successfully removed.", status: :see_other }
     end

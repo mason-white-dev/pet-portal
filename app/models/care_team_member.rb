@@ -24,6 +24,10 @@
 class CareTeamMember < ApplicationRecord
   belongs_to :pet
 
+  # `validate: { allow_blank: true }` makes an out-of-range role (e.g. a crafted
+  # POST with role="astronaut") a graceful validation failure (422) instead of an
+  # ArgumentError at assignment time (500). allow_blank lets the presence
+  # validation below own the "missing role" message rather than double-reporting.
   enum :role, {
     primary_vet:   "primary_vet",
     emergency_vet: "emergency_vet",
@@ -32,10 +36,12 @@ class CareTeamMember < ApplicationRecord
     walker:        "walker",
     trainer:       "trainer",
     other:         "other"
-  }
+  }, validate: { allow_blank: true }
 
-  validates :name, presence: true
+  # Presence validation: ensures the user actually selected a role, and returns a
+  # more user-friendly error message than the enum validation.
   validates :role, presence: true
+  validates :name, presence: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
 
   # Care team is shown vets-first — the enum is declared in priority order, so

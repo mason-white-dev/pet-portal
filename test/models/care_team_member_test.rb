@@ -76,8 +76,13 @@ class CareTeamMemberTest < ActiveSupport::TestCase
     assert @care_team_member.emergency_vet?
   end
 
-  test "rejects an unknown role" do
-    assert_raises(ArgumentError) { @care_team_member.role = "astronaut" }
+  # With `validate: { allow_blank: true }` on the enum, an out-of-range value no
+  # longer raises ArgumentError at assignment — it's held and rejected by a
+  # normal validation, so a crafted request gets a graceful 422 (not a 500).
+  test "rejects an unknown role as a validation error" do
+    @care_team_member.role = "astronaut"
+    assert_not @care_team_member.valid?
+    assert_includes @care_team_member.errors[:role], "is not included in the list"
   end
 
   test "role_label humanizes the stored role" do
