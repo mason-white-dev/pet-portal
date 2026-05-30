@@ -1,46 +1,62 @@
 <%#
   # Pet Profile: "About" Tab
   #
-  # This partial renders the main dashboard for a specific pet. It provides a
-  # bird's-eye view of the pet's core identity, schedule, and notes.
+  # The main dashboard for a single pet — a bird's-eye view of identity, daily
+  # schedule, and care team.
   #
-  # Layout Structure:
-  # - Row 1: Pet Photo & Name, Identity details (breed, age, microchip), and a Daily Schedule preview.
+  # Layout:
+  # - Row 1: Identity card (photo + core attributes) and a Daily Schedule preview.
   # - Row 2: the Care Team list (vets, groomers, sitters, etc.).
   #
-  # Note: Daily Schedule is still a placeholder stub for a future feature; Care Team is live.
+  # All cards share one visual language: hairline border, soft shadow, rounded-4,
+  # a small uppercase "eyebrow" header, and a go-link action on the right.
+  #
+  # Note: Daily Schedule is a placeholder stub for a future feature; Care Team is
+  # live. The Care Team card's HEADER lives here, but its BODY is the
+  # care_team_members/list partial (which carries the Turbo Stream target id), so
+  # create/update/destroy can refresh just the list without redrawing the header.
 %>
-<%# --- ROW 1: PHOTO, IDENTITY, & DAILY SCHEDULE --- %>
+<%# --- ROW 1: IDENTITY & DAILY SCHEDULE --- %>
 <div class="row g-4 mb-4">
-  <%# --- _pet_identity_card.html.erb --- %>
+  <%# --- _pet_identity_card.html.erb (col-lg-8 lives on the partial root) --- %>
   <%= render "pet_identity_card", pet: pet %>
+
   <%# --- DAILY SCHEDULE CARD (PLACEHOLDER) --- %>
   <%# Will display data from the future Daily Care feature %>
   <div class="col-lg-4">
-    <div class="card shadow-sm border border-secondary-subtle rounded-4 h-100">
-      <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-4 pb-0 px-4">
-        <div class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Daily Schedule</div>
-        <span class="badge bg-light text-secondary border border-secondary-subtle fw-normal">Coming soon</span>
-      </div>
-      <div class="card-body p-4 pt-3">
-        <div class="text-muted fst-italic">Food, walks, meals, and meds will show up here once Daily Care is set up.</div>
+    <div class="card border border-secondary-subtle rounded-4 shadow-sm h-100">
+      <div class="card-body p-4 d-flex flex-column">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <span class="eyebrow text-muted">Daily Schedule</span>
+          <span class="badge rounded-pill text-bg-light border border-secondary-subtle fw-normal">Coming soon</span>
+        </div>
+        <%# Centered empty state so the placeholder reads as intentional. %>
+        <div class="flex-grow-1 d-flex flex-column align-items-center justify-content-center text-center py-4">
+          <span class="pet-card-add__icon d-inline-flex align-items-center justify-content-center rounded-circle mb-3">
+            <i class="fa-regular fa-clock fs-4 text-secondary"></i>
+          </span>
+          <div class="text-muted small px-2">Food, walks, meals, and meds will show up here once Daily Care is set up.</div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
 <%# --- ROW 2: CARE TEAM --- %>
 <div class="row g-4">
-  <%# --- CARE TEAM CARD --- %>
-  <%# Lists the pet's vets, groomers, sitters, etc. "+ Add" and each "Edit" open %>
-  <%# the shared drawer modal. %>
-  <div class="col-lg-12">
-    <div class="card shadow-sm border border-secondary-subtle rounded-4 h-100">
-      <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-4 pb-0 px-4">
-        <div class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Care Team</div>
+  <div class="col-12">
+    <%# overflow-hidden clips the flush care-team rows to the card's rounded-4
+        corners, so the last row's square bottom corners don't poke through. %>
+    <div class="card border border-secondary-subtle rounded-4 shadow-sm overflow-hidden">
+      <%# Card HEADER (stays put across Turbo refreshes). "+ Add" and each row's
+          "Edit" open the shared drawer modal. %>
+      <div class="d-flex justify-content-between align-items-center px-4 pt-4 pb-3">
+        <span class="eyebrow text-muted">Care Team</span>
         <%= link_to new_pet_care_team_member_path(pet), class: "go-link text-secondary text-decoration-none small fw-medium d-inline-flex align-items-center gap-1", data: { turbo_frame: "drawer" } do %>
-          <span>+ Add</span>
+          <i class="fa-solid fa-plus"></i> Add
         <% end %>
       </div>
+      <%# Card BODY: the list partial (carries the Turbo Stream target id). %>
       <%= render "care_team_members/list", pet: pet %>
     </div>
   </div>

@@ -9,43 +9,48 @@
   # Fully local-driven: needs `pet` and `care_team_member` locals (passed from
   # new.html.erb / edit.html.erb). Rendered inside the modal's "drawer" frame.
 %>
+<%# Password managers (1Password, LastPass) mistake non-credential fields like
+    "Name"/"Email" for account fields. The `pm_off` helper (application_helper)
+    adds the opt-out attributes per FIELD — they only reliably suppress the
+    "save to 1Password?" prompt on the input itself, not on the <form>. So every
+    field below is wrapped in pm_off(...). %>
 <%= form_with(model: [ pet, care_team_member ]) do |form| %>
 
   <div class="row g-3">
 
     <div class="col-sm-6">
       <%= form.label :role, class: "field-label" %>
-      <%= form.select :role, CareTeamMember.roles.keys.map { |k| [ k.titleize, k ] }, { prompt: "Select a role" }, class: [ "form-select", ("is-invalid" if care_team_member.errors[:role].any?) ] %>
+      <%= form.select :role, CareTeamMember.roles.keys.map { |k| [ k.titleize, k ] }, { prompt: "Select a role" }, **pm_off(class: [ "form-select", ("is-invalid" if care_team_member.errors[:role].any?) ]) %>
       <%= field_error care_team_member, :role %>
     </div>
 
     <div class="col-sm-6">
       <%= form.label :name, class: "field-label" %>
-      <%= form.text_field :name, placeholder: "e.g. Dr. Alice Nguyen", class: [ "form-control", ("is-invalid" if care_team_member.errors[:name].any?) ] %>
+      <%= form.text_field :name, **pm_off(placeholder: "e.g. Dr. Alice Nguyen", class: [ "form-control", ("is-invalid" if care_team_member.errors[:name].any?) ]) %>
       <%= field_error care_team_member, :name %>
     </div>
 
     <div class="col-sm-6">
       <%= form.label :organization, class: "field-label" %>
-      <%= form.text_field :organization, placeholder: "e.g. Banfield Pet Hospital", class: [ "form-control", ("is-invalid" if care_team_member.errors[:organization].any?) ] %>
+      <%= form.text_field :organization, **pm_off(placeholder: "e.g. Banfield Pet Hospital", class: [ "form-control", ("is-invalid" if care_team_member.errors[:organization].any?) ]) %>
       <%= field_error care_team_member, :organization %>
     </div>
 
     <div class="col-sm-6">
       <%= form.label :phone, class: "field-label" %>
-      <%= form.telephone_field :phone, class: [ "form-control", ("is-invalid" if care_team_member.errors[:phone].any?) ] %>
+      <%= form.telephone_field :phone, **pm_off(class: [ "form-control", ("is-invalid" if care_team_member.errors[:phone].any?) ]) %>
       <%= field_error care_team_member, :phone %>
     </div>
 
     <div class="col-12">
       <%= form.label :email, class: "field-label" %>
-      <%= form.email_field :email, class: [ "form-control", ("is-invalid" if care_team_member.errors[:email].any?) ] %>
+      <%= form.email_field :email, **pm_off(class: [ "form-control", ("is-invalid" if care_team_member.errors[:email].any?) ]) %>
       <%= field_error care_team_member, :email %>
     </div>
 
     <div class="col-12">
       <%= form.label :notes, class: "field-label" %>
-      <%= form.text_area :notes, rows: 3, class: [ "form-control", ("is-invalid" if care_team_member.errors[:notes].any?) ] %>
+      <%= form.text_area :notes, rows: 3, **pm_off(class: [ "form-control", ("is-invalid" if care_team_member.errors[:notes].any?) ]) %>
       <%= field_error care_team_member, :notes %>
     </div>
 

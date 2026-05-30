@@ -1,12 +1,16 @@
 <%# Horizontal tab nav. Active tab = bold ink text + an underline that sits on
     the header's divider (.pet-tab, see application.css); the rest are muted.
-    About → show; the middle tabs are placeholders pending #3–#6. %>
-<div class="d-flex align-items-end flex-wrap gap-5">
-  <%= link_to pet_path(pet), class: "pet-tab text-decoration-none #{active_tab == :about ? 'active fw-bold text-ink' : 'text-secondary'}", aria: { current: (active_tab == :about ? "page" : nil) } do %>
-    About
+    Each tab carries a small FontAwesome glyph for quick scanning (dashboard
+    style). flex-wrap lets tabs wrap to a second line on narrow screens (no
+    horizontal scroll — overflow containers would clip the .pet-tab underline's
+    negative-margin overhang and show a stray scrollbar). About → show; the
+    middle tabs are placeholders pending #3–#6. %>
+<div class="d-flex align-items-end flex-wrap gap-4 gap-md-5">
+  <%= link_to pet_path(pet), class: "pet-tab text-decoration-none d-inline-flex align-items-center gap-2 text-nowrap #{active_tab == :about ? 'active fw-bold text-ink' : 'text-secondary'}", aria: { current: (active_tab == :about ? "page" : nil) } do %>
+    <i class="fa-solid fa-paw"></i> About
   <% end %>
-  <a href="#" class="pet-tab text-decoration-none text-secondary">Vaccines</a>
-  <a href="#" class="pet-tab text-decoration-none text-secondary">Issues &amp; visits</a>
-  <a href="#" class="pet-tab text-decoration-none text-secondary">Daily care</a>
-  <a href="#" class="pet-tab text-decoration-none text-secondary">Memories</a>
+  <a href="#" class="pet-tab text-decoration-none d-inline-flex align-items-center gap-2 text-nowrap text-secondary"><i class="fa-solid fa-syringe"></i> Vaccines</a>
+  <a href="#" class="pet-tab text-decoration-none d-inline-flex align-items-center gap-2 text-nowrap text-secondary"><i class="fa-solid fa-notes-medical"></i> Issues &amp; visits</a>
+  <a href="#" class="pet-tab text-decoration-none d-inline-flex align-items-center gap-2 text-nowrap text-secondary"><i class="fa-solid fa-bowl-food"></i> Daily care</a>
+  <a href="#" class="pet-tab text-decoration-none d-inline-flex align-items-center gap-2 text-nowrap text-secondary"><i class="fa-solid fa-images"></i> Memories</a>
 </div>

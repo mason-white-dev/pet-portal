@@ -19,4 +19,19 @@ class PetsHelperTest < ActionView::TestCase
   test "is blank when nothing is present" do
     assert_equal "", pet_subtitle(Pet.new)
   end
+
+  test "pet_field_icon renders the mapped glyph as a coral accent <i>" do
+    html = pet_field_icon(:species)
+
+    assert_includes html, "fa-paw"        # the glyph mapped to :species
+    assert_includes html, "fa-solid"      # FontAwesome style
+    assert_includes html, "text-accent"   # brand coral
+    assert_match(/\A<i /, html)           # rendered as an <i> tag
+  end
+
+  test "pet_field_icon raises on an unknown field" do
+    # fetch fails loudly so a typo'd field name surfaces in dev rather than
+    # silently rendering no icon.
+    assert_raises(KeyError) { pet_field_icon(:not_a_field) }
+  end
 end

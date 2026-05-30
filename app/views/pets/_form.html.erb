@@ -1,60 +1,68 @@
 <%#
   # Pet Form (shared by new + edit)
   #
-  # Mirrors the merged Identity card (pets/_pet_identity_card): current photo +
-  # change control on the LEFT, the editable identity fields on the RIGHT, using
-  # the shared `.field-label` style — so the modal reads as "the card, made
-  # editable." Rendered inside the modal's "drawer" frame via pets/edit.html.erb.
+  # Mirrors the merged Identity card (pets/_pet_identity_card): the photo + change
+  # control on the LEFT, the editable identity fields on the RIGHT, using the
+  # shared `.field-label` style (with matching coral icons) — so the modal reads
+  # as "the card, made editable." Rendered inside the modal's "drawer" frame via
+  # pets/new.html.erb and pets/edit.html.erb.
   #
   # Validation errors are shown INLINE, per field: each input gets `is-invalid`
   # (Bootstrap's red border + icon) and a message underneath via the field_error
   # helper — same treatment as the sign-up form, rather than one summary alert.
+  #
+  # IMPORTANT: the photo column is driven by the `image-preview` Stimulus
+  # controller. The data-controller / data-image-preview-target / data-action
+  # hooks below are load-bearing — picking a file points the <img> at a local
+  # object URL (no upload until submit). Restyle freely, but keep those hooks.
 %>
+<%# Password managers (1Password, LastPass) mistake non-credential fields like
+    "Name" for account fields. The `pm_off` helper (application_helper) adds the
+    opt-out attributes per FIELD — they only reliably suppress the "save to
+    1Password?" prompt on the input itself, not on the <form>. So every field
+    below is wrapped in pm_off(...). %>
 <%= form_with(model: pet) do |form| %>
-
   <div class="row g-4">
-
     <%# --- LEFT: current photo + change control (mirrors the card's photo) --- %>
-    <%# data-controller wires the live preview: picking a file points the <img> %>
-    <%# at a local object URL (no upload until "Save changes" submits). %>
     <div class="col-md-4" data-controller="image-preview">
-
       <%# A just-uploaded file on an UNSAVED pet (e.g. a validation-error re-render) %>
       <%# is attached but its blob isn't persisted — image_tag can't build a URL for %>
       <%# it ("Cannot get a signed_id for a new record"). So treat it as a real photo %>
       <%# only when the blob is persisted; otherwise fall back to the placeholder. %>
       <% has_photo = pet.avatar_image.attached? && pet.avatar_image.blob&.persisted? %>
-
       <%# Preview <img>. Shown when there's a saved photo; otherwise a src-less %>
       <%# hidden <img> waits to be filled by the controller on file pick. %>
       <% if has_photo %>
         <%= image_tag pet.avatar_image, alt: pet.name,
-              class: "w-100 rounded-3 object-fit-cover mb-3",
+              class: "w-100 rounded-4 object-fit-cover shadow-sm mb-3",
               style: "aspect-ratio: 1 / 1;",
               data: { image_preview_target: "image" } %>
       <% else %>
-        <img alt="" class="w-100 rounded-3 object-fit-cover mb-3 d-none"
+        <img alt="" class="w-100 rounded-4 object-fit-cover shadow-sm mb-3 d-none"
              style="aspect-ratio: 1 / 1;"
              data-image-preview-target="image">
       <% end %>
-
-      <%# Hatched placeholder, hidden once a photo exists or is picked. %>
-      <div class="w-100 rounded-3 bg-light d-flex align-items-center justify-content-center mb-3 <%= "d-none" if has_photo %>"
-           style="aspect-ratio: 1 / 1; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px);"
+      <%# Coral monogram placeholder (matches the profile card + gallery), hidden %>
+      <%# once a photo exists or is picked. On a brand-new pet with no name yet, %>
+      <%# show a neutral camera prompt instead of an initial. %>
+      <div class="pet-card__monogram w-100 rounded-4 d-flex flex-column align-items-center justify-content-center mb-3 <%= "d-none" if has_photo %>"
+           style="aspect-ratio: 1 / 1;"
            data-image-preview-target="placeholder">
-        <span class="badge bg-white text-secondary border border-secondary-subtle fw-normal">No photo yet</span>
+        <% if pet.name.present? %>
+          <span class="display-3 fw-bold"><%= pet.name.to_s.first.upcase %></span>
+        <% else %>
+          <i class="fa-solid fa-camera fs-1 mb-2"></i>
+          <span class="small fw-medium">Add a photo</span>
+        <% end %>
       </div>
-
       <%# Native file input, hidden — the buttons below drive it. It still %>
       <%# submits the chosen file as pet[avatar_image] on save. %>
-      <%= form.file_field :avatar_image, accept: "image/*", class: "d-none",
-            data: { image_preview_target: "input", action: "change->image-preview#update" } %>
-
+      <%= form.file_field :avatar_image, accept: "image/*", **pm_off(class: "d-none",
+            data: { image_preview_target: "input", action: "change->image-preview#update" }) %>
       <%# "1" here tells PetsController#update to purge the stored photo on save. %>
       <%# It's read directly from params, not via pet_params. %>
       <%= hidden_field_tag "pet[remove_avatar_image]", "",
             data: { image_preview_target: "removeFlag" } %>
-
       <%# Prettier replacement for the default file UI: a button to open the %>
       <%# picker, and one to clear the photo. The result is shown via the live %>
       <%# preview above, so the file path/name is unnecessary. %>
@@ -69,70 +77,76 @@
       <%# avatar_image errors (wrong type / too large) surface here, under the buttons. %>
       <%= field_error pet, :avatar_image %>
     </div>
-
     <%# --- RIGHT: editable identity fields (mirrors the card's detail grid) --- %>
     <div class="col-md-8">
       <div class="row g-3">
-
         <div class="col-sm-6">
-          <%= form.label :name, class: "field-label" %>
-          <%= form.text_field :name, class: [ "form-control", ("is-invalid" if pet.errors[:name].any?) ] %>
+          <%= form.label :name, class: "field-label" do %>
+            <%= pet_field_icon(:name) %>Name
+          <% end %>
+          <%= form.text_field :name, **pm_off(placeholder: "e.g. Scout", class: [ "form-control", ("is-invalid" if pet.errors[:name].any?) ]) %>
           <%= field_error pet, :name %>
         </div>
-
         <div class="col-sm-6">
-          <%= form.label :species, class: "field-label" %>
-          <%= form.select :species, Pet.species.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select species" }, class: [ "form-select", ("is-invalid" if pet.errors[:species].any?) ] %>
+          <%= form.label :species, class: "field-label" do %>
+            <%= pet_field_icon(:species) %>Species
+          <% end %>
+          <%= form.select :species, Pet.species.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select species" }, **pm_off(class: [ "form-select", ("is-invalid" if pet.errors[:species].any?) ]) %>
           <%= field_error pet, :species %>
         </div>
-
         <div class="col-sm-6">
-          <%= form.label :breed, class: "field-label" %>
-          <%= form.text_field :breed, class: [ "form-control", ("is-invalid" if pet.errors[:breed].any?) ] %>
+          <%= form.label :breed, class: "field-label" do %>
+            <%= pet_field_icon(:breed) %>Breed
+          <% end %>
+          <%= form.text_field :breed, **pm_off(placeholder: "e.g. Mixed Breed", class: [ "form-control", ("is-invalid" if pet.errors[:breed].any?) ]) %>
           <%= field_error pet, :breed %>
         </div>
-
         <div class="col-sm-6">
-          <%= form.label :sex, class: "field-label" %>
-          <%= form.select :sex, Pet.sexes.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select sex" }, class: [ "form-select", ("is-invalid" if pet.errors[:sex].any?) ] %>
+          <%= form.label :sex, class: "field-label" do %>
+            <%= pet_field_icon(:sex) %>Sex
+          <% end %>
+          <%= form.select :sex, Pet.sexes.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select sex" }, **pm_off(class: [ "form-select", ("is-invalid" if pet.errors[:sex].any?) ]) %>
           <%= field_error pet, :sex %>
         </div>
-
         <div class="col-sm-6">
-          <%= form.label :date_of_birth, "Birthday", class: "field-label" %>
-          <%= form.date_field :date_of_birth, class: [ "form-control", ("is-invalid" if pet.errors[:date_of_birth].any?) ] %>
+          <%= form.label :date_of_birth, class: "field-label" do %>
+            <%= pet_field_icon(:date_of_birth) %>Birthday
+          <% end %>
+          <%= form.date_field :date_of_birth, **pm_off(class: [ "form-control", ("is-invalid" if pet.errors[:date_of_birth].any?) ]) %>
           <%= field_error pet, :date_of_birth %>
         </div>
-
         <div class="col-sm-6">
-          <%= form.label :microchip, class: "field-label" %>
-          <%= form.text_field :microchip, class: [ "form-control", ("is-invalid" if pet.errors[:microchip].any?) ] %>
+          <%= form.label :microchip, class: "field-label" do %>
+            <%= pet_field_icon(:microchip) %>Microchip
+          <% end %>
+          <%= form.text_field :microchip, **pm_off(placeholder: "e.g. Tag-12345", class: [ "form-control", ("is-invalid" if pet.errors[:microchip].any?) ]) %>
           <%= field_error pet, :microchip %>
         </div>
-
-        <%# Neutered: boolean, so a checkbox rather than a value --- %>
-        <div class="col-12">
-          <div class="form-check">
-            <%= form.check_box :neutered, class: "form-check-input" %>
-            <%= form.label :neutered, class: "form-check-label" %>
+        <%# Neutered: matches the other fields — a coral-icon field-label header
+            with the control beneath. The control is a plain inline Bootstrap
+            switch (no box; a bordered well would make a toggle look like a text
+            input). Canonical form-check/form-switch markup so Bootstrap handles
+            layout. %>
+        <div class="col-sm-6">
+          <div class="field-label"><%= pet_field_icon(:neutered) %>Spayed / neutered</div>
+          <div class="form-check form-switch">
+            <%= form.check_box :neutered, **pm_off(class: "form-check-input", role: "switch") %>
+            <%= form.label :neutered, "Yes", class: "form-check-label text-ink" %>
           </div>
         </div>
-
         <div class="col-12">
-          <%= form.label :notes, class: "field-label" %>
-          <%= form.text_area :notes, rows: 4, class: [ "form-control", ("is-invalid" if pet.errors[:notes].any?) ] %>
+          <%= form.label :notes, class: "field-label" do %>
+            <%= pet_field_icon(:notes) %>Notes
+          <% end %>
+          <%= form.text_area :notes, rows: 4, **pm_off(placeholder: "Anything worth remembering — temperament, allergies, routines…", class: [ "form-control", ("is-invalid" if pet.errors[:notes].any?) ]) %>
           <%= field_error pet, :notes %>
         </div>
-
       </div>
     </div>
-
   </div>
-
-  <%# --- ACTIONS: Cancel just dismisses the Bootstrap modal; Save submits --- %>
-  <div class="d-flex justify-content-end gap-2 mt-4">
+  <%# --- ACTIONS: divided off; Cancel dismisses the modal, Save submits --- %>
+  <div class="d-flex justify-content-end gap-2 border-top border-secondary-subtle mt-4 pt-3">
     <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
     <%= form.submit "Save changes", class: "btn btn-ink rounded-pill px-4" %>
   </div>
-
 <% end %>

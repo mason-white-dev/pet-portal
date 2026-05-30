@@ -1,61 +1,65 @@
 <%#
-  # Care Team Member card (one tile in the Care Team grid on the pet profile)
+  # Care Team Member row (one entry in the Care Team list on the pet profile)
   #
   # Rendered as a collection from care_team_members/_list
   # (`collection: pet.care_team_members`), so each iteration receives a
   # `care_team_member` local; `pet` is passed through for the edit link's nested
-  # path. The root <div class="col"> is the grid cell — the responsive
-  # row-cols-* wrapper that arranges these tiles lives in _list.
+  # path. The root is a flush list-group-item — the list-group wrapper lives in
+  # _list.
   #
-  # Header is a role "eyebrow" + Edit link; the fields below are compact inline
-  # "Label: value" rows (one line each, em dash for blanks) to keep the card
-  # short. "Edit" opens the shared drawer modal.
+  # Layout: a coral monogram tile, then the role as a coral "eyebrow" title over
+  # the member's name, with organization beneath; quick phone/email actions and
+  # an Edit pencil are pushed to the right. Notes, when present, drop onto a
+  # second muted line. Blank optional fields are simply omitted to keep each row
+  # tight. All actions open the shared drawer modal / native handlers
+  # (tel:/mailto:).
 %>
-<div class="col">
-  <div class="card h-100 border border-secondary-subtle rounded-3">
-    <div class="card-body p-3">
+<div class="list-group-item border-0 border-top px-4 py-3">
+  <div class="d-flex align-items-center gap-3">
 
-      <%# Header: role eyebrow + edit (same layout as the Identity card header) %>
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <span class="text-uppercase text-muted fw-bold" style="letter-spacing: 1px; font-size: .7rem;"><%= care_team_member.role_label %></span>
-        <%= link_to edit_pet_care_team_member_path(pet, care_team_member), class: "go-link text-secondary text-decoration-none small fw-medium d-inline-flex align-items-center gap-1", data: { turbo_frame: "drawer" } do %>
-          Edit <i class="fa-solid fa-arrow-right"></i>
+    <%# Monogram tile (reuses the gallery's coral wash). name is required, so the
+        initial is always present. %>
+    <span class="pet-card__monogram rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 fw-bold fs-5" style="width: 46px; height: 46px;">
+      <%= care_team_member.name.to_s.first&.upcase %>
+    </span>
+
+    <%# Role (coral eyebrow title) over the member's name, organization beneath.
+        min-width:0 lets the text truncate. %>
+    <div class="flex-grow-1" style="min-width: 0;">
+      <div class="text-uppercase text-accent fw-bold text-truncate" style="letter-spacing: .5px; font-size: .7rem;"><%= care_team_member.role_label %></div>
+      <div class="fw-semibold text-ink text-truncate"><%= care_team_member.name %></div>
+      <% if care_team_member.organization.present? %>
+        <div class="small text-secondary text-truncate">
+          <i class="fa-regular fa-building me-1"></i><%= care_team_member.organization %>
+        </div>
+      <% end %>
+    </div>
+
+    <%# Quick actions: phone, email, edit — consistent ghost icon buttons. %>
+    <div class="d-flex align-items-center gap-1 flex-shrink-0">
+      <% if care_team_member.phone.present? %>
+        <%# tel: href is digits-only (+ kept) so dialers parse it; the title keeps
+            the formatted number. aria-label gives the icon-only button an
+            accessible name; the glyph is decorative (aria-hidden). %>
+        <%= link_to "tel:#{care_team_member.phone.gsub(/[^0-9+]/, "")}", class: "btn btn-sm btn-light text-secondary rounded-circle d-inline-flex align-items-center justify-content-center", style: "width: 34px; height: 34px;", title: care_team_member.phone, aria: { label: "Call #{care_team_member.name}" } do %>
+          <i class="fa-solid fa-phone" aria-hidden="true"></i>
         <% end %>
-      </div>
-
-      <%# Compact inline labeled fields: "Name: Scout" on one line each. %>
-      <div class="d-flex flex-column gap-1 small">
-        <div>
-          <span class="text-muted">Name:</span>
-          <span class="fw-medium text-ink"><%= care_team_member.name %></span>
-        </div>
-        <div>
-          <span class="text-muted">Organization:</span>
-          <span class="fw-medium text-ink"><%= care_team_member.organization.presence || "—" %></span>
-        </div>
-        <div>
-          <span class="text-muted">Phone:</span>
-          <% if care_team_member.phone.present? %>
-            <%# tel: href is digits-only (+ kept) so dialers parse it; the label stays formatted. %>
-            <%= link_to care_team_member.phone, "tel:#{care_team_member.phone.gsub(/[^0-9+]/, "")}", class: "fw-medium text-decoration-none" %>
-          <% else %>
-            <span class="fw-medium text-ink">—</span>
-          <% end %>
-        </div>
-        <div class="text-break">
-          <span class="text-muted">Email:</span>
-          <% if care_team_member.email.present? %>
-            <%= mail_to care_team_member.email, class: "fw-medium text-decoration-none" %>
-          <% else %>
-            <span class="fw-medium text-ink">—</span>
-          <% end %>
-        </div>
-        <div>
-          <span class="text-muted">Notes:</span>
-          <span class="fw-medium text-ink"><%= care_team_member.notes.presence || "—" %></span>
-        </div>
-      </div>
-
+      <% end %>
+      <% if care_team_member.email.present? %>
+        <%= mail_to care_team_member.email, class: "btn btn-sm btn-light text-secondary rounded-circle d-inline-flex align-items-center justify-content-center", style: "width: 34px; height: 34px;", title: care_team_member.email, aria: { label: "Email #{care_team_member.name}" } do %>
+          <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+        <% end %>
+      <% end %>
+      <%= link_to edit_pet_care_team_member_path(pet, care_team_member), class: "go-link btn btn-sm btn-light text-secondary rounded-circle d-inline-flex align-items-center justify-content-center", style: "width: 34px; height: 34px;", title: "Edit", aria: { label: "Edit #{care_team_member.name}" }, data: { turbo_frame: "drawer" } do %>
+        <i class="fa-solid fa-pen" aria-hidden="true"></i>
+      <% end %>
     </div>
   </div>
+
+  <%# Notes: optional second line, indented to align under the name column. %>
+  <% if care_team_member.notes.present? %>
+    <div class="small text-secondary mt-2 ps-5 ms-1">
+      <i class="fa-regular fa-note-sticky me-1"></i><%= care_team_member.notes %>
+    </div>
+  <% end %>
 </div>

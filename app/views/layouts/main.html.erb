@@ -56,7 +56,11 @@
       </div>
     </aside>
     <%# --- RIGHT COLUMN (MAIN CONTENT) --- %>
-    <main class="flex-grow-1 p-4 p-md-5 overflow-auto">
+    <%# Faint-warm workspace (`bg-surface`) against the deeper-warm `bg-brand` nav
+        rail, so the sidebar and content read as two distinct regions rather than
+        one continuous canvas — while staying just warm enough that the white
+        cards still pop instead of going white-on-white. %>
+    <main class="flex-grow-1 p-4 p-md-5 overflow-auto bg-surface">
       <%# --- Injects the view tied to the active nav bar item (e.g. pets/index) --- %>
       <%= yield %>
     </main>

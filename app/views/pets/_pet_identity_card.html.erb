@@ -2,13 +2,14 @@
   # Identity Card (partial)
   #
   # The pet's profile photo + core attributes (name, species, breed, sex,
-  # birthday, microchip, notes), shown on the About tab as ONE card: the photo
-  # flush on the left, the identity details on the right. Rendered in two
-  # places, on purpose:
+  # birthday, microchip, notes), shown on the About tab as ONE card: a contained
+  # avatar tile on the left, a clean two-column field grid on the right, with the
+  # free-text Notes spanning full width beneath. Rendered in two places, on
+  # purpose:
   #   1. initial page load, from pets/_about, and
   #   2. after a successful edit, from pets/update.turbo_stream.erb.
-  # Keeping it in one partial means both paths render identical HTML — and now
-  # that the photo lives here too, editing the avatar refreshes live as well.
+  # Keeping it in one partial means both paths render identical HTML — and since
+  # the photo lives here too, editing the avatar refreshes live as well.
   #
   # The root <div>'s id is the Turbo Stream REPLACE target. dom_id(pet,
   # :pet_identity_card) → "pet_identity_card_pet_42". This MUST match the
@@ -17,54 +18,57 @@
 %>
 <%# --- ROOT: id here is what the Turbo Stream replaces after a save --- %>
 <div id="<%= dom_id(pet, :pet_identity_card) %>" class="col-lg-8">
-  <div class="card shadow-sm border border-secondary-subtle rounded-4 h-100 overflow-hidden">
-    <%# row g-0 = zero gutters, so the photo and details sit flush as one card. %>
-    <%# overflow-hidden on the card clips the image to the rounded corners.    %>
-    <div class="row g-0 h-100">
-      <%# --- LEFT: profile photo. Absolutely positioned so it's OUT of the flow %>
-      <%#     and can't push the card taller. The card height is set by the      %>
-      <%#     details column on the right; the photo just fills that height and  %>
-      <%#     object-fit-cover crops to the center. min-height is the floor for   %>
-      <%#     small screens, where the columns stack and there's no sibling to    %>
-      <%#     stretch against. %>
-      <div class="col-md-4 position-relative" style="min-height: 450px;">
-        <% if pet.avatar_image.attached? %>
-          <%= image_tag pet.avatar_image, alt: pet.name, class: "position-absolute top-0 start-0 w-100 h-100 object-fit-cover" %>
-        <% else %>
-          <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-light" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px);">
-            <span class="badge bg-white text-secondary border border-secondary-subtle fw-normal"><%= pet.name %></span>
-          </div>
+  <div class="card border border-secondary-subtle rounded-4 shadow-sm h-100">
+    <div class="card-body p-4 p-md-4">
+
+      <%# --- HEADER: section eyebrow + edit trigger --- %>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <span class="eyebrow text-muted">Identity</span>
+        <%# data-turbo-frame: "drawer" redirects this click AWAY from the
+            pet_content frame this link sits inside, and into the modal's "drawer"
+            frame instead. Without it, Turbo would try to load the edit response
+            into pet_content (the whole profile) and fail. %>
+        <%= link_to edit_pet_path(pet), class: "go-link text-secondary text-decoration-none small fw-medium d-inline-flex align-items-center gap-1", data: { turbo_frame: "drawer" } do %>
+          Edit <i class="fa-solid fa-arrow-right"></i>
         <% end %>
       </div>
-      <%# --- RIGHT: identity header + fields --- %>
-      <div class="col-md-8">
-        <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-4 pb-0 px-4">
-          <div class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Identity</div>
-          <%# --- EDIT TRIGGER --- %>
-          <%# data-turbo-frame: "drawer" redirects this click AWAY from the %>
-          <%# pet_content frame this link sits inside, and into the modal's %>
-          <%# "drawer" frame instead. Without it, Turbo would try to load the %>
-          <%# edit response into pet_content (the whole profile) and fail. %>
-          <%= link_to edit_pet_path(pet), class: "go-link text-secondary text-decoration-none small fw-medium d-inline-flex align-items-center gap-1", data: { turbo_frame: "drawer" } do %>
-            Edit <i class="fa-solid fa-arrow-right"></i>
+
+      <%# --- BODY: avatar tile + field grid, stacking on phones --- %>
+      <div class="d-flex flex-column flex-sm-row gap-4">
+
+        <%# Contained, rounded avatar at a FIXED 200×240 portrait size, so the tile
+            never changes shape with the photo's own dimensions. object-fit-cover
+            center-crops the image to fill the box without distortion. Monogram
+            fallback (same fixed size) reuses the gallery's coral wash. %>
+        <div class="flex-shrink-0 mx-auto mx-sm-0" style="width: 200px; height: 240px;">
+          <% if pet.avatar_image.attached? %>
+            <%= image_tag pet.avatar_image, alt: pet.name, class: "rounded-4 object-fit-cover shadow-sm w-100 h-100" %>
+          <% else %>
+            <div class="pet-card__monogram rounded-4 d-flex align-items-center justify-content-center w-100 h-100">
+              <span class="display-4 fw-bold"><%= pet.name.to_s.first&.upcase %></span>
+            </div>
           <% end %>
         </div>
-        <div class="card-body p-4">
-          <div class="row g-4">
-            <div class="col-sm-6">
-              <div class="field-label">Name</div>
-              <div class="fw-medium text-ink"><%= pet.name %></div>
+
+        <%# Field grid: small uppercase labels (field-label) with a coral icon,
+            value beneath. Two-up on all but the narrowest cells; Notes is full
+            width. %>
+        <div class="flex-grow-1" style="min-width: 0;">
+          <div class="row g-3 g-md-4">
+            <div class="col-6">
+              <div class="field-label"><%= pet_field_icon(:name) %>Name</div>
+              <div class="fw-medium text-ink text-truncate"><%= pet.name %></div>
             </div>
-            <div class="col-sm-6">
-              <div class="field-label">Species</div>
+            <div class="col-6">
+              <div class="field-label"><%= pet_field_icon(:species) %>Species</div>
               <div class="fw-medium text-ink"><%= pet.species&.humanize || "—" %></div>
             </div>
-            <div class="col-sm-6">
-              <div class="field-label">Breed</div>
+            <div class="col-6">
+              <div class="field-label"><%= pet_field_icon(:breed) %>Breed</div>
               <div class="fw-medium text-ink"><%= pet.breed.presence || "—" %></div>
             </div>
-            <div class="col-sm-6">
-              <div class="field-label">Sex</div>
+            <div class="col-6">
+              <div class="field-label"><%= pet_field_icon(:sex) %>Sex</div>
               <div class="fw-medium text-ink">
                 <%= pet.sex&.humanize || "—" %>
                 <% if pet.neutered %>
@@ -72,39 +76,35 @@
                 <% end %>
               </div>
             </div>
-            <div class="col-sm-6">
-              <div class="field-label">Birthday</div>
+            <div class="col-6">
+              <div class="field-label"><%= pet_field_icon(:date_of_birth) %>Birthday</div>
               <div class="fw-medium text-ink">
                 <% if pet.date_of_birth.present? %>
                   <%= pet.date_of_birth.strftime("%B %-d, %Y") %>
-                  <span class="text-secondary d-block">(<%= time_ago_in_words(pet.date_of_birth) %>)</span>
+                  <span class="text-secondary d-block small">(<%= time_ago_in_words(pet.date_of_birth) %>)</span>
                 <% else %>
                   —
                 <% end %>
               </div>
             </div>
-            <div class="col-sm-6">
-              <div class="field-label">Microchip</div>
-              <div class="fw-medium text-ink">
-                <%= pet.microchip.presence || "—" %>
-                <% if pet.microchip.present? %>
-                  <span class="badge bg-light text-secondary border border-secondary-subtle fw-normal d-inline-block mt-1">registered</span>
-                <% end %>
-              </div>
-            </div>
-            <div class="col-sm-12">
-              <div class="field-label">Notes</div>
-              <div class="fw-medium text-ink">
-                <% if pet.notes.present? %>
-                  <div class="text-ink" style="line-height: 1.6;"><%= simple_format pet.notes %></div>
-                <% else %>
-                  <div class="text-muted fst-italic">No notes recorded yet.</div>
-                <% end %>
-              </div>
+            <div class="col-6">
+              <div class="field-label"><%= pet_field_icon(:microchip) %>Microchip</div>
+              <div class="fw-medium text-ink"><%= pet.microchip.presence || "—" %></div>
             </div>
           </div>
         </div>
       </div>
+
+      <%# --- NOTES: full width, divided off from the grid above --- %>
+      <div class="border-top border-secondary-subtle mt-4 pt-4">
+        <div class="field-label"><%= pet_field_icon(:notes) %>Notes</div>
+        <% if pet.notes.present? %>
+          <div class="text-ink" style="line-height: 1.6;"><%= simple_format pet.notes %></div>
+        <% else %>
+          <div class="text-muted fst-italic">No notes recorded yet.</div>
+        <% end %>
+      </div>
+
     </div>
   </div>
 </div>

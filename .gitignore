@@ -40,3 +40,7 @@
 /.idea
 .DS_Store
 
+# Ignore Claude Code per-session runtime state (e.g. the scheduled-tasks lock,
+# which holds a session id/PID and must not be shared across machines).
+/.claude/scheduled_tasks.lock
+
