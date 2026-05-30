@@ -27,7 +27,7 @@
     <div class="card border border-secondary-subtle rounded-4 shadow-sm h-100">
       <div class="card-body p-4 d-flex flex-column">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <span class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Daily Schedule</span>
+          <span class="eyebrow text-muted">Daily Schedule</span>
           <span class="badge rounded-pill text-bg-light border border-secondary-subtle fw-normal">Coming soon</span>
         </div>
         <%# Centered empty state so the placeholder reads as intentional. %>
@@ -49,7 +49,7 @@
       <%# Card HEADER (stays put across Turbo refreshes). "+ Add" and each row's
           "Edit" open the shared drawer modal. %>
       <div class="d-flex justify-content-between align-items-center px-4 pt-4 pb-3">
-        <span class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Care Team</span>
+        <span class="eyebrow text-muted">Care Team</span>
         <%= link_to new_pet_care_team_member_path(pet), class: "go-link text-secondary text-decoration-none small fw-medium d-inline-flex align-items-center gap-1", data: { turbo_frame: "drawer" } do %>
           <i class="fa-solid fa-plus"></i> Add
         <% end %>

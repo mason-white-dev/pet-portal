@@ -23,7 +23,7 @@
 
       <%# --- HEADER: section eyebrow + edit trigger --- %>
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <span class="text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Identity</span>
+        <span class="eyebrow text-muted">Identity</span>
         <%# data-turbo-frame: "drawer" redirects this click AWAY from the
             pet_content frame this link sits inside, and into the modal's "drawer"
             frame instead. Without it, Turbo would try to load the edit response
@@ -58,19 +58,19 @@
         <div class="flex-grow-1" style="min-width: 0;">
           <div class="row g-3 g-md-4">
             <div class="col-6">
-              <div class="field-label"><i class="fa-solid fa-tag text-accent me-1"></i>Name</div>
+              <div class="field-label"><%= pet_field_icon(:name) %>Name</div>
               <div class="fw-medium text-ink text-truncate"><%= pet.name %></div>
             </div>
             <div class="col-6">
-              <div class="field-label"><i class="fa-solid fa-paw text-accent me-1"></i>Species</div>
+              <div class="field-label"><%= pet_field_icon(:species) %>Species</div>
               <div class="fw-medium text-ink"><%= pet.species&.humanize || "—" %></div>
             </div>
             <div class="col-6">
-              <div class="field-label"><i class="fa-solid fa-dog text-accent me-1"></i>Breed</div>
+              <div class="field-label"><%= pet_field_icon(:breed) %>Breed</div>
               <div class="fw-medium text-ink"><%= pet.breed.presence || "—" %></div>
             </div>
             <div class="col-6">
-              <div class="field-label"><i class="fa-solid fa-venus-mars text-accent me-1"></i>Sex</div>
+              <div class="field-label"><%= pet_field_icon(:sex) %>Sex</div>
               <div class="fw-medium text-ink">
                 <%= pet.sex&.humanize || "—" %>
                 <% if pet.neutered %>
@@ -79,7 +79,7 @@
               </div>
             </div>
             <div class="col-6">
-              <div class="field-label"><i class="fa-solid fa-cake-candles text-accent me-1"></i>Birthday</div>
+              <div class="field-label"><%= pet_field_icon(:date_of_birth) %>Birthday</div>
               <div class="fw-medium text-ink">
                 <% if pet.date_of_birth.present? %>
                   <%= pet.date_of_birth.strftime("%B %-d, %Y") %>
@@ -90,13 +90,8 @@
               </div>
             </div>
             <div class="col-6">
-              <div class="field-label"><i class="fa-solid fa-microchip text-accent me-1"></i>Microchip</div>
-              <div class="fw-medium text-ink">
-                <%= pet.microchip.presence || "—" %>
-                <% if pet.microchip.present? %>
-                  <span class="badge text-bg-light border border-secondary-subtle fw-normal d-inline-block mt-1">registered</span>
-                <% end %>
-              </div>
+              <div class="field-label"><%= pet_field_icon(:microchip) %>Microchip</div>
+              <div class="fw-medium text-ink"><%= pet.microchip.presence || "—" %></div>
             </div>
           </div>
         </div>
@@ -104,7 +99,7 @@
 
       <%# --- NOTES: full width, divided off from the grid above --- %>
       <div class="border-top border-secondary-subtle mt-4 pt-4">
-        <div class="field-label"><i class="fa-solid fa-note-sticky text-accent me-1"></i>Notes</div>
+        <div class="field-label"><%= pet_field_icon(:notes) %>Notes</div>
         <% if pet.notes.present? %>
           <div class="text-ink" style="line-height: 1.6;"><%= simple_format pet.notes %></div>
         <% else %>

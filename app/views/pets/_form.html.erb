@@ -87,7 +87,7 @@
 
         <div class="col-sm-6">
           <%= form.label :name, class: "field-label" do %>
-            <i class="fa-solid fa-tag text-accent me-1"></i>Name
+<%= pet_field_icon(:name) %>Name
           <% end %>
           <%= form.text_field :name, placeholder: "e.g. Scout", class: [ "form-control", ("is-invalid" if pet.errors[:name].any?) ] %>
           <%= field_error pet, :name %>
@@ -95,7 +95,7 @@
 
         <div class="col-sm-6">
           <%= form.label :species, class: "field-label" do %>
-            <i class="fa-solid fa-paw text-accent me-1"></i>Species
+<%= pet_field_icon(:species) %>Species
           <% end %>
           <%= form.select :species, Pet.species.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select species" }, class: [ "form-select", ("is-invalid" if pet.errors[:species].any?) ] %>
           <%= field_error pet, :species %>
@@ -103,7 +103,7 @@
 
         <div class="col-sm-6">
           <%= form.label :breed, class: "field-label" do %>
-            <i class="fa-solid fa-dog text-accent me-1"></i>Breed
+<%= pet_field_icon(:breed) %>Breed
           <% end %>
           <%= form.text_field :breed, placeholder: "e.g. Mixed Breed", class: [ "form-control", ("is-invalid" if pet.errors[:breed].any?) ] %>
           <%= field_error pet, :breed %>
@@ -111,7 +111,7 @@
 
         <div class="col-sm-6">
           <%= form.label :sex, class: "field-label" do %>
-            <i class="fa-solid fa-venus-mars text-accent me-1"></i>Sex
+<%= pet_field_icon(:sex) %>Sex
           <% end %>
           <%= form.select :sex, Pet.sexes.keys.map { |k| [ k.humanize, k ] }, { prompt: "Select sex" }, class: [ "form-select", ("is-invalid" if pet.errors[:sex].any?) ] %>
           <%= field_error pet, :sex %>
@@ -119,7 +119,7 @@
 
         <div class="col-sm-6">
           <%= form.label :date_of_birth, class: "field-label" do %>
-            <i class="fa-solid fa-cake-candles text-accent me-1"></i>Birthday
+<%= pet_field_icon(:date_of_birth) %>Birthday
           <% end %>
           <%= form.date_field :date_of_birth, class: [ "form-control", ("is-invalid" if pet.errors[:date_of_birth].any?) ] %>
           <%= field_error pet, :date_of_birth %>
@@ -127,7 +127,7 @@
 
         <div class="col-sm-6">
           <%= form.label :microchip, class: "field-label" do %>
-            <i class="fa-solid fa-microchip text-accent me-1"></i>Microchip
+<%= pet_field_icon(:microchip) %>Microchip
           <% end %>
           <%= form.text_field :microchip, placeholder: "e.g. Tag-12345", class: [ "form-control", ("is-invalid" if pet.errors[:microchip].any?) ] %>
           <%= field_error pet, :microchip %>
@@ -139,7 +139,7 @@
             input). Canonical form-check/form-switch markup so Bootstrap handles
             layout. %>
         <div class="col-sm-6">
-          <div class="field-label"><i class="fa-solid fa-scissors text-accent me-1"></i>Spayed / neutered</div>
+          <div class="field-label"><%= pet_field_icon(:neutered) %>Spayed / neutered</div>
           <div class="form-check form-switch">
             <%= form.check_box :neutered, class: "form-check-input", role: "switch" %>
             <%= form.label :neutered, "Yes", class: "form-check-label text-ink" %>
@@ -148,7 +148,7 @@
 
         <div class="col-12">
           <%= form.label :notes, class: "field-label" do %>
-            <i class="fa-solid fa-note-sticky text-accent me-1"></i>Notes
+            <%= pet_field_icon(:notes) %>Notes
           <% end %>
           <%= form.text_area :notes, rows: 4, placeholder: "Anything worth remembering — temperament, allergies, routines…", class: [ "form-control", ("is-invalid" if pet.errors[:notes].any?) ] %>
           <%= field_error pet, :notes %>
