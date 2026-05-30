@@ -28,10 +28,13 @@
         confirmation into the shared modal (drawer frame) rather than the
         browser's native confirm(). The real, filled Delete button lives inside
         that confirmation (see pets/confirm_delete). %>
+    <%# aria-label names the button even when the text collapses to icon-only on
+        mobile (d-none d-sm-inline); the glyph is decorative (aria-hidden). %>
     <%= link_to confirm_delete_pet_path(pet),
           class: "btn btn-sm btn-outline-danger rounded-pill flex-shrink-0 d-inline-flex align-items-center gap-2",
+          aria: { label: "Delete #{pet.name}" },
           data: { turbo_frame: "drawer" } do %>
-      <i class="fa-regular fa-trash-can"></i>
+      <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
       <span class="d-none d-sm-inline">Delete pet</span>
     <% end %>
   </div>

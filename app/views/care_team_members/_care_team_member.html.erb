@@ -39,18 +39,19 @@
     <div class="d-flex align-items-center gap-1 flex-shrink-0">
       <% if care_team_member.phone.present? %>
         <%# tel: href is digits-only (+ kept) so dialers parse it; the title keeps
-            the formatted number. %>
-        <%= link_to "tel:#{care_team_member.phone.gsub(/[^0-9+]/, "")}", class: "btn btn-sm btn-light text-secondary rounded-circle d-inline-flex align-items-center justify-content-center", style: "width: 34px; height: 34px;", title: care_team_member.phone do %>
-          <i class="fa-solid fa-phone"></i>
+            the formatted number. aria-label gives the icon-only button an
+            accessible name; the glyph is decorative (aria-hidden). %>
+        <%= link_to "tel:#{care_team_member.phone.gsub(/[^0-9+]/, "")}", class: "btn btn-sm btn-light text-secondary rounded-circle d-inline-flex align-items-center justify-content-center", style: "width: 34px; height: 34px;", title: care_team_member.phone, aria: { label: "Call #{care_team_member.name}" } do %>
+          <i class="fa-solid fa-phone" aria-hidden="true"></i>
         <% end %>
       <% end %>
       <% if care_team_member.email.present? %>
-        <%= mail_to care_team_member.email, class: "btn btn-sm btn-light text-secondary rounded-circle d-inline-flex align-items-center justify-content-center", style: "width: 34px; height: 34px;", title: care_team_member.email do %>
-          <i class="fa-regular fa-envelope"></i>
+        <%= mail_to care_team_member.email, class: "btn btn-sm btn-light text-secondary rounded-circle d-inline-flex align-items-center justify-content-center", style: "width: 34px; height: 34px;", title: care_team_member.email, aria: { label: "Email #{care_team_member.name}" } do %>
+          <i class="fa-regular fa-envelope" aria-hidden="true"></i>
         <% end %>
       <% end %>
-      <%= link_to edit_pet_care_team_member_path(pet, care_team_member), class: "go-link btn btn-sm btn-light text-secondary rounded-circle d-inline-flex align-items-center justify-content-center", style: "width: 34px; height: 34px;", title: "Edit", data: { turbo_frame: "drawer" } do %>
-        <i class="fa-solid fa-pen"></i>
+      <%= link_to edit_pet_care_team_member_path(pet, care_team_member), class: "go-link btn btn-sm btn-light text-secondary rounded-circle d-inline-flex align-items-center justify-content-center", style: "width: 34px; height: 34px;", title: "Edit", aria: { label: "Edit #{care_team_member.name}" }, data: { turbo_frame: "drawer" } do %>
+        <i class="fa-solid fa-pen" aria-hidden="true"></i>
       <% end %>
     </div>
   </div>
