@@ -45,7 +45,9 @@
 <%# --- ROW 2: CARE TEAM --- %>
 <div class="row g-4">
   <div class="col-12">
-    <div class="card border border-secondary-subtle rounded-4 shadow-sm">
+    <%# overflow-hidden clips the flush care-team rows to the card's rounded-4
+        corners, so the last row's square bottom corners don't poke through. %>
+    <div class="card border border-secondary-subtle rounded-4 shadow-sm overflow-hidden">
       <%# Card HEADER (stays put across Turbo refreshes). "+ Add" and each row's
           "Edit" open the shared drawer modal. %>
       <div class="d-flex justify-content-between align-items-center px-4 pt-4 pb-3">
