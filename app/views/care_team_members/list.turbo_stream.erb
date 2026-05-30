@@ -1,0 +1,15 @@
+<%#
+  # Shared Turbo Stream: refresh the Care Team list.
+  #
+  # Rendered by create / update / destroy on success (each calls `render :list`).
+  # Replaces the whole Care Team card body — dom_id(@pet, :care_team_members),
+  # the root of _list — with a freshly rendered list. Because the list is
+  # re-rendered from the database, one template covers every case: a new row, an
+  # edited row, a removed row, and the empty state.
+  #
+  # Streams target by DOM id across the whole document, so this reaches the list
+  # even though the form that triggered it lives inside the "drawer" frame. The
+  # modal closes separately via popup_controller.js on turbo:submit-end success.
+%>
+<%= turbo_stream.replace dom_id(@pet, :care_team_members),
+      partial: "care_team_members/list", locals: { pet: @pet } %>

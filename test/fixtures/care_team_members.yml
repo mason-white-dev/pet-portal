@@ -1,0 +1,45 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# == Schema Information
+#
+# Table name: care_team_members
+#
+#  id           :bigint           not null, primary key
+#  email        :string
+#  name         :string
+#  notes        :text
+#  organization :string
+#  phone        :string
+#  role         :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  pet_id       :bigint           not null
+#
+# Indexes
+#
+#  index_care_team_members_on_pet_id  (pet_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (pet_id => pets.id)
+#
+# `one` belongs to pets(:one) -> users(:one) (the account we sign in as in tests).
+# `two` belongs to pets(:two) -> users(:two), so it's used to prove cross-account
+# access is impossible.
+one:
+  pet: one
+  role: primary_vet
+  name: Dr. Alice Nguyen
+  organization: Banfield Pet Hospital
+  phone: 503-555-0101
+  email: care@banfield.example.com
+  notes: Annual checkups and vaccinations.
+
+two:
+  pet: two
+  role: groomer
+  name: Sam Rivera
+  organization: Happy Tails Grooming
+  phone: 503-555-0199
+  email: hello@happytails.example.com
+  notes: Full groom every six weeks.

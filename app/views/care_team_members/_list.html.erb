@@ -1,0 +1,21 @@
+<%#
+  # Care Team list (the card body on the pet profile)
+  #
+  # The single source of truth for how the care team renders. Drawn directly by
+  # pets/_about on first load, and re-rendered by list.turbo_stream.erb after any
+  # create/update/destroy. Its root carries dom_id(pet, :care_team_members) — the
+  # target the stream replaces. Needs a `pet` local.
+%>
+<div id="<%= dom_id(pet, :care_team_members) %>" class="card-body p-4 pt-3">
+  <% members = pet.care_team_members.ordered.to_a %>
+  <% if members.any? %>
+    <%# Responsive grid: cards wrap and stack horizontally — 1 column on phones, %>
+    <%# 2 on medium screens, 3 on extra-wide. Each cell is the _care_team_member %>
+    <%# partial (its root is the `col`); `g-3` is the gutter between cards. %>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 g-3">
+      <%= render partial: "care_team_members/care_team_member", collection: members, locals: { pet: pet } %>
+    </div>
+  <% else %>
+    <div class="text-muted fst-italic">No care team members yet. Add a vet, groomer, sitter, and more.</div>
+  <% end %>
+</div>
